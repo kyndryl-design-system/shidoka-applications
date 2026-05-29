@@ -4,14 +4,15 @@ import '../components/global/uiShell';
 import '../components/global/header';
 import '../components/global/localNav';
 import '../components/global/footer';
-import '../components/reusable/badge';
 import '../components/reusable/button';
 import '../components/reusable/iconSelector';
 import '../components/reusable/link';
 import '../components/reusable/pagetitle';
+import '../components/reusable/sideDrawer';
 import '../components/reusable/tabs';
 import '../components/reusable/widget';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import { Config as gridstackConfig } from '../common/helpers/gridstack';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
@@ -29,12 +30,16 @@ import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
 import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
+import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
 import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notification.svg';
+import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 import starOutlineIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
+import arrowDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-down.svg';
+import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
 
 const iconMap = {
   'catalog-management': catalogIcon,
@@ -60,11 +65,20 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
 
   .dashboard-content {
     align-items: start;
+    width: 100%;
+    max-width: 110rem;
+    margin-inline: 0 auto;
+    justify-content: start;
+  }
+
+  .dashboard-content .grid-stack {
+    width: 100%;
+    max-width: none;
   }
 
   .dashboard-hero {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
     margin-bottom: 0.5rem;
@@ -76,18 +90,41 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     align-items: center;
     justify-content: flex-end;
     gap: 0.75rem;
-    padding-top: 0.5rem;
+  }
+
+  .dashboard-settings-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dashboard-settings-drawer__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--kd-color-background-container-soft);
+    border-radius: 0.5rem;
+  }
+
+  .dashboard-settings-drawer__title {
+    color: var(--kd-color-text-level-primary);
+    font-weight: var(--kd-font-weight-medium);
+  }
+
+  .dashboard-settings-drawer__description {
+    color: var(--kd-color-text-level-secondary);
   }
 
   .dashboard-kpis {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .dashboard-kpi {
-    min-height: 144px;
+    min-height: 156px;
   }
 
   .dashboard-kpi kyn-widget {
@@ -101,25 +138,89 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     gap: 0.75rem;
   }
 
-  .dashboard-kpi__label {
-    color: var(--kd-color-text-level-secondary);
-  }
-
-  .dashboard-kpi__value {
-    color: var(--kd-color-text-level-primary);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300;
-    line-height: 1;
-  }
-
-  .dashboard-kpi__meta {
+  .dashboard-kpi__top {
     display: flex;
-    flex-wrap: wrap;
+    min-width: 0;
     align-items: center;
     gap: 0.5rem;
   }
 
-  @media (max-width: calc(82rem - 0.001px)) {
+  .dashboard-kpi__lock,
+  .dashboard-kpi__menu,
+  .dashboard-kpi__trend {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    color: var(--kd-color-icon-secondary);
+  }
+
+  .dashboard-kpi__lock svg,
+  .dashboard-kpi__menu svg,
+  .dashboard-kpi__trend svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+
+  .dashboard-kpi__label {
+    min-width: 0;
+    flex: 1 1 auto;
+    color: var(--kd-color-text-level-secondary);
+    font-size: 0.75rem;
+    font-weight: var(--kd-font-weight-medium);
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dashboard-kpi__menu {
+    margin-inline-start: auto;
+  }
+
+  .dashboard-kpi__value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+    margin-block-start: 0.25rem;
+  }
+
+  .dashboard-kpi__value {
+    color: var(--kd-color-text-level-primary);
+    font-size: clamp(2.25rem, 3.5vw, 2.875rem);
+    font-weight: var(--kd-font-weight-regular);
+    line-height: 1;
+  }
+
+  .dashboard-kpi__trend {
+    color: var(--kd-color-text-level-primary);
+    transform: translateY(-0.125rem);
+  }
+
+  .dashboard-kpi__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--kd-color-text-level-secondary);
+    font-size: 0.75rem;
+    font-weight: var(--kd-font-weight-regular);
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  .dashboard-kpi__action {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    padding-top: 0.125rem;
+  }
+
+  .dashboard-kpi__action kyn-button {
+    width: min(100%, 9rem);
+  }
+
+  @media (max-width: calc(58rem - 0.001px)) {
     .dashboard-kpis {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -127,6 +228,7 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
 
   @media (max-width: calc(52rem - 0.001px)) {
     .dashboard-hero {
+      align-items: flex-start;
       flex-direction: column;
     }
 
@@ -150,6 +252,8 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
 const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
   /* Optional Storybook visual treatment: backdrop gradient and trellis art. */
   .ui-shell-dashboard-demo {
+    --dashboard-trellis-height: clamp(320px, 30vw, 560px);
+
     position: relative;
     isolation: isolate;
     min-height: 100vh;
@@ -162,11 +266,11 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
     z-index: 0;
     inset-block-start: var(--kd-header-height, 56px);
     inset-inline: 0;
-    height: 320px;
+    height: var(--dashboard-trellis-height);
     content: '';
     background: var(--kd-color-background-container-soft);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0 50%, transparent 100%);
     pointer-events: none;
   }
 
@@ -177,8 +281,8 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
 
   .dashboard-main::after {
     position: absolute;
-    inset: 200px 0 auto;
-    height: 160px;
+    inset: calc(var(--dashboard-trellis-height) / 2) 0 auto;
+    height: calc(var(--dashboard-trellis-height) / 2);
     content: '';
     background: linear-gradient(
       to bottom,
@@ -198,12 +302,12 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
     z-index: 1;
     inset-block-start: 0;
     inset-inline-end: 0;
-    width: min(62vw, 980px);
-    height: 320px;
+    width: min(82vw, 1440px);
+    height: var(--dashboard-trellis-height);
     color: var(--kd-color-opacity-ai-warm-red-50);
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0 50%, transparent 100%);
     pointer-events: none;
   }
 
@@ -291,17 +395,19 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
   .user-flyout-card {
     display: flex;
     flex-direction: column;
-    min-width: 240px;
-    padding: 0.75rem;
+    min-width: 220px;
   }
 
   .flyout-action-list {
     gap: 0.25rem;
+    padding: 0.25rem;
   }
 
   .user-flyout-card {
     align-items: stretch;
     gap: 0.75rem;
+    min-width: 240px;
+    padding: 0.75rem;
   }
 
   .user-flyout-card .flyout-action-list {
@@ -558,19 +664,67 @@ const createFlyoutActionLinkSource = (label) =>
 const createKpiSource = (kpi) => `<div class="dashboard-kpi">
   <kyn-widget removeHeader>
     <div class="dashboard-kpi__content">
-      <span class="dashboard-kpi__label kd-type--ui-02">${escapeSource(
-        kpi.label
-      )}</span>
-      <span class="dashboard-kpi__value">${escapeSource(kpi.value)}</span>
+      <div class="dashboard-kpi__top">
+        <span class="dashboard-kpi__lock"><!-- lock icon --></span>
+        <span class="dashboard-kpi__label">${escapeSource(kpi.label)}</span>
+        <span class="dashboard-kpi__menu"><!-- overflow icon --></span>
+      </div>
+      <div class="dashboard-kpi__value-row">
+        <span class="dashboard-kpi__value">${escapeSource(kpi.value)}</span>
+        <span class="dashboard-kpi__trend"><!-- ${
+          kpi.trend === 'down' ? 'arrow-down' : 'arrow-up'
+        } icon --></span>
+      </div>
       <div class="dashboard-kpi__meta">
-        <kyn-badge label="${escapeSource(
-          kpi.statusLabel
-        )}" status="${escapeSource(kpi.status)}" hideIcon></kyn-badge>
-        <span class="kd-type--ui-04">${escapeSource(kpi.meta)}</span>
+        <span>${escapeSource(kpi.meta)}</span>
+      </div>
+      <div class="dashboard-kpi__action">
+        <kyn-button kind="secondary" size="extra-small">
+          More Info
+        </kyn-button>
       </div>
     </div>
   </kyn-widget>
 </div>`;
+
+const SETTINGS_DRAWER_SOURCE = `
+<kyn-side-drawer
+  size="md"
+  titleText="Dashboard settings"
+  labelText="Adjust how this dashboard summarizes operations signals."
+  submitBtnText="Apply"
+>
+  <kyn-button
+    slot="anchor"
+    kind="primary"
+    size="small"
+    iconPosition="left"
+  >
+    ${createSourceIcon('settings', 'icon')}
+    Settings
+  </kyn-button>
+
+  <div class="dashboard-settings-drawer">
+    <div class="dashboard-settings-drawer__section">
+      <div class="dashboard-settings-drawer__title kd-type--ui-02">
+        Data refresh
+      </div>
+      <div class="dashboard-settings-drawer__description kd-type--ui-03">
+        Showing live operations data with a five minute refresh cadence.
+      </div>
+    </div>
+
+    <div class="dashboard-settings-drawer__section">
+      <div class="dashboard-settings-drawer__title kd-type--ui-02">
+        Dashboard scope
+      </div>
+      <div class="dashboard-settings-drawer__description kd-type--ui-03">
+        Metrics include recommendations, input quality, latency, and cost
+        signals across active environments.
+      </div>
+    </div>
+  </div>
+</kyn-side-drawer>`;
 
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
@@ -769,7 +923,7 @@ const renderShellHeader = () => html`
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Notifications" hideMenuLabel>
+      <kyn-header-flyout label="Notifications" hideMenuLabel noPadding>
         <span slot="button" class="header-icon">
           ${unsafeSVG(notificationIcon)}
         </span>
@@ -787,7 +941,7 @@ const renderShellHeader = () => html`
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Help">
+      <kyn-header-flyout label="Help" noPadding>
         <span slot="button" class="header-icon">
           ${unsafeSVG(informationIcon)}
         </span>
@@ -803,7 +957,7 @@ const renderShellHeader = () => html`
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="User Profile" hideMenuLabel>
+      <kyn-header-flyout label="User Profile" hideMenuLabel noPadding>
         <span slot="button" class="header-icon">
           ${unsafeSVG(userAvatarIcon)}
         </span>
@@ -865,6 +1019,7 @@ const kpis = [
     status: 'success',
     statusLabel: 'Healthy',
     meta: 'Increased by 12%',
+    trend: 'up',
   },
   {
     label: 'Input data quality',
@@ -872,6 +1027,7 @@ const kpis = [
     status: 'info',
     statusLabel: 'Stable',
     meta: 'Across 18 sources',
+    trend: 'up',
   },
   {
     label: 'Interference time',
@@ -879,6 +1035,7 @@ const kpis = [
     status: 'warning',
     statusLabel: 'Review',
     meta: 'Decreased by 4%',
+    trend: 'down',
   },
   {
     label: 'Uptime',
@@ -886,11 +1043,17 @@ const kpis = [
     status: 'success',
     statusLabel: 'On target',
     meta: 'Last 30 days',
+    trend: 'up',
   },
 ];
 
+const chartAnimation = {
+  duration: 700,
+  easing: 'easeOutQuart',
+};
+
 const cartesianOptions = (xTitle, yTitle) => ({
-  animation: false,
+  animation: chartAnimation,
   maintainAspectRatio: false,
   plugins: {
     legend: {
@@ -915,7 +1078,7 @@ const cartesianOptions = (xTitle, yTitle) => ({
 });
 
 const radarOptions = {
-  animation: false,
+  animation: chartAnimation,
   maintainAspectRatio: false,
   plugins: {
     legend: {
@@ -925,13 +1088,13 @@ const radarOptions = {
   scales: {
     r: {
       beginAtZero: true,
-      suggestedMax: 100,
+      suggestedMax: 60,
     },
   },
 };
 
 const doughnutOptions = {
-  animation: false,
+  animation: chartAnimation,
   maintainAspectRatio: false,
   cutout: '62%',
   plugins: {
@@ -964,7 +1127,7 @@ const chartData = [
     id: 'container-growth',
     title: 'Container growth',
     subtitle: 'Container count by environment',
-    type: 'bar',
+    type: 'radar',
     labels: ['Dev', 'Test', 'Stage', 'Prod', 'DR'],
     datasets: [
       {
@@ -976,25 +1139,25 @@ const chartData = [
         data: [18, 24, 21, 31, 16],
       },
     ],
-    options: cartesianOptions('Environment', 'Containers'),
+    options: radarOptions,
   },
   {
     id: 'service-readiness',
-    title: 'Service readiness',
-    subtitle: 'Readiness dimensions by domain',
-    type: 'radar',
-    labels: ['Security', 'Cost', 'Resiliency', 'Capacity', 'Compliance'],
+    title: '2025 Analysis of Data',
+    subtitle: 'Weekly volume by dataset',
+    type: 'bar',
+    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     datasets: [
       {
-        label: 'Current',
-        data: [82, 76, 88, 71, 84],
+        label: 'Dataset 1',
+        data: [18000, 31000, 27000, 42000, 22500, 18000, 22500],
       },
       {
-        label: 'Target',
-        data: [90, 86, 92, 84, 90],
+        label: 'Dataset 2',
+        data: [14000, 49000, 30500, 37500, 32000, 39500, 19000],
       },
     ],
-    options: radarOptions,
+    options: cartesianOptions('Day of the week', 'Count'),
   },
   {
     id: 'inference-latency',
@@ -1031,9 +1194,9 @@ const chartData = [
 ];
 
 const chartGridHeight = 5;
-const radarGridHeight = 6;
+const wideChartGridHeight = 6;
 const getChartGridHeight = (id) =>
-  id === 'service-readiness' ? radarGridHeight : chartGridHeight;
+  id === 'service-readiness' ? wideChartGridHeight : chartGridHeight;
 const createChartLayoutItem = (id, x, y, w) => ({
   id,
   x,
@@ -1043,7 +1206,15 @@ const createChartLayoutItem = (id, x, y, w) => ({
   minW: 4,
   minH: getChartGridHeight(id),
 });
-const bottomChartGridY = chartGridHeight + radarGridHeight;
+const bottomChartGridY = chartGridHeight + wideChartGridHeight;
+
+const dashboardGridstackConfig = {
+  ...gridstackConfig,
+  cellHeight: 96,
+  staticGrid: false,
+  disableDrag: false,
+  disableResize: true,
+};
 
 const dashboardChartLayout = {
   max: [
@@ -1081,13 +1252,13 @@ const dashboardChartLayout = {
     createChartLayoutItem(
       'inference-latency',
       0,
-      chartGridHeight * 2 + radarGridHeight,
+      chartGridHeight * 2 + wideChartGridHeight,
       4
     ),
     createChartLayoutItem(
       'optimization-mix',
       0,
-      chartGridHeight * 3 + radarGridHeight,
+      chartGridHeight * 3 + wideChartGridHeight,
       4
     ),
   ],
@@ -1167,7 +1338,7 @@ ${indentSource(
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Notifications" hideMenuLabel>
+      <kyn-header-flyout label="Notifications" hideMenuLabel noPadding>
         ${createSourceIcon('notification', 'button', 'header-icon')}
         <div class="flyout-action-list">
 ${indentSource(
@@ -1179,7 +1350,7 @@ ${indentSource(
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Help">
+      <kyn-header-flyout label="Help" noPadding>
         ${createSourceIcon('information', 'button', 'header-icon')}
         <div class="flyout-action-list">
 ${indentSource(
@@ -1191,7 +1362,7 @@ ${indentSource(
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="User Profile" hideMenuLabel>
+      <kyn-header-flyout label="User Profile" hideMenuLabel noPadding>
         ${createSourceIcon('user', 'button', 'header-icon')}
         <div class="user-flyout-card">
           <kyn-header-user-profile
@@ -1238,14 +1409,9 @@ ${indentSource(
     <div class="dashboard-content kd-grid">
       <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
         <div class="dashboard-hero">
-          <kyn-page-title
-            headLine="Dashboard"
-            pageTitle="Operations Overview"
-            subTitle="Monitor key health, usage, reliability, and cost signals across active environments."
-          ></kyn-page-title>
+          <kyn-page-title pageTitle="Welcome, User"></kyn-page-title>
           <div class="dashboard-hero-actions">
-            <kyn-badge label="Live data" status="success" hideIcon></kyn-badge>
-            <kyn-button kind="primary" size="small">Settings</kyn-button>
+${indentSource(SETTINGS_DRAWER_SOURCE, 12)}
           </div>
         </div>
       </div>
@@ -1259,6 +1425,7 @@ ${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
       <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
         <kyn-widget-gridstack
           .layout=${stringifySourceProp(dashboardChartLayout)}
+          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
         >
           <div class="grid-stack">
 ${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
@@ -1285,17 +1452,30 @@ const renderKpis = () => html`
         <div class="dashboard-kpi">
           <kyn-widget removeHeader>
             <div class="dashboard-kpi__content">
-              <span class="dashboard-kpi__label kd-type--ui-02"
-                >${kpi.label}</span
-              >
-              <span class="dashboard-kpi__value">${kpi.value}</span>
+              <div class="dashboard-kpi__top">
+                <span class="dashboard-kpi__lock" aria-hidden="true">
+                  ${unsafeSVG(lockIcon)}
+                </span>
+                <span class="dashboard-kpi__label">${kpi.label}</span>
+                <span class="dashboard-kpi__menu" aria-hidden="true">
+                  ${unsafeSVG(overflowIcon)}
+                </span>
+              </div>
+              <div class="dashboard-kpi__value-row">
+                <span class="dashboard-kpi__value">${kpi.value}</span>
+                <span class="dashboard-kpi__trend" aria-hidden="true">
+                  ${unsafeSVG(
+                    kpi.trend === 'down' ? arrowDownIcon : arrowUpIcon
+                  )}
+                </span>
+              </div>
               <div class="dashboard-kpi__meta">
-                <kyn-badge
-                  label=${kpi.statusLabel}
-                  status=${kpi.status}
-                  hideIcon
-                ></kyn-badge>
-                <span class="kd-type--ui-04">${kpi.meta}</span>
+                <span>${kpi.meta}</span>
+              </div>
+              <div class="dashboard-kpi__action">
+                <kyn-button kind="secondary" size="extra-small">
+                  More Info
+                </kyn-button>
               </div>
             </div>
           </kyn-widget>
@@ -1303,6 +1483,41 @@ const renderKpis = () => html`
       `
     )}
   </div>
+`;
+
+const renderSettingsDrawer = () => html`
+  <kyn-side-drawer
+    size="md"
+    titleText="Dashboard settings"
+    labelText="Adjust how this dashboard summarizes operations signals."
+    submitBtnText="Apply"
+  >
+    <kyn-button slot="anchor" kind="primary" size="small" iconPosition="left">
+      <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+      Settings
+    </kyn-button>
+
+    <div class="dashboard-settings-drawer">
+      <div class="dashboard-settings-drawer__section">
+        <div class="dashboard-settings-drawer__title kd-type--ui-02">
+          Data refresh
+        </div>
+        <div class="dashboard-settings-drawer__description kd-type--ui-03">
+          Showing live operations data with a five minute refresh cadence.
+        </div>
+      </div>
+
+      <div class="dashboard-settings-drawer__section">
+        <div class="dashboard-settings-drawer__title kd-type--ui-02">
+          Dashboard scope
+        </div>
+        <div class="dashboard-settings-drawer__description kd-type--ui-03">
+          Metrics include recommendations, input quality, latency, and cost
+          signals across active environments.
+        </div>
+      </div>
+    </div>
+  </kyn-side-drawer>
 `;
 
 const renderChartWidget = (chart) => html`
@@ -1395,21 +1610,9 @@ export const FullDashboardImplementation = {
             class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
           >
             <div class="dashboard-hero">
-              <kyn-page-title
-                headLine="Dashboard"
-                pageTitle="Operations Overview"
-                subTitle="Monitor key health, usage, reliability, and cost signals across active environments."
-              ></kyn-page-title>
+              <kyn-page-title pageTitle="Welcome, User"></kyn-page-title>
               <div class="dashboard-hero-actions">
-                <kyn-badge
-                  label="Live data"
-                  status="success"
-                  hideIcon
-                ></kyn-badge>
-                <kyn-button kind="primary" size="small">
-                  <span slot="icon">${unsafeSVG(settingsIcon)}</span>
-                  Settings
-                </kyn-button>
+                ${renderSettingsDrawer()}
               </div>
             </div>
           </div>
@@ -1423,7 +1626,10 @@ export const FullDashboardImplementation = {
           <div
             class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
           >
-            <kyn-widget-gridstack .layout=${dashboardChartLayout}>
+            <kyn-widget-gridstack
+              .layout=${dashboardChartLayout}
+              .gridstackConfig=${dashboardGridstackConfig}
+            >
               <div class="grid-stack">
                 ${chartData.map((chart) => renderChartWidget(chart))}
               </div>
