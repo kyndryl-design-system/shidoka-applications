@@ -66,7 +66,7 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   .dashboard-content {
     align-items: start;
     width: 100%;
-    max-width: 120rem;
+    max-width: 110rem;
     margin-inline: 0 auto;
     justify-content: start;
   }
