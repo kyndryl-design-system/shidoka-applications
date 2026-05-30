@@ -92,6 +92,27 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     gap: 0.75rem;
   }
 
+  .dashboard-tabs {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .dashboard-tabs kyn-tabs {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .dashboard-tabs-grid-col {
+    min-width: 0;
+  }
+
+  .dashboard-tab-panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 0.75rem;
+  }
+
   .dashboard-settings-drawer {
     display: flex;
     flex-direction: column;
@@ -725,6 +746,36 @@ const SETTINGS_DRAWER_SOURCE = `
     </div>
   </div>
 </kyn-side-drawer>`;
+
+const createDashboardTabsSource = () => `
+<div class="dashboard-tabs">
+  <kyn-tabs tabSize="md">
+    <kyn-tab slot="tabs" id="my-dashboard" selected>My Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="vital-dashboard">Vital Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="data-dashboard">Data Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="gtm-dashboard">GTM Dashboard</kyn-tab>
+
+    <kyn-tab-panel tabId="my-dashboard" visible noPadding>
+      <div class="dashboard-tab-panel-content">
+        <div class="dashboard-kpis">
+${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
+        </div>
+
+        <kyn-widget-gridstack
+          .layout=${stringifySourceProp(dashboardChartLayout)}
+          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
+        >
+          <div class="grid-stack">
+${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
+          </div>
+        </kyn-widget-gridstack>
+      </div>
+    </kyn-tab-panel>
+    <kyn-tab-panel tabId="vital-dashboard" noPadding></kyn-tab-panel>
+    <kyn-tab-panel tabId="data-dashboard" noPadding></kyn-tab-panel>
+    <kyn-tab-panel tabId="gtm-dashboard" noPadding></kyn-tab-panel>
+  </kyn-tabs>
+</div>`;
 
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
@@ -1416,21 +1467,8 @@ ${indentSource(SETTINGS_DRAWER_SOURCE, 12)}
         </div>
       </div>
 
-      <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-        <div class="dashboard-kpis">
-${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
-        </div>
-      </div>
-
-      <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-        <kyn-widget-gridstack
-          .layout=${stringifySourceProp(dashboardChartLayout)}
-          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
-        >
-          <div class="grid-stack">
-${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
-          </div>
-        </kyn-widget-gridstack>
+      <div class="dashboard-tabs-grid-col kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
+${indentSource(createDashboardTabsSource(), 8)}
       </div>
     </div>
   </main>
@@ -1518,6 +1556,35 @@ const renderSettingsDrawer = () => html`
       </div>
     </div>
   </kyn-side-drawer>
+`;
+
+const renderDashboardTabs = () => html`
+  <div class="dashboard-tabs">
+    <kyn-tabs tabSize="md">
+      <kyn-tab slot="tabs" id="my-dashboard" selected>My Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="vital-dashboard">Vital Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="data-dashboard">Data Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="gtm-dashboard">GTM Dashboard</kyn-tab>
+
+      <kyn-tab-panel tabId="my-dashboard" visible noPadding>
+        <div class="dashboard-tab-panel-content">
+          ${renderKpis()}
+
+          <kyn-widget-gridstack
+            .layout=${dashboardChartLayout}
+            .gridstackConfig=${dashboardGridstackConfig}
+          >
+            <div class="grid-stack">
+              ${chartData.map((chart) => renderChartWidget(chart))}
+            </div>
+          </kyn-widget-gridstack>
+        </div>
+      </kyn-tab-panel>
+      <kyn-tab-panel tabId="vital-dashboard" noPadding></kyn-tab-panel>
+      <kyn-tab-panel tabId="data-dashboard" noPadding></kyn-tab-panel>
+      <kyn-tab-panel tabId="gtm-dashboard" noPadding></kyn-tab-panel>
+    </kyn-tabs>
+  </div>
 `;
 
 const renderChartWidget = (chart) => html`
@@ -1618,22 +1685,9 @@ export const FullDashboardImplementation = {
           </div>
 
           <div
-            class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
+            class="dashboard-tabs-grid-col kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
           >
-            ${renderKpis()}
-          </div>
-
-          <div
-            class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
-          >
-            <kyn-widget-gridstack
-              .layout=${dashboardChartLayout}
-              .gridstackConfig=${dashboardGridstackConfig}
-            >
-              <div class="grid-stack">
-                ${chartData.map((chart) => renderChartWidget(chart))}
-              </div>
-            </kyn-widget-gridstack>
+            ${renderDashboardTabs()}
           </div>
         </div>
       </main>
