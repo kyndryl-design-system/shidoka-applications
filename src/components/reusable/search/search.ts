@@ -297,7 +297,12 @@ export class Search extends LitElement {
       case ENTER_KEY_CODE: {
         // select highlighted option
         e.preventDefault();
-        const selectedValue = suggestionEls[highlightedIndex]?.innerText;
+        const isSearchHistory = this.value === '' && this.enableSearchHistory;
+        const listToRender = isSearchHistory
+          ? this.searchHistory
+          : this.suggestions;
+        const selectedValue = listToRender[highlightedIndex];
+        if (selectedValue === undefined) return;
         this.shadowRoot
           ?.querySelector('kyn-text-input')
           ?.setValueAndNotify(selectedValue);
