@@ -92,6 +92,27 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     gap: 0.75rem;
   }
 
+  .dashboard-tabs {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .dashboard-tabs kyn-tabs {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .dashboard-tabs-grid-col {
+    min-width: 0;
+  }
+
+  .dashboard-tab-panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 0.75rem;
+  }
+
   .dashboard-settings-drawer {
     display: flex;
     flex-direction: column;
@@ -117,9 +138,7 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   }
 
   .dashboard-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    align-items: stretch;
+    width: 100%;
     gap: 1.25rem;
   }
 
@@ -220,12 +239,6 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     width: min(100%, 9rem);
   }
 
-  @media (max-width: calc(58rem - 0.001px)) {
-    .dashboard-kpis {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
   @media (max-width: calc(52rem - 0.001px)) {
     .dashboard-hero {
       align-items: flex-start;
@@ -241,10 +254,6 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   @media (max-width: calc(42rem - 0.001px)) {
     .dashboard-main {
       padding-inline: 1rem;
-    }
-
-    .dashboard-kpis {
-      grid-template-columns: 1fr;
     }
   }
 `;
@@ -294,12 +303,12 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
 
   .dashboard-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   .dashboard-trellis {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     inset-block-start: 0;
     inset-inline-end: 0;
     width: min(82vw, 1440px);
@@ -661,7 +670,9 @@ const createFlyoutActionLinkSource = (label) =>
     '</kyn-header-link>',
   ].join('\n');
 
-const createKpiSource = (kpi) => `<div class="dashboard-kpi">
+const createKpiSource = (
+  kpi
+) => `<div class="dashboard-kpi kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
   <kyn-widget removeHeader>
     <div class="dashboard-kpi__content">
       <div class="dashboard-kpi__top">
@@ -725,6 +736,36 @@ const SETTINGS_DRAWER_SOURCE = `
     </div>
   </div>
 </kyn-side-drawer>`;
+
+const createDashboardTabsSource = () => `
+<div class="dashboard-tabs">
+  <kyn-tabs tabSize="md">
+    <kyn-tab slot="tabs" id="my-dashboard" selected>My Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="vital-dashboard">Vital Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="data-dashboard">Data Dashboard</kyn-tab>
+    <kyn-tab slot="tabs" id="gtm-dashboard">GTM Dashboard</kyn-tab>
+
+    <kyn-tab-panel tabId="my-dashboard" visible noPadding>
+      <div class="dashboard-tab-panel-content">
+        <div class="dashboard-kpis kd-grid">
+${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
+        </div>
+
+        <kyn-widget-gridstack
+          .layout=${stringifySourceProp(dashboardChartLayout)}
+          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
+        >
+          <div class="grid-stack">
+${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
+          </div>
+        </kyn-widget-gridstack>
+      </div>
+    </kyn-tab-panel>
+    <kyn-tab-panel tabId="vital-dashboard" noPadding></kyn-tab-panel>
+    <kyn-tab-panel tabId="data-dashboard" noPadding></kyn-tab-panel>
+    <kyn-tab-panel tabId="gtm-dashboard" noPadding></kyn-tab-panel>
+  </kyn-tabs>
+</div>`;
 
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
@@ -1416,21 +1457,8 @@ ${indentSource(SETTINGS_DRAWER_SOURCE, 12)}
         </div>
       </div>
 
-      <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-        <div class="dashboard-kpis">
-${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
-        </div>
-      </div>
-
-      <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
-        <kyn-widget-gridstack
-          .layout=${stringifySourceProp(dashboardChartLayout)}
-          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
-        >
-          <div class="grid-stack">
-${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
-          </div>
-        </kyn-widget-gridstack>
+      <div class="dashboard-tabs-grid-col kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
+${indentSource(createDashboardTabsSource(), 8)}
       </div>
     </div>
   </main>
@@ -1446,10 +1474,12 @@ ${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
 );
 
 const renderKpis = () => html`
-  <div class="dashboard-kpis">
+  <div class="dashboard-kpis kd-grid">
     ${kpis.map(
       (kpi) => html`
-        <div class="dashboard-kpi">
+        <div
+          class="dashboard-kpi kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3"
+        >
           <kyn-widget removeHeader>
             <div class="dashboard-kpi__content">
               <div class="dashboard-kpi__top">
@@ -1518,6 +1548,35 @@ const renderSettingsDrawer = () => html`
       </div>
     </div>
   </kyn-side-drawer>
+`;
+
+const renderDashboardTabs = () => html`
+  <div class="dashboard-tabs">
+    <kyn-tabs tabSize="md">
+      <kyn-tab slot="tabs" id="my-dashboard" selected>My Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="vital-dashboard">Vital Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="data-dashboard">Data Dashboard</kyn-tab>
+      <kyn-tab slot="tabs" id="gtm-dashboard">GTM Dashboard</kyn-tab>
+
+      <kyn-tab-panel tabId="my-dashboard" visible noPadding>
+        <div class="dashboard-tab-panel-content">
+          ${renderKpis()}
+
+          <kyn-widget-gridstack
+            .layout=${dashboardChartLayout}
+            .gridstackConfig=${dashboardGridstackConfig}
+          >
+            <div class="grid-stack">
+              ${chartData.map((chart) => renderChartWidget(chart))}
+            </div>
+          </kyn-widget-gridstack>
+        </div>
+      </kyn-tab-panel>
+      <kyn-tab-panel tabId="vital-dashboard" noPadding></kyn-tab-panel>
+      <kyn-tab-panel tabId="data-dashboard" noPadding></kyn-tab-panel>
+      <kyn-tab-panel tabId="gtm-dashboard" noPadding></kyn-tab-panel>
+    </kyn-tabs>
+  </div>
 `;
 
 const renderChartWidget = (chart) => html`
@@ -1618,22 +1677,9 @@ export const FullDashboardImplementation = {
           </div>
 
           <div
-            class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
+            class="dashboard-tabs-grid-col kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
           >
-            ${renderKpis()}
-          </div>
-
-          <div
-            class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
-          >
-            <kyn-widget-gridstack
-              .layout=${dashboardChartLayout}
-              .gridstackConfig=${dashboardGridstackConfig}
-            >
-              <div class="grid-stack">
-                ${chartData.map((chart) => renderChartWidget(chart))}
-              </div>
-            </kyn-widget-gridstack>
+            ${renderDashboardTabs()}
           </div>
         </div>
       </main>
