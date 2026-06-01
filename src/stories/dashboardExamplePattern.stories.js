@@ -138,9 +138,7 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   }
 
   .dashboard-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    align-items: stretch;
+    width: 100%;
     gap: 1.25rem;
   }
 
@@ -241,12 +239,6 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     width: min(100%, 9rem);
   }
 
-  @media (max-width: calc(58rem - 0.001px)) {
-    .dashboard-kpis {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
   @media (max-width: calc(52rem - 0.001px)) {
     .dashboard-hero {
       align-items: flex-start;
@@ -262,10 +254,6 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   @media (max-width: calc(42rem - 0.001px)) {
     .dashboard-main {
       padding-inline: 1rem;
-    }
-
-    .dashboard-kpis {
-      grid-template-columns: 1fr;
     }
   }
 `;
@@ -315,12 +303,12 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
 
   .dashboard-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   .dashboard-trellis {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     inset-block-start: 0;
     inset-inline-end: 0;
     width: min(82vw, 1440px);
@@ -682,7 +670,9 @@ const createFlyoutActionLinkSource = (label) =>
     '</kyn-header-link>',
   ].join('\n');
 
-const createKpiSource = (kpi) => `<div class="dashboard-kpi">
+const createKpiSource = (
+  kpi
+) => `<div class="dashboard-kpi kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
   <kyn-widget removeHeader>
     <div class="dashboard-kpi__content">
       <div class="dashboard-kpi__top">
@@ -757,7 +747,7 @@ const createDashboardTabsSource = () => `
 
     <kyn-tab-panel tabId="my-dashboard" visible noPadding>
       <div class="dashboard-tab-panel-content">
-        <div class="dashboard-kpis">
+        <div class="dashboard-kpis kd-grid">
 ${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
         </div>
 
@@ -1484,10 +1474,12 @@ ${indentSource(createDashboardTabsSource(), 8)}
 );
 
 const renderKpis = () => html`
-  <div class="dashboard-kpis">
+  <div class="dashboard-kpis kd-grid">
     ${kpis.map(
       (kpi) => html`
-        <div class="dashboard-kpi">
+        <div
+          class="dashboard-kpi kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3"
+        >
           <kyn-widget removeHeader>
             <div class="dashboard-kpi__content">
               <div class="dashboard-kpi__top">
