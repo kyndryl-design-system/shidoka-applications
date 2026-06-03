@@ -9,6 +9,38 @@ $single-column-width: 350px;
   display: block;
   position: relative;
   min-width: 0;
+  --kyn-header-link-flyout-background: var(
+    --kd-color-background-menu-state-default
+  );
+  --kyn-header-link-wrapper-background: var(--kd-color-background-opacity-1);
+  --kyn-header-link-wrapper-padding: 16px;
+  --kyn-header-link-wrapper-border-radius: 8px;
+  --kyn-header-link-flyout-padding: 8px 8px 8px 230px;
+  --kyn-header-link-single-categorical-width: min(
+    calc(230px + #{$single-column-width} + 8px),
+    calc(100vw - 16px)
+  );
+  --kyn-header-link-two-column-width: min(
+    calc(230px + 2 * #{$single-column-width} + 32px + 16px),
+    calc(100vw - 16px)
+  );
+}
+
+:host-context(.global-switcher-nav) {
+  --kyn-header-link-flyout-background: var(
+    --kd-color-background-container-overlay-background
+  );
+  --kyn-header-link-wrapper-background: transparent;
+  --kyn-header-link-wrapper-border-radius: 0;
+  --kyn-header-link-flyout-padding: 0 0 0 246px;
+  --kyn-header-link-single-categorical-width: min(
+    calc(246px + #{$single-column-width}),
+    calc(100vw - 16px)
+  );
+  --kyn-header-link-two-column-width: min(
+    calc(246px + 2 * #{$single-column-width} + 32px),
+    calc(100vw - 16px)
+  );
 }
 
 :host([hidden]) {
@@ -98,6 +130,12 @@ $single-column-width: 350px;
     flex: 0 0 auto;
   }
 
+  // Icon wrapper spans only — flex on text labels breaks ellipsis truncation.
+  ::slotted(span:first-child:not([slot]):has(> svg)) {
+    display: flex;
+    align-items: center;
+  }
+
   // Only-child spans: 16px icon in nav bar, flexible text in flyout
   ::slotted(span:first-child:only-child:not([slot])) {
     width: var(--kyn-header-span-only-width, 16px);
@@ -132,7 +170,12 @@ $single-column-width: 350px;
 }
 
 .arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 
   svg {
     display: block;
@@ -239,7 +282,7 @@ $single-column-width: 350px;
 
   &__content {
     display: none;
-    background: var(--kd-color-background-menu-state-default);
+    background: var(--kyn-header-link-flyout-background);
     box-sizing: border-box;
 
     &.slotted:not(.no-padding) {
@@ -453,6 +496,36 @@ kyn-text-input {
   margin-bottom: 8px;
 }
 
+// Global Switcher layout hooks when nested under `kyn-header-nav.global-switcher-nav`.
+@media (min-width: 42rem) {
+  .menu.level--1 .wrapper {
+    padding: var(--kyn-header-link-wrapper-padding);
+    background-color: var(--kyn-header-link-wrapper-background);
+    border-radius: var(--kyn-header-link-wrapper-border-radius);
+  }
+
+  .menu.level--1 .menu__content.slotted:not(.no-padding) {
+    padding: var(--kyn-header-link-flyout-padding);
+  }
+
+  :host([has-multi-column]) .menu.open .menu__content.slotted,
+  .menu.full-width-flyout.open .menu__content.slotted {
+    padding: var(--kyn-header-link-flyout-padding);
+  }
+
+  :host([has-categorical]:not([has-multi-column]))
+    .menu.level--1
+    .menu__content.slotted {
+    width: var(--kyn-header-link-single-categorical-width);
+  }
+
+  :host([has-multi-column][data-flyout-columns='2'])
+    .menu.open
+    .menu__content.slotted {
+    width: var(--kyn-header-link-two-column-width);
+  }
+}
+
 /* --- TRUNCATION --- */
 // Enabled via `truncate` prop on kyn-header-link or `truncate-links` on kyn-header-nav.
 // Sets CSS custom properties so ::slotted span rules resolve to truncation values.
@@ -469,4 +542,20 @@ kyn-text-input {
   --kyn-header-span-only-overflow: hidden;
   --kyn-header-span-only-text-overflow: ellipsis;
   --kyn-header-span-only-white-space: nowrap;
+
+  // Label spans need block layout for ellipsis (flex clips without "...").
+  ::slotted(span:first-child:not([slot])) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  ::slotted(span:first-child:not([slot]):has(> svg)) {
+    display: flex;
+    flex-shrink: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
 }

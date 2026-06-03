@@ -15,45 +15,25 @@ import '@kyndryl-design-system/shidoka-charts/components/chart';
 import { Config as gridstackConfig } from '../common/helpers/gridstack';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from './globalSwitcher/globalSwitcherPatternStyles.js';
+import { createGlobalSwitcherSectionSource } from './globalSwitcher/globalSwitcherPattern.js';
+import { renderGlobalSwitcherSection } from './globalSwitcher/globalSwitcherRender.js';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
 import { WorkspaceSwitcherPattern } from './workspaceSwitcher/WorkspaceSwitcher.stories.js';
 
 import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 import insightsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/actionable-insights.svg';
-import adminIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user-settings.svg';
-import catalogIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/catalog-management.svg';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
-import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
-import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
 import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
-import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/history.svg';
-import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
 import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
-import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
 import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notification.svg';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
-import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
-import starOutlineIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
 import arrowDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-down.svg';
 import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
-
-const iconMap = {
-  'catalog-management': catalogIcon,
-  'circle-stroke': circleIcon,
-  console: consoleIcon,
-  dashboard: dashboardIcon,
-  history: historyIcon,
-  home: homeIcon,
-  launch: launchIcon,
-  recommend: starOutlineIcon,
-  'recommend-filled': starFilledIcon,
-  services: servicesIcon,
-  'user-settings': adminIcon,
-};
 
 const DASHBOARD_PATTERN_STYLES = /* css */ `
   /* Copyable pattern CSS. Import gridstack-shidoka.css globally for kyn-widget-gridstack. */
@@ -138,12 +118,32 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   }
 
   .dashboard-kpis {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
     width: 100%;
     gap: 1.25rem;
   }
 
   .dashboard-kpi {
     min-height: 156px;
+    box-sizing: border-box;
+    flex: 1 1 calc((100% - 3.75rem) / 4);
+    max-width: calc((100% - 3.75rem) / 4);
+  }
+
+  @media (max-width: calc(68rem - 0.001px)) {
+    .dashboard-kpi {
+      flex: 1 1 calc((100% - 1.25rem) / 2);
+      max-width: calc((100% - 1.25rem) / 2);
+    }
+  }
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    .dashboard-kpi {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
   }
 
   .dashboard-kpi kyn-widget {
@@ -438,6 +438,7 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
 
 const DASHBOARD_STYLES = [
   DASHBOARD_PATTERN_STYLES,
+  GLOBAL_SWITCHER_PATTERN_STYLES,
   DASHBOARD_VISUAL_TREATMENT_STYLES,
   DASHBOARD_SHELL_DEMO_STYLES,
 ].join('\n\n');
@@ -466,201 +467,6 @@ const createSourceIcon = (icon, slot = '', className = '') => {
   return `<span${slotAttr}${classAttr}><!-- ${escapeSource(
     icon
   )} icon --></span>`;
-};
-
-const createSourceStarSelector = (checked = false) =>
-  [
-    `<kyn-icon-selector${checked ? ' checked' : ''}>`,
-    '  <span slot="icon-unchecked"><!-- recommend icon --></span>',
-    '  <span slot="icon-checked"><!-- recommend-filled icon --></span>',
-    '</kyn-icon-selector>',
-  ].join('\n');
-
-const createGlobalSwitcherLinkSource = (link) => {
-  const attrs = [
-    `href="${escapeSource(link.href || 'javascript:void(0)')}"`,
-    link.target ? `target="${escapeSource(link.target)}"` : '',
-    link.target === '_blank' ? 'truncate' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  const content = [
-    link.icon
-      ? [
-          '<span style="display: inline-flex; align-items: center; gap: 8px;">',
-          `  ${createSourceIcon(link.icon, '', 'global-switcher-icon')}`,
-          `  ${escapeSource(link.label)}`,
-          '</span>',
-        ].join('\n')
-      : `<span>${escapeSource(link.label)}</span>`,
-    createSourceStarSelector(link.starred || false),
-    link.target === '_blank'
-      ? createSourceIcon('launch', '', 'global-switcher-launch-icon')
-      : '',
-  ]
-    .filter(Boolean)
-    .map((line) => indentSource(line, 2))
-    .join('\n');
-
-  return [`<kyn-header-link ${attrs}>`, content, '</kyn-header-link>'].join(
-    '\n'
-  );
-};
-
-const createGlobalSwitcherCategorySource = (category) =>
-  [
-    `<kyn-header-category heading="${escapeSource(category.heading)}">`,
-    indentSource(createSourceIcon(category.icon || 'circle-stroke', 'icon'), 2),
-    indentSource(
-      category.links
-        .map((link) => createGlobalSwitcherLinkSource(link))
-        .join('\n'),
-      2
-    ),
-    '</kyn-header-category>',
-  ].join('\n');
-
-const createSimpleGlobalSwitcherSectionSource = (section) =>
-  [
-    `<kyn-header-link id="${escapeSource(
-      section.id
-    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
-    indentSource(createSourceIcon(section.icon), 2),
-    indentSource(escapeSource(section.label), 2),
-    indentSource('<kyn-header-category slot="links">', 2),
-    indentSource(
-      section.links
-        .map((link) => createGlobalSwitcherLinkSource(link))
-        .join('\n'),
-      4
-    ),
-    indentSource('</kyn-header-category>', 2),
-    '</kyn-header-link>',
-    section.dividerAfter ? '<kyn-header-divider></kyn-header-divider>' : '',
-  ]
-    .filter(Boolean)
-    .join('\n');
-
-const createMixedGlobalSwitcherSectionSource = (section) =>
-  [
-    `<kyn-header-link id="${escapeSource(
-      section.id
-    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
-    indentSource(createSourceIcon(section.icon), 2),
-    indentSource(escapeSource(section.label), 2),
-    indentSource(
-      [
-        '<div slot="links" style="display: flex; flex-direction: column; gap: 2px;">',
-        indentSource(
-          [
-            ...section.topLinks.map((link) =>
-              createGlobalSwitcherLinkSource(link)
-            ),
-            ...section.categories.map((category) =>
-              createGlobalSwitcherCategorySource(category)
-            ),
-          ].join('\n'),
-          2
-        ),
-        '</div>',
-      ].join('\n'),
-      2
-    ),
-    '</kyn-header-link>',
-  ].join('\n');
-
-const createTabbedGlobalSwitcherSectionSource = (section) =>
-  [
-    `<kyn-header-link id="${escapeSource(
-      section.id
-    )}" href="javascript:void(0)" full-width-flyout>`,
-    indentSource(createSourceIcon(section.icon), 2),
-    indentSource(escapeSource(section.label), 2),
-    indentSource(
-      [
-        '<kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;">',
-        indentSource(
-          section.tabs
-            .map(
-              (tab, index) => `<kyn-tab
-  slot="tabs"
-  id="${escapeSource(tab.id)}"
-  fill-width
-  style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"${
-    index === 0 ? '\n  selected' : ''
-  }
->
-  ${escapeSource(tab.label)}
-</kyn-tab>`
-            )
-            .join('\n'),
-          2
-        ),
-        indentSource(
-          section.tabs
-            .map(
-              (tab, index) => `<kyn-tab-panel tabId="${escapeSource(
-                tab.id
-              )}" noPadding${index === 0 ? ' visible' : ''}>
-  <kyn-header-categories layout="masonry">
-${indentSource(
-  tab.categories
-    .map((category) => createGlobalSwitcherCategorySource(category))
-    .join('\n'),
-  4
-)}
-  </kyn-header-categories>
-</kyn-tab-panel>`
-            )
-            .join('\n'),
-          2
-        ),
-        '</kyn-tabs>',
-      ].join('\n'),
-      2
-    ),
-    '</kyn-header-link>',
-  ].join('\n');
-
-const createCategoricalGlobalSwitcherSectionSource = (section) =>
-  [
-    `<kyn-header-link id="${escapeSource(
-      section.id
-    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
-    indentSource(createSourceIcon(section.icon), 2),
-    indentSource(escapeSource(section.label), 2),
-    indentSource(
-      [
-        `<kyn-header-categories slot="links" layout="masonry" maxColumns="${
-          section.maxColumns || 3
-        }">`,
-        indentSource(
-          section.categories
-            .map((category) => createGlobalSwitcherCategorySource(category))
-            .join('\n'),
-          2
-        ),
-        '</kyn-header-categories>',
-      ].join('\n'),
-      2
-    ),
-    '</kyn-header-link>',
-  ].join('\n');
-
-const createGlobalSwitcherSectionSource = (section) => {
-  switch (section.type) {
-    case 'simple':
-      return createSimpleGlobalSwitcherSectionSource(section);
-    case 'mixed':
-      return createMixedGlobalSwitcherSectionSource(section);
-    case 'tabbed':
-      return createTabbedGlobalSwitcherSectionSource(section);
-    case 'categorical':
-      return createCategoricalGlobalSwitcherSectionSource(section);
-    default:
-      return '';
-  }
 };
 
 const createFlyoutActionLinkSource = (label) =>
@@ -767,174 +573,15 @@ ${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
   </kyn-tabs>
 </div>`;
 
-const starSelector = (checked = false) => html`
-  <kyn-icon-selector ?checked=${checked}>
-    <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
-    <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
-  </kyn-icon-selector>
-`;
-
-const renderGlobalSwitcherLink = (link) => html`
-  <kyn-header-link
-    href=${link.href}
-    ?truncate=${link.target === '_blank'}
-    target=${link.target || ''}
-  >
-    ${link.icon
-      ? html`<span style="display: inline-flex; align-items: center; gap: 8px;">
-          <span style="display: flex; flex-shrink: 0; margin-top: -2px;">
-            ${unsafeSVG(iconMap[link.icon])}
-          </span>
-          ${link.label}
-        </span>`
-      : html`<span>${link.label}</span>`}
-    ${starSelector(link.starred || false)}
-    ${link.target === '_blank'
-      ? html`<span
-          style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-          >${unsafeSVG(launchIcon)}</span
-        >`
-      : ''}
-  </kyn-header-link>
-`;
-
-const renderGlobalSwitcherCategory = (category) => html`
-  <kyn-header-category heading=${category.heading}>
-    <span slot="icon">
-      ${unsafeSVG(category.icon ? iconMap[category.icon] : circleIcon)}
-    </span>
-    ${category.links.map((link) => renderGlobalSwitcherLink(link))}
-  </kyn-header-category>
-`;
-
-const renderSimpleGlobalSwitcherSection = (section) => html`
-  <kyn-header-link
-    id=${section.id}
-    href="javascript:void(0)"
-    ?hideSearch=${section.hideSearch}
-  >
-    <span>${unsafeSVG(iconMap[section.icon])}</span>
-    ${section.label}
-
-    <kyn-header-category slot="links">
-      ${section.links.map((link) => renderGlobalSwitcherLink(link))}
-    </kyn-header-category>
-  </kyn-header-link>
-  ${section.dividerAfter ? html`<kyn-header-divider></kyn-header-divider>` : ''}
-`;
-
-const renderMixedGlobalSwitcherSection = (section) => html`
-  <kyn-header-link
-    id=${section.id}
-    href="javascript:void(0)"
-    ?hideSearch=${section.hideSearch}
-  >
-    <span>${unsafeSVG(iconMap[section.icon])}</span>
-    ${section.label}
-
-    <div slot="links" style="display: flex; flex-direction: column; gap: 2px;">
-      ${section.topLinks.map((link) => renderGlobalSwitcherLink(link))}
-      ${section.categories.map(
-        (category) => html`
-          <kyn-header-category
-            heading=${category.heading}
-            style="margin-top: 8px;"
-          >
-            <span slot="icon">
-              ${unsafeSVG(category.icon ? iconMap[category.icon] : circleIcon)}
-            </span>
-            ${category.links.map((link) => renderGlobalSwitcherLink(link))}
-          </kyn-header-category>
-        `
-      )}
-    </div>
-  </kyn-header-link>
-`;
-
-const renderTabbedGlobalSwitcherSection = (section) => html`
-  <kyn-header-link id=${section.id} href="javascript:void(0)" full-width-flyout>
-    <span>${unsafeSVG(iconMap[section.icon])}</span>
-    ${section.label}
-
-    <kyn-tabs
-      tabSize="md"
-      slot="links"
-      style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
-    >
-      ${section.tabs.map(
-        (tab, index) => html`
-          <kyn-tab
-            slot="tabs"
-            id=${tab.id}
-            fill-width
-            style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
-            ?selected=${index === 0}
-          >
-            ${tab.label}
-          </kyn-tab>
-        `
-      )}
-      ${section.tabs.map(
-        (tab, index) => html`
-          <kyn-tab-panel tabId=${tab.id} noPadding ?visible=${index === 0}>
-            <kyn-header-categories layout="masonry" .limitRootLinks=${false}>
-              ${tab.categories.map((category) =>
-                renderGlobalSwitcherCategory(category)
-              )}
-            </kyn-header-categories>
-          </kyn-tab-panel>
-        `
-      )}
-    </kyn-tabs>
-  </kyn-header-link>
-`;
-
-const renderCategoricalGlobalSwitcherSection = (section) => html`
-  <kyn-header-link
-    id=${section.id}
-    href="javascript:void(0)"
-    ?hideSearch=${section.hideSearch}
-  >
-    <span>${unsafeSVG(iconMap[section.icon])}</span>
-    ${section.label}
-
-    <kyn-header-categories
-      slot="links"
-      layout="masonry"
-      maxColumns=${section.maxColumns || 3}
-      .limitRootLinks=${false}
-    >
-      ${section.categories.map((category) =>
-        renderGlobalSwitcherCategory(category)
-      )}
-    </kyn-header-categories>
-  </kyn-header-link>
-`;
-
-const renderGlobalSwitcherSection = (section) => {
-  switch (section.type) {
-    case 'simple':
-      return renderSimpleGlobalSwitcherSection(section);
-    case 'mixed':
-      return renderMixedGlobalSwitcherSection(section);
-    case 'tabbed':
-      return renderTabbedGlobalSwitcherSection(section);
-    case 'categorical':
-      return renderCategoricalGlobalSwitcherSection(section);
-    default:
-      return '';
-  }
-};
-
 const renderShellHeader = () => html`
+  <style>
+    ${GLOBAL_SWITCHER_PATTERN_STYLES}
+  </style>
   <kyn-header rootUrl="/" appTitle="Dashboard">
     <span slot="logo" style="--kyn-header-logo-width: 120px;">
       ${unsafeSVG(bridgeLogo)}
     </span>
-    <kyn-header-nav
-      truncate-links
-      style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
-    >
+    <kyn-header-nav class="global-switcher-nav" truncate-links>
       ${navData.sections.map((section) => renderGlobalSwitcherSection(section))}
     </kyn-header-nav>
 
@@ -1348,7 +995,7 @@ const DASHBOARD_SOURCE = createStorySource(
     <span slot="logo" style="--kyn-header-logo-width: 120px;">
       <!-- bridge logo -->
     </span>
-    <kyn-header-nav truncate-links>
+    <kyn-header-nav class="global-switcher-nav" truncate-links>
 ${indentSource(
   navData.sections
     .map((section) => createGlobalSwitcherSectionSource(section))

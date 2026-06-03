@@ -615,6 +615,8 @@ export class HeaderLink extends LitElement {
         this._closeOtherOpenLinks();
       }
       this.open = !this.open;
+    } else {
+      this._closeOtherOpenLinks();
     }
 
     const event = new CustomEvent('on-click', {

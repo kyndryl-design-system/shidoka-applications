@@ -5,11 +5,13 @@ import { expect, waitFor } from 'storybook/test';
 import '../../components/global/header';
 import '../../components/reusable/tabs';
 
+import {
+  GLOBAL_SWITCHER_EQUAL_TAB_STYLE,
+  GLOBAL_SWITCHER_PATTERN_STYLES,
+} from './globalSwitcherPatternStyles.js';
+
 import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
-
-const equalTabStyle =
-  'width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);';
 
 const renderEmptyState = (title = 'Subscribe to your first service') => html`
   <div
@@ -48,11 +50,14 @@ export default {
 
 export const FullWidthEmptyStateServiceTabs = {
   render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
     <kyn-header rootUrl="/" appTitle="Services Catalog">
       <span slot="logo" style="--kyn-header-logo-width: 120px;"
         >${unsafeSVG(bridgeLogo)}</span
       >
-      <kyn-header-nav auto-open-flyout="default">
+      <kyn-header-nav class="global-switcher-nav" auto-open-flyout="default">
         <kyn-header-link
           id="services"
           href="javascript:void(0)"
@@ -70,7 +75,7 @@ export const FullWidthEmptyStateServiceTabs = {
               slot="tabs"
               id="kyndryl"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
               selected
             >
               Kyndryl Services
@@ -79,7 +84,7 @@ export const FullWidthEmptyStateServiceTabs = {
               slot="tabs"
               id="platform"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
             >
               Platform Services
             </kyn-tab>
@@ -87,7 +92,7 @@ export const FullWidthEmptyStateServiceTabs = {
               slot="tabs"
               id="additional"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
             >
               Additional Services
             </kyn-tab>
@@ -143,11 +148,18 @@ export const FullWidthEmptyStateServiceTabs = {
 
 export const FullWidthSingleCategoryServiceTab = {
   render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
     <kyn-header rootUrl="/" appTitle="Services Catalog">
       <span slot="logo" style="--kyn-header-logo-width: 120px;"
         >${unsafeSVG(bridgeLogo)}</span
       >
-      <kyn-header-nav auto-open-flyout="default" truncate-links>
+      <kyn-header-nav
+        class="global-switcher-nav"
+        auto-open-flyout="default"
+        truncate-links
+      >
         <kyn-header-link
           id="services"
           href="javascript:void(0)"
@@ -165,7 +177,7 @@ export const FullWidthSingleCategoryServiceTab = {
               slot="tabs"
               id="kyndryl"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
               selected
             >
               Kyndryl Services
@@ -174,7 +186,7 @@ export const FullWidthSingleCategoryServiceTab = {
               slot="tabs"
               id="platform"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
             >
               Platform Services
             </kyn-tab>
@@ -182,7 +194,7 @@ export const FullWidthSingleCategoryServiceTab = {
               slot="tabs"
               id="additional"
               fill-width
-              style=${equalTabStyle}
+              style=${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}
             >
               Additional Services
             </kyn-tab>

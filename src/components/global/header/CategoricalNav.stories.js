@@ -10,6 +10,7 @@ import '../../reusable/tabs';
 import megaNavConfig from './sampleMegaNavCategories.json';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from '../../../stories/globalSwitcher/globalSwitcherPatternStyles.js';
 
 import './Docs.mdx';
 
@@ -55,11 +56,17 @@ export const WithCategorizedNav = {
     };
 
     return html`
+      <style>
+        ${GLOBAL_SWITCHER_PATTERN_STYLES}
+      </style>
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+        <kyn-header-nav
+          class="global-switcher-nav"
+          auto-open-flyout=${renderArgs.autoOpenFlyout}
+        >
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application
@@ -263,11 +270,17 @@ export const WithCategorizedNavJsonGrid = {
     };
 
     return html`
+      <style>
+        ${GLOBAL_SWITCHER_PATTERN_STYLES}
+      </style>
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+        <kyn-header-nav
+          class="global-switcher-nav"
+          auto-open-flyout=${renderArgs.autoOpenFlyout}
+        >
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application
@@ -373,11 +386,17 @@ export const WithCategorizedNavManualHtml = {
     };
 
     return html`
+      <style>
+        ${GLOBAL_SWITCHER_PATTERN_STYLES}
+      </style>
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+        <kyn-header-nav
+          class="global-switcher-nav"
+          auto-open-flyout=${renderArgs.autoOpenFlyout}
+        >
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application
@@ -766,11 +785,17 @@ export const WithCategorizedNavGrid = {
     };
 
     return html`
+      <style>
+        ${GLOBAL_SWITCHER_PATTERN_STYLES}
+      </style>
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+        <kyn-header-nav
+          class="global-switcher-nav"
+          auto-open-flyout=${renderArgs.autoOpenFlyout}
+        >
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application
