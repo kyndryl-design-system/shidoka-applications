@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor } from 'storybook/test';
 
 import './';
 import '../../reusable/tabs';
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from '../../../stories/globalSwitcher/globalSwitcherPatternStyles.js';
 
 export default {
   title: 'Tests/Global Components/Header/Categorical Nav',
@@ -117,8 +118,15 @@ export const SlottedTruncatedRootToFullDetailRegression = {
 
 export const FullWidthFlyoutSingleCategoryRegression = {
   render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
     <kyn-header rootUrl="/" appTitle="Application">
-      <kyn-header-nav auto-open-flyout="services" truncate-links>
+      <kyn-header-nav
+        class="global-switcher-nav"
+        auto-open-flyout="services"
+        truncate-links
+      >
         <kyn-header-link
           id="services"
           href="javascript:void(0)"

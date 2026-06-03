@@ -68,6 +68,11 @@ export class HeaderNav extends LitElement {
    */
   private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
 
+  /** Resize observer for keeping the Global Switcher parent rail aligned with the open flyout.
+   * @internal
+   */
+  private _globalSwitcherResizeObserver?: ResizeObserver;
+
   /** @internal */
   private get _isDesktop(): boolean {
     if (typeof window === 'undefined') return true;
@@ -131,6 +136,7 @@ export class HeaderNav extends LitElement {
 
   private _handleSlotChange() {
     this._updateCategoriesVisibility();
+    this._syncGlobalSwitcherFrame();
 
     // Trigger auto-open when slot content changes (handles late-loading content)
     if (this.autoOpenFlyout && this._isDesktop && !this._autoOpenTriggered) {
@@ -239,6 +245,7 @@ export class HeaderNav extends LitElement {
       if (target) {
         target.open = true;
         this._autoOpenTriggered = true;
+        this._syncGlobalSwitcherFrame();
       }
     });
   }
@@ -247,6 +254,63 @@ export class HeaderNav extends LitElement {
     if (changedProps.has('hasCategories')) {
       this.classList.toggle('categories-open', this.hasCategories);
     }
+
+    if (changedProps.has('hasCategories')) {
+      this._syncGlobalSwitcherFrame();
+    }
+  }
+
+  /** Keep the Global Switcher rail height in step with the open flyout.
+   * @internal
+   */
+  private _syncGlobalSwitcherFrame(): void {
+    const frame = this.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+
+    if (!frame) return;
+
+    const resetFrame = () => {
+      frame.style.height = '';
+      frame.style.minHeight = '';
+      this.classList.remove('global-switcher-frame-open');
+      this._globalSwitcherResizeObserver?.disconnect();
+      this._globalSwitcherResizeObserver = undefined;
+    };
+
+    const shouldSyncFrame =
+      getComputedStyle(this)
+        .getPropertyValue('--kyn-header-nav-sync-flyout-height')
+        .trim() === '1';
+
+    if (!shouldSyncFrame || !this._isDesktop) {
+      resetFrame();
+      return;
+    }
+
+    const openLink = this.querySelector<HTMLElement>(
+      ':scope > kyn-header-link[open], :scope > kyn-header-link[isactive]'
+    );
+    const flyout = openLink?.shadowRoot?.querySelector<HTMLElement>(
+      '.menu__content.slotted'
+    );
+
+    if (!flyout) {
+      resetFrame();
+      return;
+    }
+
+    this.classList.add('global-switcher-frame-open');
+
+    const setHeight = () => {
+      const flyoutHeight = flyout.getBoundingClientRect().height;
+      frame.style.height = flyoutHeight ? `${flyoutHeight}px` : '';
+      frame.style.minHeight = flyoutHeight ? `${flyoutHeight}px` : '';
+    };
+
+    requestAnimationFrame(setHeight);
+
+    this._globalSwitcherResizeObserver?.disconnect();
+    this._globalSwitcherResizeObserver = new ResizeObserver(setHeight);
+    this._globalSwitcherResizeObserver.observe(flyout);
   }
 
   override connectedCallback(): void {
@@ -256,6 +320,7 @@ export class HeaderNav extends LitElement {
 
     this._attrObserver = new MutationObserver(() => {
       this._updateCategoriesVisibility();
+      this._syncGlobalSwitcherFrame();
     });
 
     this._attrObserver.observe(this, {
@@ -272,6 +337,11 @@ export class HeaderNav extends LitElement {
     if (this._attrObserver) {
       this._attrObserver.disconnect();
       this._attrObserver = undefined;
+    }
+
+    if (this._globalSwitcherResizeObserver) {
+      this._globalSwitcherResizeObserver.disconnect();
+      this._globalSwitcherResizeObserver = undefined;
     }
 
     super.disconnectedCallback();

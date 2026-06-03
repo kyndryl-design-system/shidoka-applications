@@ -26,3 +26,23 @@
     width: 230px;
   }
 }
+
+@media (min-width: 42rem) {
+  .menu__content {
+    width: var(--kyn-header-nav-menu-width, 230px);
+    padding: var(--kyn-header-nav-menu-padding, 12px);
+    background: var(
+      --kyn-header-nav-menu-background,
+      var(--kd-color-background-container-default)
+    );
+    border-radius: var(--kyn-header-nav-menu-border-radius, 8px);
+    overflow: var(--kyn-header-nav-menu-overflow, hidden auto);
+  }
+
+  :host(.global-switcher-frame-open) .menu__content {
+    border-radius: var(
+      --kyn-header-nav-menu-open-border-radius,
+      var(--kyn-header-nav-menu-border-radius, 8px)
+    );
+  }
+}

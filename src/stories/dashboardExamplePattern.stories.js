@@ -15,6 +15,7 @@ import '@kyndryl-design-system/shidoka-charts/components/chart';
 import { Config as gridstackConfig } from '../common/helpers/gridstack';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from './globalSwitcher/globalSwitcherPatternStyles.js';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
 import { WorkspaceSwitcherPattern } from './workspaceSwitcher/WorkspaceSwitcher.stories.js';
 
@@ -138,12 +139,32 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   }
 
   .dashboard-kpis {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
     width: 100%;
     gap: 1.25rem;
   }
 
   .dashboard-kpi {
     min-height: 156px;
+    box-sizing: border-box;
+    flex: 1 1 calc((100% - 3.75rem) / 4);
+    max-width: calc((100% - 3.75rem) / 4);
+  }
+
+  @media (max-width: calc(68rem - 0.001px)) {
+    .dashboard-kpi {
+      flex: 1 1 calc((100% - 1.25rem) / 2);
+      max-width: calc((100% - 1.25rem) / 2);
+    }
+  }
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    .dashboard-kpi {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
   }
 
   .dashboard-kpi kyn-widget {
@@ -438,6 +459,7 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
 
 const DASHBOARD_STYLES = [
   DASHBOARD_PATTERN_STYLES,
+  GLOBAL_SWITCHER_PATTERN_STYLES,
   DASHBOARD_VISUAL_TREATMENT_STYLES,
   DASHBOARD_SHELL_DEMO_STYLES,
 ].join('\n\n');
@@ -927,14 +949,14 @@ const renderGlobalSwitcherSection = (section) => {
 };
 
 const renderShellHeader = () => html`
+  <style>
+    ${GLOBAL_SWITCHER_PATTERN_STYLES}
+  </style>
   <kyn-header rootUrl="/" appTitle="Dashboard">
     <span slot="logo" style="--kyn-header-logo-width: 120px;">
       ${unsafeSVG(bridgeLogo)}
     </span>
-    <kyn-header-nav
-      truncate-links
-      style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
-    >
+    <kyn-header-nav class="global-switcher-nav" truncate-links>
       ${navData.sections.map((section) => renderGlobalSwitcherSection(section))}
     </kyn-header-nav>
 
@@ -1348,7 +1370,7 @@ const DASHBOARD_SOURCE = createStorySource(
     <span slot="logo" style="--kyn-header-logo-width: 120px;">
       <!-- bridge logo -->
     </span>
-    <kyn-header-nav truncate-links>
+    <kyn-header-nav class="global-switcher-nav" truncate-links>
 ${indentSource(
   navData.sections
     .map((section) => createGlobalSwitcherSectionSource(section))

@@ -19,9 +19,105 @@ import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/hom
 import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
 
 import navData from './example_global_switcher_data.json';
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from './globalSwitcherPatternStyles.js';
 
 const equalServiceTabStyle =
   'width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);';
+
+const globalSwitcherPatternStyles = html`
+  <style>
+    ${GLOBAL_SWITCHER_PATTERN_STYLES}
+  </style>
+`;
+
+const SLOTTED_HTML_SWITCHER_SOURCE = `<style>
+${GLOBAL_SWITCHER_PATTERN_STYLES.trim()}
+</style>
+
+<kyn-header rootUrl="/" appTitle="Application">
+  <span slot="logo" style="--kyn-header-logo-width: 120px;">
+    <!-- product logo -->
+  </span>
+
+  <kyn-header-nav
+    class="global-switcher-nav"
+    auto-open-flyout="favorites"
+    truncate-links
+  >
+    <kyn-header-link id="favorites" href="javascript:void(0)" hideSearch>
+      <span><!-- icon --></span>
+      Favorites
+
+      <kyn-header-category slot="links">
+        <kyn-header-link href="#">
+          <span>Connections Management</span>
+          <kyn-icon-selector><!-- favorite toggle --></kyn-icon-selector>
+        </kyn-header-link>
+        <kyn-header-link href="#">
+          <span>Discovered Data</span>
+          <kyn-icon-selector><!-- favorite toggle --></kyn-icon-selector>
+        </kyn-header-link>
+      </kyn-header-category>
+    </kyn-header-link>
+
+    <kyn-header-link id="services" href="javascript:void(0)" full-width-flyout>
+      <span><!-- icon --></span>
+      Services
+
+      <kyn-tabs
+        tabSize="md"
+        slot="links"
+        style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
+      >
+        <kyn-tab
+          slot="tabs"
+          id="kyndryl"
+          fill-width
+          selected
+          style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+        >
+          Kyndryl Services
+        </kyn-tab>
+        <kyn-tab-panel tabId="kyndryl" noPadding visible>
+          <kyn-header-categories layout="masonry">
+            <kyn-header-category heading="Applications, Data, & AI">
+              <span slot="icon"><!-- icon --></span>
+              <kyn-header-link href="#"><span>Business Intelligence</span></kyn-header-link>
+            </kyn-header-category>
+          </kyn-header-categories>
+        </kyn-tab-panel>
+      </kyn-tabs>
+    </kyn-header-link>
+  </kyn-header-nav>
+</kyn-header>`;
+
+const JSON_SWITCHER_SOURCE = `<style>
+${GLOBAL_SWITCHER_PATTERN_STYLES.trim()}
+</style>
+
+<kyn-header rootUrl="/" appTitle="Application">
+  <span slot="logo" style="--kyn-header-logo-width: 120px;">
+    <!-- product logo -->
+  </span>
+
+  <kyn-header-nav
+    class="global-switcher-nav"
+    auto-open-flyout="favorites"
+    truncate-links
+  >
+    <!-- Render sections from your navigation data. -->
+    <!-- type: simple | mixed | tabbed | categorical -->
+  </kyn-header-nav>
+</kyn-header>`;
+
+const createSourceParameters = (code) => ({
+  docs: {
+    source: {
+      language: 'html',
+      code,
+    },
+  },
+});
 
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
@@ -41,16 +137,18 @@ export default {
 };
 
 export const SlottedHTMLSwitcher = {
+  parameters: createSourceParameters(SLOTTED_HTML_SWITCHER_SOURCE),
   render: (renderArgs) => {
     return html`
+      ${globalSwitcherPatternStyles}
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
         <kyn-header-nav
+          class="global-switcher-nav"
           auto-open-flyout="favorites"
           truncate-links
-          style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >
           <!-- FAVORITES -->
           <kyn-header-link id="favorites" href="javascript:void(0)" hideSearch>
@@ -868,16 +966,18 @@ const renderSection = (section) => {
 };
 
 export const JSONSwitcher = {
+  parameters: createSourceParameters(JSON_SWITCHER_SOURCE),
   render: (renderArgs) => {
     return html`
+      ${globalSwitcherPatternStyles}
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
         <kyn-header-nav
+          class="global-switcher-nav"
           auto-open-flyout="favorites"
           truncate-links
-          style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >
           ${navData.sections.map((section) => renderSection(section))}
         </kyn-header-nav>

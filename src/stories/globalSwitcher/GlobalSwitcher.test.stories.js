@@ -5,6 +5,8 @@ import { expect, waitFor } from 'storybook/test';
 import '../../components/global/header';
 import '../../components/reusable/tabs';
 
+import { GLOBAL_SWITCHER_PATTERN_STYLES } from './globalSwitcherPatternStyles.js';
+
 import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 
@@ -48,11 +50,14 @@ export default {
 
 export const FullWidthEmptyStateServiceTabs = {
   render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
     <kyn-header rootUrl="/" appTitle="Services Catalog">
       <span slot="logo" style="--kyn-header-logo-width: 120px;"
         >${unsafeSVG(bridgeLogo)}</span
       >
-      <kyn-header-nav auto-open-flyout="default">
+      <kyn-header-nav class="global-switcher-nav" auto-open-flyout="default">
         <kyn-header-link
           id="services"
           href="javascript:void(0)"
@@ -143,11 +148,18 @@ export const FullWidthEmptyStateServiceTabs = {
 
 export const FullWidthSingleCategoryServiceTab = {
   render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
     <kyn-header rootUrl="/" appTitle="Services Catalog">
       <span slot="logo" style="--kyn-header-logo-width: 120px;"
         >${unsafeSVG(bridgeLogo)}</span
       >
-      <kyn-header-nav auto-open-flyout="default" truncate-links>
+      <kyn-header-nav
+        class="global-switcher-nav"
+        auto-open-flyout="default"
+        truncate-links
+      >
         <kyn-header-link
           id="services"
           href="javascript:void(0)"
