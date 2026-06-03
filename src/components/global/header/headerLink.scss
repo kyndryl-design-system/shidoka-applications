@@ -9,6 +9,10 @@ $single-column-width: 350px;
   display: block;
   position: relative;
   min-width: 0;
+  --kyn-header-link-flyout-background: var(
+    --kd-color-background-menu-state-default
+  );
+  --kyn-header-link-wrapper-background: var(--kd-color-background-opacity-1);
 }
 
 :host([hidden]) {
@@ -250,10 +254,7 @@ $single-column-width: 350px;
 
   &__content {
     display: none;
-    background: var(
-      --kyn-header-link-flyout-background,
-      var(--kd-color-background-menu-state-default)
-    );
+    background: var(--kyn-header-link-flyout-background);
     box-sizing: border-box;
 
     &.slotted:not(.no-padding) {
@@ -472,10 +473,7 @@ kyn-text-input {
 @media (min-width: 42rem) {
   .menu.level--1 .wrapper {
     padding: var(--kyn-header-link-wrapper-padding, 16px);
-    background-color: var(
-      --kyn-header-link-wrapper-background,
-      var(--kd-color-background-opacity-1)
-    );
+    background-color: var(--kyn-header-link-wrapper-background);
     border-radius: var(--kyn-header-link-wrapper-border-radius, 8px);
   }
 

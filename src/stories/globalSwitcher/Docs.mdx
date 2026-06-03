@@ -10,7 +10,7 @@ import navData from './example_global_switcher_data.json';
 A **pattern** (not a standalone component) for composing categorical navigation inside the Shidoka header.
 It assembles header primitives into flyout sections — dropdowns, tabbed catalogs, multi-column menus, and more.
 
-Copy the full pattern from the **Code** panel on **Slotted HTML** or **JSON-driven** (same single snippet): CSS, HTML, `navData` JSON, icon keys, and render logic.
+Copy the full pattern from the **Code** panel on **Slotted HTML** or **JSON-driven** (same single snippet): CSS, reference HTML, and trimmed `navData` exemplars with schema notes.
 
 ## Pattern Structure
 
@@ -53,6 +53,16 @@ kyn-header
   )}
 />
 
+## Pattern CSS
+
+Section **[1]** is the minimum glue to compose header primitives into this layout:
+
+- **`--kyn-*` variables** — documented component customization APIs (see Key Properties below). Re-check these when upgrading Shidoka header or tab components.
+- **`--kd-*` tokens** — design-system colors; they track theme updates automatically.
+- **`.global-switcher-*` classes** — pattern-only layout helpers (tab width, mixed-link stacking, icon alignment).
+
+The block lives in `globalSwitcherPatternStyles.js` and is shared by the Storybook demo and the copy-paste snippet, so updates stay in one place.
+
 Optional max flyout height — add to the `.global-switcher-nav` rule in section **[1]**:
 
 ```css
@@ -81,7 +91,7 @@ For external links, also set `truncate` on the leaf `kyn-header-link` when using
 ## Section Patterns
 
 Every flyout starts with a `kyn-header-link` trigger. What you slot into `slot="links"` determines the layout.
-Section **[2]** shows one trimmed exemplar per `section.type` (not the full nav tree). Section **[4]** iterates all of `navData.sections`.
+Section **[2]** shows one trimmed exemplar per `section.type` (not the full nav tree). Repeat that markup for each entry in `navData.sections` from section **[3]**.
 
 ### Simple Dropdown
 
@@ -160,6 +170,6 @@ Production apps typically fetch nav config from a service. Use `example_global_s
 | `tabbed`      | Tabbed Categorical Nav       |
 | `categorical` | Multi-Column Categorical Nav |
 
-Sections **[3]**–**[4]** contain full `navData` and the `sections[].type` render switch (with `.global-switcher-*` layout classes).
+Section **[3]** contains schema notes, icon keys, and one trimmed exemplar per `section.type`. See `example_global_switcher_data.json` for the full payload. Map each type to the HTML exemplar in section **[2]**.
 
 Storybook maintainers: `globalSwitcherPattern.js` · `globalSwitcherRender.js` · `globalSwitcherPatternStyles.js`.

@@ -32,7 +32,7 @@ const patternSnippetParameters = (renderArgs = args) =>
 
 const patternSnippetDescription = {
   story:
-    'Copy the **Code** panel below — it includes pattern CSS, reference HTML, full `navData` JSON, icon keys, and render logic in one place.',
+    'Copy the **Code** panel below — it includes pattern CSS, reference HTML, and trimmed `navData` exemplars with schema notes in one place.',
 };
 
 const renderFullSwitcher = (renderArgs) =>

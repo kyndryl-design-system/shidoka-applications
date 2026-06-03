@@ -3,12 +3,14 @@
  * Storybook demo rendering lives in globalSwitcherRender.js (Lit + icons).
  */
 import {
-  createGlobalSwitcherStorySource,
   GLOBAL_SWITCHER_EQUAL_TAB_STYLE,
   GLOBAL_SWITCHER_PATTERN_STYLES,
 } from './globalSwitcherPatternStyles.js';
 
-export { GLOBAL_SWITCHER_PATTERN_STYLES, createGlobalSwitcherStorySource };
+export {
+  GLOBAL_SWITCHER_PATTERN_STYLES,
+  createGlobalSwitcherStorySource,
+} from './globalSwitcherPatternStyles.js';
 
 export const GLOBAL_SWITCHER_ICON_KEYS = [
   'recommend-filled',
@@ -26,51 +28,11 @@ export const GLOBAL_SWITCHER_ICON_KEYS = [
 
 export const GLOBAL_SWITCHER_DATA_REFERENCE_SOURCE = `// navData.sections[] — each item has a "type":
 //   simple | mixed | tabbed | categorical
+// Map section.type to the HTML exemplars in [2] (slot="links" content per type).
+// Full example payload: example_global_switcher_data.json
 // Link: label, href, starred?, target?, icon?
-// Section: id, label, icon, hideSearch?, dividerAfter? (simple), maxColumns? (categorical)`;
-
-export const GLOBAL_SWITCHER_RENDER_LOGIC_SOURCE = `// Framework-agnostic: map navData.sections to markup.
-// Icon keys: ${GLOBAL_SWITCHER_ICON_KEYS.join(', ')}
-
-const TAB_STYLE = '${GLOBAL_SWITCHER_EQUAL_TAB_STYLE}';
-
-const renderLink = (link) => {
-  const attrs = [
-    \`href="\${link.href || '#'}"\`,
-    link.target ? \`target="\${link.target}"\` : '',
-    link.target === '_blank' ? 'truncate' : '',
-  ].filter(Boolean).join(' ');
-  const label = link.icon
-    ? \`<span class="global-switcher-link-label"><span class="global-switcher-link-icon"><!-- \${link.icon} --></span>\${link.label}</span>\`
-    : \`<span>\${link.label}</span>\`;
-  const star = \`<kyn-icon-selector\${link.starred ? ' checked' : ''}><span slot="icon-unchecked"></span><span slot="icon-checked"></span></kyn-icon-selector>\`;
-  const launch = link.target === '_blank' ? '<span class="global-switcher-external-icon"></span>' : '';
-  return \`<kyn-header-link \${attrs}>\${label}\${star}\${launch}</kyn-header-link>\`;
-};
-
-const renderCategory = (category, { spaced } = {}) =>
-  \`<kyn-header-category heading="\${category.heading}"\${spaced ? ' class="global-switcher-category--spaced"' : ''}>
-    <span slot="icon"><!-- \${category.icon || 'circle-stroke'} --></span>
-    \${category.links.map(renderLink).join('')}
-  </kyn-header-category>\`;
-
-const renderLinksSlot = {
-  simple: (s) => \`<kyn-header-category slot="links">\${s.links.map(renderLink).join('')}</kyn-header-category>\`,
-  mixed: (s) => \`<div slot="links" class="global-switcher-mixed-links">\${s.topLinks.map(renderLink).join('')}\${s.categories.map((c) => renderCategory(c, { spaced: true })).join('')}</div>\`,
-  tabbed: (s) => \`<kyn-tabs tabSize="md" slot="links" class="global-switcher-tabs">\${s.tabs.map((tab, i) => \`<kyn-tab slot="tabs" id="\${tab.id}" fill-width style="\${TAB_STYLE}"\${i === 0 ? ' selected' : ''}>\${tab.label}</kyn-tab>\`).join('')}\${s.tabs.map((tab, i) => \`<kyn-tab-panel tabId="\${tab.id}" noPadding\${i === 0 ? ' visible' : ''}><kyn-header-categories layout="masonry" limit-root-links="false">\${tab.categories.map(renderCategory).join('')}</kyn-header-categories></kyn-tab-panel>\`).join('')}</kyn-tabs>\`,
-  categorical: (s) => \`<kyn-header-categories slot="links" layout="masonry" maxColumns="\${s.maxColumns || 3}" limit-root-links="false">\${s.categories.map(renderCategory).join('')}</kyn-header-categories>\`,
-};
-
-const renderSection = (section) => {
-  const slot = renderLinksSlot[section.type]?.(section) ?? '';
-  const attrs = [\`id="\${section.id}"\`, 'href="javascript:void(0)"', section.hideSearch ? 'hideSearch' : '', section.type === 'tabbed' ? 'full-width-flyout' : ''].filter(Boolean).join(' ');
-  const divider = section.dividerAfter ? '<kyn-header-divider></kyn-header-divider>' : '';
-  return \`<kyn-header-link \${attrs}><span><!-- \${section.icon} --></span>\${section.label}\${slot}</kyn-header-link>\${divider}\`;
-};
-
-// <kyn-header-nav class="global-switcher-nav" truncate-links auto-open-flyout="favorites">
-//   \${navData.sections.map(renderSection).join('')}
-// </kyn-header-nav>`;
+// Section: id, label, icon, hideSearch?, dividerAfter? (simple), maxColumns? (categorical)
+// Icon keys: ${GLOBAL_SWITCHER_ICON_KEYS.join(', ')}`;
 
 const limit = (items = [], count = 2) => items.slice(0, count);
 
@@ -121,6 +83,10 @@ export const pickReferenceSections = (sections = []) => {
     })
     .map(shrinkSectionForReference);
 };
+
+export const buildReferenceNavData = (navData) => ({
+  sections: pickReferenceSections(navData.sections),
+});
 
 const escapeSource = (value = '') =>
   String(value)
@@ -345,8 +311,11 @@ export const createGlobalSwitcherPatternSnippet = (
   headerOptions = { rootUrl: '/', appTitle: 'Application' },
   navOptions = { autoOpenFlyout: 'favorites', truncateLinks: true }
 ) => {
-  const referenceMarkup = createGlobalSwitcherStorySource(
-    buildReferenceMarkup(navData, headerOptions, navOptions)
+  const referenceNavData = buildReferenceNavData(navData);
+  const referenceMarkup = buildReferenceMarkup(
+    navData,
+    headerOptions,
+    navOptions
   );
 
   return [
@@ -357,17 +326,13 @@ export const createGlobalSwitcherPatternSnippet = (
     '/* --- [1] Pattern CSS --- */',
     GLOBAL_SWITCHER_PATTERN_STYLES.trim(),
     '',
-    '/* --- [2] Reference HTML (one exemplar per type; loop navData.sections in [4] for full nav) --- */',
+    '/* --- [2] Reference HTML (one exemplar per type; repeat per navData.sections entry) --- */',
     referenceMarkup,
     '',
-    '/* --- [3] Navigation data --- */',
-    `const navData = ${JSON.stringify(navData, null, 2)};`,
-    '',
-    '/* --- [4] Render logic --- */',
-    `// Icon keys: ${GLOBAL_SWITCHER_ICON_KEYS.join(', ')}`,
+    '/* --- [3] Navigation data (schema + trimmed exemplar; see example_global_switcher_data.json for full payload) --- */',
     GLOBAL_SWITCHER_DATA_REFERENCE_SOURCE,
     '',
-    GLOBAL_SWITCHER_RENDER_LOGIC_SOURCE.trim(),
+    `const navData = ${JSON.stringify(referenceNavData, null, 2)};`,
   ].join('\n');
 };
 
