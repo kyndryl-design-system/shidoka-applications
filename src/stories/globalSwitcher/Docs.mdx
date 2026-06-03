@@ -55,13 +55,12 @@ kyn-header
 
 ## Pattern CSS
 
-Section **[1]** is the minimum glue to compose header primitives into this layout:
+Add `class="global-switcher-nav"` to `kyn-header-nav` — that activates Global Switcher flyout framing inside the header components (`:host(.global-switcher-nav)` / `:host-context(.global-switcher-nav)` in `headerNav.scss` / `headerLink.scss`).
 
-- **`--kyn-*` variables** — documented component customization APIs (see Key Properties below). Re-check these when upgrading Shidoka header or tab components.
-- **`--kd-*` tokens** — design-system colors; they track theme updates automatically.
-- **`.global-switcher-*` classes** — pattern-only layout helpers (tab width, mixed-link stacking, icon alignment).
+Section **[1]** adds pattern-only layout helpers on top:
 
-The block lives in `globalSwitcherPatternStyles.js` and is shared by the Storybook demo and the copy-paste snippet, so updates stay in one place.
+- **`--global-switcher-tab-width`** — equal tab sizing (with `class="global-switcher-tabs"` and `fill-width` on each tab)
+- **`.global-switcher-*` classes** — mixed-link stacking, icon alignment, category spacing
 
 Optional max flyout height — add to the `.global-switcher-nav` rule in section **[1]**:
 

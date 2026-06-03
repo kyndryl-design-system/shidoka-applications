@@ -13,6 +13,34 @@ $single-column-width: 350px;
     --kd-color-background-menu-state-default
   );
   --kyn-header-link-wrapper-background: var(--kd-color-background-opacity-1);
+  --kyn-header-link-wrapper-padding: 16px;
+  --kyn-header-link-wrapper-border-radius: 8px;
+  --kyn-header-link-flyout-padding: 8px 8px 8px 230px;
+  --kyn-header-link-single-categorical-width: min(
+    calc(230px + #{$single-column-width} + 8px),
+    calc(100vw - 16px)
+  );
+  --kyn-header-link-two-column-width: min(
+    calc(230px + 2 * #{$single-column-width} + 32px + 16px),
+    calc(100vw - 16px)
+  );
+}
+
+:host-context(.global-switcher-nav) {
+  --kyn-header-link-flyout-background: var(
+    --kd-color-background-container-overlay-background
+  );
+  --kyn-header-link-wrapper-background: transparent;
+  --kyn-header-link-wrapper-border-radius: 0;
+  --kyn-header-link-flyout-padding: 0 0 0 246px;
+  --kyn-header-link-single-categorical-width: min(
+    calc(246px + #{$single-column-width}),
+    calc(100vw - 16px)
+  );
+  --kyn-header-link-two-column-width: min(
+    calc(246px + 2 * #{$single-column-width} + 32px),
+    calc(100vw - 16px)
+  );
 }
 
 :host([hidden]) {
@@ -468,43 +496,33 @@ kyn-text-input {
   margin-bottom: 8px;
 }
 
-// Optional Global Switcher layout hooks. These declarations are inert until
-// a parent pattern supplies the custom properties on `kyn-header-nav`.
+// Global Switcher layout hooks when nested under `kyn-header-nav.global-switcher-nav`.
 @media (min-width: 42rem) {
   .menu.level--1 .wrapper {
-    padding: var(--kyn-header-link-wrapper-padding, 16px);
+    padding: var(--kyn-header-link-wrapper-padding);
     background-color: var(--kyn-header-link-wrapper-background);
-    border-radius: var(--kyn-header-link-wrapper-border-radius, 8px);
+    border-radius: var(--kyn-header-link-wrapper-border-radius);
   }
 
   .menu.level--1 .menu__content.slotted:not(.no-padding) {
-    padding: var(--kyn-header-link-flyout-padding, 8px 8px 8px 230px);
+    padding: var(--kyn-header-link-flyout-padding);
   }
 
   :host([has-multi-column]) .menu.open .menu__content.slotted,
   .menu.full-width-flyout.open .menu__content.slotted {
-    padding: var(--kyn-header-link-flyout-padding, 8px 8px 8px 230px);
+    padding: var(--kyn-header-link-flyout-padding);
   }
 
   :host([has-categorical]:not([has-multi-column]))
     .menu.level--1
     .menu__content.slotted {
-    width: var(
-      --kyn-header-link-single-categorical-width,
-      min(calc(230px + #{$single-column-width} + 8px), calc(100vw - 16px))
-    );
+    width: var(--kyn-header-link-single-categorical-width);
   }
 
   :host([has-multi-column][data-flyout-columns='2'])
     .menu.open
     .menu__content.slotted {
-    width: var(
-      --kyn-header-link-two-column-width,
-      min(
-        calc(230px + 2 * #{$single-column-width} + 32px + 16px),
-        calc(100vw - 16px)
-      )
-    );
+    width: var(--kyn-header-link-two-column-width);
   }
 }
 
