@@ -98,8 +98,8 @@ $single-column-width: 350px;
     flex: 0 0 auto;
   }
 
-  // Icon spans are commonly used for default-slot SVGs before link text.
-  ::slotted(span:first-child:not([slot])) {
+  // Icon wrapper spans only — flex on text labels breaks ellipsis truncation.
+  ::slotted(span:first-child:not([slot]):has(> svg)) {
     display: flex;
     align-items: center;
   }
@@ -526,4 +526,20 @@ kyn-text-input {
   --kyn-header-span-only-overflow: hidden;
   --kyn-header-span-only-text-overflow: ellipsis;
   --kyn-header-span-only-white-space: nowrap;
+
+  // Label spans need block layout for ellipsis (flex clips without "...").
+  ::slotted(span:first-child:not([slot])) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  ::slotted(span:first-child:not([slot]):has(> svg)) {
+    display: flex;
+    flex-shrink: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
 }

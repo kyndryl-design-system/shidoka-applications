@@ -1,5 +1,7 @@
-import { Meta, Title, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Title, Source } from '@storybook/addon-docs/blocks';
 import * as GlobalSwitcherStories from './GlobalSwitcher.stories.js';
+import { createGlobalSwitcherPatternSnippet } from './globalSwitcherPattern.js';
+import navData from './example_global_switcher_data.json';
 
 <Meta of={GlobalSwitcherStories} name="Docs" />
 
@@ -8,11 +10,13 @@ import * as GlobalSwitcherStories from './GlobalSwitcher.stories.js';
 A **pattern** (not a standalone component) for composing categorical navigation inside the Shidoka header.
 It assembles header primitives into flyout sections — dropdowns, tabbed catalogs, multi-column menus, and more.
 
+Copy the full pattern from the **Code** panel on **Slotted HTML** or **JSON-driven** (same single snippet): CSS, HTML, `navData` JSON, icon keys, and render logic.
+
 ## Pattern Structure
 
 ```
 kyn-header
-└── kyn-header-nav
+└── kyn-header-nav.global-switcher-nav
     ├── kyn-header-link              ← flyout trigger
     │   └── slot="links"
     │       ├── kyn-header-category  ← simple dropdown
@@ -26,91 +30,66 @@ kyn-header
 
 ```html
 <kyn-header rootUrl="/" appTitle="My Application">
-  <kyn-header-nav>
+  <kyn-header-nav class="global-switcher-nav">
     <!-- each top-level kyn-header-link becomes a flyout trigger -->
     <!-- slot="links" content determines the flyout type -->
   </kyn-header-nav>
 </kyn-header>
 ```
 
-## Flyout Height
+## Copy the full pattern
 
-Set a max height for global-switcher flyouts (including categorical nav) with CSS custom properties:
+<Source
+  code={createGlobalSwitcherPatternSnippet(
+    navData,
+    {
+      rootUrl: '/',
+      appTitle: 'Application',
+    },
+    {
+      autoOpenFlyout: 'favorites',
+      truncateLinks: true,
+    }
+  )}
+/>
 
-```html
-<style>
-  .global-switcher-nav {
-    --kyn-global-switcher-max-height: 70vh;
-    --kyn-header-nav-menu-width: 246px;
-    --kyn-header-nav-menu-padding: 12px;
-    --kyn-header-nav-menu-background: var(
-      --kd-color-background-menu-state-default
-    );
-    --kyn-header-nav-menu-border-radius: 8px;
-    --kyn-header-nav-menu-open-border-radius: 8px 0 0 8px;
-    --kyn-header-nav-menu-overflow: visible;
-    --kyn-header-nav-sync-flyout-height: 1;
-    --kyn-header-link-flyout-background: var(
-      --kd-color-background-container-overlay-background
-    );
-    --kyn-header-link-flyout-padding: 0 0 0 246px;
-    --kyn-header-link-wrapper-padding: 16px;
-    --kyn-header-link-wrapper-background: transparent;
-    --kyn-header-link-wrapper-border-radius: 0;
-    --kyn-header-link-single-categorical-width: min(
-      calc(246px + 350px),
-      calc(100vw - 16px)
-    );
-    --kyn-header-link-two-column-width: min(
-      calc(246px + 2 * 350px + 32px),
-      calc(100vw - 16px)
-    );
-  }
-</style>
+Optional max flyout height — add to the `.global-switcher-nav` rule in section **[1]**:
 
-<kyn-header-nav class="global-switcher-nav"> ... </kyn-header-nav>
+```css
+--kyn-global-switcher-max-height: 70vh;
 ```
 
-- Set `--kyn-global-switcher-max-height` on `kyn-header-nav` (all flyouts) or on a specific `kyn-header-link` (single flyout).
+Set on `kyn-header-nav` (all flyouts) or on a specific `kyn-header-link` (single flyout).
+
+## Link truncation
+
+Ellipsize long labels in flyout menus:
+
+```html
+<kyn-header-nav
+  class="global-switcher-nav"
+  truncate-links
+  auto-open-flyout="favorites"
+>
+  <!-- nested kyn-header-link labels truncate when they overflow -->
+</kyn-header-nav>
+```
+
+Open **Favorites** in the story to see a long item (for example “Visualization, Exploration and Semantic Analytics”).
+For external links, also set `truncate` on the leaf `kyn-header-link` when using `target="_blank"`.
 
 ## Section Patterns
 
 Every flyout starts with a `kyn-header-link` trigger. What you slot into `slot="links"` determines the layout.
+Section **[2]** shows one trimmed exemplar per `section.type` (not the full nav tree). Section **[4]** iterates all of `navData.sections`.
 
 ### Simple Dropdown
 
 A flat `kyn-header-category` — best for short lists like Favorites or Recently Viewed.
 
-```html
-<kyn-header-link href="javascript:void(0)">
-  <span>{icon}</span>
-  Favorites
-  <kyn-header-category slot="links">
-    <kyn-header-link href="/page-a"><span>Page A</span></kyn-header-link>
-    <kyn-header-link href="/page-b"><span>Page B</span></kyn-header-link>
-  </kyn-header-category>
-</kyn-header-link>
-```
-
 ### Mixed Layout
 
 A `div` wrapper combining loose links with a categorized group beneath them.
-
-```html
-<kyn-header-link href="javascript:void(0)">
-  <span>{icon}</span>
-  Console
-  <div slot="links" style="display: flex; flex-direction: column; gap: 2px;">
-    <kyn-header-link href="/home"><span>Bridge Home</span></kyn-header-link>
-    <kyn-header-category heading="Dashboards" style="margin-top: 8px;">
-      <span slot="icon">{icon}</span>
-      <kyn-header-link href="/insights"
-        ><span>Actionable Insights</span></kyn-header-link
-      >
-    </kyn-header-category>
-  </div>
-</kyn-header-link>
-```
 
 ### Tabbed Categorical Nav
 
@@ -119,117 +98,25 @@ Use `full-width-flyout` for tabbed categorical Global Switcher flyouts so the
 flyout keeps the categorical full-width layout even when the active tab renders
 an empty state with no categories.
 
-```html
-<kyn-header-link href="javascript:void(0)" full-width-flyout>
-  <span>{icon}</span>
-  Services
-  <kyn-tabs
-    class="global-switcher-service-tabs"
-    tabSize="md"
-    slot="links"
-    style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
-  >
-    <kyn-tab
-      slot="tabs"
-      id="tab-a"
-      fill-width
-      selected
-      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
-      >Kyndryl Services</kyn-tab
-    >
-    <kyn-tab
-      slot="tabs"
-      id="tab-b"
-      fill-width
-      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
-      >Platform Services</kyn-tab
-    >
-    <kyn-tab
-      slot="tabs"
-      id="tab-c"
-      fill-width
-      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
-      >Additional Services</kyn-tab
-    >
-    <kyn-tab-panel tabId="tab-a" noPadding visible>
-      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
-        <kyn-header-category heading="Category 1">
-          <span slot="icon">{icon}</span>
-          <kyn-header-link href="#"><span>Link 1</span></kyn-header-link>
-        </kyn-header-category>
-      </kyn-header-categories>
-    </kyn-tab-panel>
-    <kyn-tab-panel tabId="tab-b" noPadding>
-      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
-        <kyn-header-category heading="Category 2">
-          <span slot="icon">{icon}</span>
-          <kyn-header-link href="#"><span>Link 2</span></kyn-header-link>
-        </kyn-header-category>
-      </kyn-header-categories>
-    </kyn-tab-panel>
-    <kyn-tab-panel tabId="tab-c" noPadding>
-      <div class="global-switcher-empty-state">
-        Subscribe to your first service
-      </div>
-    </kyn-tab-panel>
-  </kyn-tabs>
-</kyn-header-link>
-```
-
-`kyn-tabs` does not measure or equalize tab widths by itself. Set
-`--global-switcher-tab-width` from your Global Switcher pattern code, either as
-a fixed design value or by measuring the rendered labels and writing the widest
-value back to the `kyn-tabs` host. Keep that behavior scoped to this pattern;
-default `kyn-tabs` continue to size naturally to their label text. Use
-`fill-width` only on the tabs that the pattern sizes so the internal tab button
-fills the measured host width.
+`kyn-tabs` does not measure or equalize tab widths by itself. Set `--global-switcher-tab-width` on `.global-switcher-nav` (default `170px`), add `class="global-switcher-tabs"` on `kyn-tabs`, and use `fill-width` on each `kyn-tab` (tab width comes from the CSS variable).
 
 ### Multi-Column Categorical Nav
 
 `kyn-header-categories` directly in `slot="links"` — for categorized admin-style menus.
 
-```html
-<kyn-header-link href="javascript:void(0)">
-  <span>{icon}</span>
-  Administration
-  <kyn-header-categories
-    slot="links"
-    layout="masonry"
-    maxColumns="2"
-    .limitRootLinks="${false}"
-  >
-    <kyn-header-category heading="Access Management">
-      <span slot="icon">{icon}</span>
-      <kyn-header-link href="#"
-        ><span>Access Management Tool</span></kyn-header-link
-      >
-    </kyn-header-category>
-  </kyn-header-categories>
-</kyn-header-link>
-```
-
 ## Favorites (Icon Selectors)
 
 Add `kyn-icon-selector` inside leaf links for star-toggle behavior.
-Set these CSS custom properties on `kyn-header-nav` for hover-to-reveal animation:
+The pattern styles above set hover-to-reveal behavior on `kyn-header-nav`:
 
 ```html
-<kyn-header-nav
-  style="
-  --kyn-icon-selector-animate-selection: 1;
-  --kyn-icon-selector-only-visible-on-hover: 1;
-  --kyn-icon-selector-persist-when-checked: 1;
-"
->
-  <!-- inside any leaf link: -->
-  <kyn-header-link href="/page">
-    <span>Page Name</span>
-    <kyn-icon-selector>
-      <span slot="icon-unchecked">{starOutline}</span>
-      <span slot="icon-checked">{starFilled}</span>
-    </kyn-icon-selector>
-  </kyn-header-link>
-</kyn-header-nav>
+<kyn-header-link href="/page">
+  <span>Page Name</span>
+  <kyn-icon-selector>
+    <span slot="icon-unchecked">{starOutline}</span>
+    <span slot="icon-checked">{starFilled}</span>
+  </kyn-icon-selector>
+</kyn-header-link>
 ```
 
 ## External Links
@@ -264,18 +151,15 @@ Set `target="_blank"` and include a launch icon:
 
 ## Data-Driven Rendering
 
-Two stories demonstrate different authoring approaches:
+Production apps typically fetch nav config from a service. Use `example_global_switcher_data.json` as the schema reference.
 
-- **SlottedHTMLSwitcher** — hand-written slotted HTML. Copy-paste when prototyping.
-- **JSONSwitcher** — driven by `example_global_switcher_data.json`. Reference this for production integrations that fetch nav config from a service.
+| `type`        | Pattern                      |
+| ------------- | ---------------------------- |
+| `simple`      | Simple Dropdown              |
+| `mixed`       | Mixed Layout                 |
+| `tabbed`      | Tabbed Categorical Nav       |
+| `categorical` | Multi-Column Categorical Nav |
 
-The JSON data exports a `sections` array. Each section's `type` maps to a pattern:
+Sections **[3]**–**[4]** contain full `navData` and the `sections[].type` render switch (with `.global-switcher-*` layout classes).
 
-| `type`        | Pattern                      | Example             |
-| ------------- | ---------------------------- | ------------------- |
-| `simple`      | Simple Dropdown              | Favorites, Catalogs |
-| `mixed`       | Mixed Layout                 | Console             |
-| `tabbed`      | Tabbed Categorical Nav       | Services            |
-| `categorical` | Multi-Column Categorical Nav | Administration      |
-
-See `example_global_switcher_data.json` for the full data shape and available fields.
+Storybook maintainers: `globalSwitcherPattern.js` · `globalSwitcherRender.js` · `globalSwitcherPatternStyles.js`.
