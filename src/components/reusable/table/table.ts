@@ -383,8 +383,12 @@ export class Table extends LitElement {
       if (this._allSelected) {
         shouldSelect = !this._excludedRowIds.has(row.rowId);
       } else {
-        // normal mode - select if rowId is in selectedRowIds set
-        shouldSelect = this._selectedRowIds.has(row.rowId);
+        // normal mode - select if rowId is in selectedRowIds set,
+        // or if the row already has selected set (e.g. via attribute)
+        shouldSelect = this._selectedRowIds.has(row.rowId) || row.selected;
+        if (shouldSelect && !this._selectedRowIds.has(row.rowId)) {
+          this._selectedRowIds.add(row.rowId);
+        }
       }
 
       row.selected = shouldSelect;
