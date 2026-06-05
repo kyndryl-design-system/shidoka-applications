@@ -1,6 +1,7 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import RadioButtonScss from './radioButton.scss?inline';
+import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * Radio button.
@@ -61,6 +62,10 @@ export class RadioButton extends LitElement {
   @property({ type: Boolean })
   accessor invalid = false;
 
+  /** Input size. "xs" or "lg". */
+  @property({ type: String })
+  accessor size = 'lg';
+
   override render() {
     return html`
       <label
@@ -70,6 +75,10 @@ export class RadioButton extends LitElement {
       >
         <span><slot></slot></span>
         <input
+          class="${classMap({
+            'size--xs': this.size === 'xs',
+            'size--lg': this.size === 'lg',
+          })}"
           type="radio"
           name=${this.name}
           value=${this.value}
