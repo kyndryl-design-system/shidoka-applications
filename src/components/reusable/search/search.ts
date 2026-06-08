@@ -6,8 +6,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss?inline';
 import '../textInput';
 import '../button';
-import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
-import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/history.svg';
+import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
+import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/history.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -42,7 +42,7 @@ export class Search extends LitElement {
   @property({ type: String })
   accessor value = '';
 
-  /** Input & button size. */
+  /** Input size. "sm", "md", or "lg".*/
   @property({ type: String })
   accessor size = 'md';
 
@@ -137,7 +137,9 @@ export class Search extends LitElement {
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
-          <span slot="icon">${unsafeSVG(searchIcon)}</span>
+          <span slot="icon" class=${this.size === 'sm' ? 'small_icon' : ''}
+            >${unsafeSVG(searchIcon)}</span
+          >
         </kyn-text-input>
 
         <div
@@ -387,7 +389,11 @@ export class Search extends LitElement {
       isSearchHistory || this.searchHistory.includes(suggestion);
 
     const iconTemplate = showHistoryIcon
-      ? html`<span style="display:flex">${unsafeSVG(historyIcon)}</span>`
+      ? html`<span
+          class=${this.size === 'sm' ? 'small_icon' : ''}
+          style="display:flex"
+          >${unsafeSVG(historyIcon)}</span
+        >`
       : null;
 
     if (isSearchHistory) {
