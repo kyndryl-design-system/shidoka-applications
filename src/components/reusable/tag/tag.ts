@@ -54,9 +54,7 @@ export class Tag extends LitElement {
   accessor noTruncation = false;
 
   /**
-   * Determine if Tag is clickable(applicable for old tags only).
-   * <br>
-   * **NOTE**: New tags are **clickable** by **default**.
+   * Determine if Tag is clickable.
    */
   @property({ type: Boolean })
   accessor clickable = false;
