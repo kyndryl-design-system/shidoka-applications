@@ -186,7 +186,7 @@ export class Tag extends LitElement {
 
   private _isTagClickable() {
     if (this._checkForNewTag()) {
-      return !this.filter && this.clickable;
+      return !this.filter;
     } else {
       return this.clickable;
     }
