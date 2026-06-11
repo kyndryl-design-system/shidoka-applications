@@ -62,6 +62,12 @@ export default {
         { src: 'package.json', dest: 'dist' },
         { src: 'README.md', dest: 'dist' },
         { src: 'LICENSE', dest: 'dist' },
+        {
+          src: 'custom-elements.json',
+          dest: 'dist',
+          transform: (contents) =>
+            JSON.stringify(JSON.parse(contents.toString('utf8'))),
+        },
         { src: 'src/common/scss', dest: 'dist/common' },
         { src: 'src/common/assets', dest: 'dist/common' },
       ],
