@@ -122,20 +122,22 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     flex-wrap: wrap;
     align-items: stretch;
     width: 100%;
-    gap: 1.25rem;
+    max-width: none;
+    margin-inline: 0;
+    gap: 2rem;
   }
 
   .dashboard-kpi {
     min-height: 156px;
     box-sizing: border-box;
-    flex: 1 1 calc((100% - 3.75rem) / 4);
-    max-width: calc((100% - 3.75rem) / 4);
+    flex: 1 1 calc((100% - 6rem) / 4);
+    max-width: calc((100% - 6rem) / 4);
   }
 
   @media (max-width: calc(68rem - 0.001px)) {
     .dashboard-kpi {
-      flex: 1 1 calc((100% - 1.25rem) / 2);
-      max-width: calc((100% - 1.25rem) / 2);
+      flex: 1 1 calc((100% - 2rem) / 2);
+      max-width: calc((100% - 2rem) / 2);
     }
   }
 
