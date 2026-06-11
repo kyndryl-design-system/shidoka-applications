@@ -54,9 +54,7 @@ export class Tag extends LitElement {
   accessor noTruncation = false;
 
   /**
-   * Determine if Tag is clickable(applicable for old tags only).
-   * <br>
-   * **NOTE**: New tags are **clickable** by **default**.
+   * Determine if Tag is clickable.
    */
   @property({ type: Boolean })
   accessor clickable = false;
@@ -86,8 +84,8 @@ export class Tag extends LitElement {
     const tagClasses = {
       tags: true,
       'tag-disable': this.disabled,
-      'tag-clickable': this.clickable,
-      [`tag-clickable-${this.tagColor}`]: this.clickable,
+      'tag-clickable': this._isTagClickable(),
+      [`tag-clickable-${this.tagColor}`]: this._isTagClickable(),
       [`${baseColorClass}`]: true,
       [`${sizeClass}`]: true,
       [`${sizeClass}-filter`]: this.filter,
@@ -185,11 +183,7 @@ export class Tag extends LitElement {
   }
 
   private _isTagClickable() {
-    if (this._checkForNewTag()) {
-      return !this.filter && this.clickable;
-    } else {
-      return this.clickable;
-    }
+    return this.clickable && !this.filter;
   }
 
   private handleTagClear(e: any, value: string) {

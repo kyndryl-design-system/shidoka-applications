@@ -146,7 +146,13 @@ export class NumberInput extends FormMixin(LitElement) {
                 description=${this._textStrings.subtract}
                 @on-click=${this._handleSubtract}
               >
-                <span slot="icon">${unsafeSVG(chevronLeft)}</span>
+                <span
+                  slot="icon"
+                  class=${this.size === 'xs' || this.size === 'sm'
+                    ? 'small_icon'
+                    : ''}
+                  >${unsafeSVG(chevronLeft)}</span
+                >
               </kyn-button>`
             : null}
 
@@ -186,7 +192,13 @@ export class NumberInput extends FormMixin(LitElement) {
                 description=${this._textStrings.add}
                 @on-click=${this._handleAdd}
               >
-                <span slot="icon">${unsafeSVG(chevronRight)}</span>
+                <span
+                  slot="icon"
+                  class=${this.size === 'xs' || this.size === 'sm'
+                    ? 'icon_size'
+                    : ''}
+                  >${unsafeSVG(chevronRight)}</span
+                >
               </kyn-button>`
             : null}
         </div>

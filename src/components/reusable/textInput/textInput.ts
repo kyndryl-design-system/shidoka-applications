@@ -16,8 +16,8 @@ import '../../reusable/button';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
-import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/no-overview.svg';
-import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overview.svg';
+import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/no-overview.svg';
+import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overview.svg';
 
 import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss?inline';
@@ -206,7 +206,7 @@ export class TextInput extends FormMixin(LitElement) {
                   ?disabled=${this.disabled}
                   class="visibility-toggle"
                   kind="ghost"
-                  size="small"
+                  size=${this.size === 'xs' ? 'extra-small' : 'small'}
                   description=${this.passwordVisible
                     ? this._textStrings.hidePassword
                     : this._textStrings.showPassword}
@@ -214,7 +214,13 @@ export class TextInput extends FormMixin(LitElement) {
                     ? null
                     : this._togglePasswordVisibility}
                 >
-                  <span style="display:flex;" slot="icon">
+                  <span
+                    class=${this.size === 'sm' || this.size === 'xs'
+                      ? '.small_icon'
+                      : ''}
+                    style="display:flex;"
+                    slot="icon"
+                  >
                     ${this.passwordVisible
                       ? html`${unsafeSVG(unlockIcon)}`
                       : html`${unsafeSVG(lockIcon)}`}
@@ -228,11 +234,15 @@ export class TextInput extends FormMixin(LitElement) {
                   ?disabled=${this.disabled}
                   class="clear-button"
                   kind="ghost"
-                  size="small"
+                  size=${this.size === 'sm' ? 'extra-small' : 'small'}
                   description=${this._textStrings.clearAll}
                   @click=${() => this._handleClear()}
                 >
-                  <span style="display:flex;" slot="icon">
+                  <span
+                    class=${this.size === 'sm' ? 'small_icon' : ''}
+                    style="display:flex;"
+                    slot="icon"
+                  >
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>
