@@ -124,20 +124,20 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     width: 100%;
     max-width: none;
     margin-inline: 0;
-    gap: 2rem;
+    gap: 32px;
   }
 
   .dashboard-kpi {
     min-height: 156px;
     box-sizing: border-box;
-    flex: 1 1 calc((100% - 6rem) / 4);
-    max-width: calc((100% - 6rem) / 4);
+    flex: 1 1 calc((100% - 96px) / 4);
+    max-width: calc((100% - 96px) / 4);
   }
 
   @media (max-width: calc(68rem - 0.001px)) {
     .dashboard-kpi {
-      flex: 1 1 calc((100% - 2rem) / 2);
-      max-width: calc((100% - 2rem) / 2);
+      flex: 1 1 calc((100% - 32px) / 2);
+      max-width: calc((100% - 32px) / 2);
     }
   }
 
