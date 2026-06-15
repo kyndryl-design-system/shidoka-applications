@@ -338,6 +338,9 @@ span {
   top: 100%;
   margin-top: 4px;
   width: 100%;
+  box-sizing: border-box;
+  // never let the menu grow wider than the viewport itself.
+  max-width: var(--kyn-split-btn-menu-max-width, calc(100vw - 16px));
   max-height: 280px;
   overflow-y: auto;
   outline: none;
@@ -357,6 +360,13 @@ span {
     transform-origin: bottom;
     top: auto;
     bottom: 100%;
+  }
+
+  // anchor the menu to the right edge of the button so it opens toward the left.
+  // applied when a left-aligned menu would overflow the viewport.
+  &.leftwards {
+    left: auto;
+    right: 0;
   }
 
   &.open {
