@@ -42,6 +42,7 @@ export class SplitButtonOption extends LitElement {
   override render() {
     return html`
       <li
+        class="menu-item"
         role="option"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
@@ -52,7 +53,7 @@ export class SplitButtonOption extends LitElement {
         @click=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
-        <span>
+        <span class="menu-item-inner-el">
           <slot @slotchange=${(e: any) => this.handleSlotChange(e)}></slot>
         </span>
       </li>
