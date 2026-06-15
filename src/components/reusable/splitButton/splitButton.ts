@@ -245,9 +245,6 @@ export class SplitButton extends LitElement {
     this._openUpwards =
       wrapperRect.top > window.innerHeight * VerticalThreshold;
 
-    // Measure the menu's natural width (alignment-independent) and check
-    // whether a left-aligned menu would spill past the right edge. Compare
-    // against clientWidth (excludes the scrollbar) so we don't trigger scroll.
     const viewportWidth = document.documentElement.clientWidth;
     const menuWidth = this._menuEl.offsetWidth;
     this._openLeftwards =
@@ -313,11 +310,6 @@ export class SplitButton extends LitElement {
       if (openDropdown) {
         this.open = true;
         this.options[highlightedIndex].highlighted = true;
-
-        // scroll to highlighted option
-        // if (!this.multiple && this.value !== '') {
-        //   this.options[highlightedIndex].scrollIntoView({ block: 'nearest' });
-        // }
       }
     }
     switch (keyCode) {
