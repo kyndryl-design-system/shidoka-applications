@@ -117,33 +117,8 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     color: var(--kd-color-text-level-secondary);
   }
 
-  .dashboard-kpis {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    width: 100%;
-    gap: 1.25rem;
-  }
-
   .dashboard-kpi {
     min-height: 156px;
-    box-sizing: border-box;
-    flex: 1 1 calc((100% - 3.75rem) / 4);
-    max-width: calc((100% - 3.75rem) / 4);
-  }
-
-  @media (max-width: calc(68rem - 0.001px)) {
-    .dashboard-kpi {
-      flex: 1 1 calc((100% - 1.25rem) / 2);
-      max-width: calc((100% - 1.25rem) / 2);
-    }
-  }
-
-  @media (max-width: calc(42rem - 0.001px)) {
-    .dashboard-kpi {
-      flex: 1 1 100%;
-      max-width: 100%;
-    }
   }
 
   .dashboard-kpi kyn-widget {
@@ -553,7 +528,7 @@ const createDashboardTabsSource = () => `
 
     <kyn-tab-panel tabId="my-dashboard" visible noPadding>
       <div class="dashboard-tab-panel-content">
-        <div class="dashboard-kpis kd-grid">
+        <div class="dashboard-kpis kd-grid kd-grid--no-max kd-grid--align-left">
 ${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
         </div>
 
@@ -1121,7 +1096,7 @@ ${indentSource(createDashboardTabsSource(), 8)}
 );
 
 const renderKpis = () => html`
-  <div class="dashboard-kpis kd-grid">
+  <div class="dashboard-kpis kd-grid kd-grid--no-max kd-grid--align-left">
     ${kpis.map(
       (kpi) => html`
         <div
