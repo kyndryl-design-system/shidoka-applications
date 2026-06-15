@@ -93,11 +93,32 @@ export class SplitButton extends LitElement {
   accessor _openUpwards = false;
 
   /**
+   * Anchor the menu to the right edge of the button (opens toward the left).
+   * @ignore
+   */
+  @state()
+  accessor _openLeftwards = false;
+
+  /**
    * Queries the .select DOM element.
    * @ignore
    */
   @query('.select')
   accessor buttonEl!: HTMLElement;
+
+  /**
+   * Queries the .split-btn-wrapper DOM element.
+   * @ignore
+   */
+  @query('.split-btn-wrapper')
+  accessor _wrapperEl!: HTMLElement;
+
+  /**
+   * Queries the .options menu DOM element.
+   * @ignore
+   */
+  @query('.options')
+  accessor _menuEl!: HTMLElement;
 
   /**
    * Assistive text for screen readers.
@@ -178,6 +199,7 @@ export class SplitButton extends LitElement {
             options: true,
             open: this.open,
             upwards: this._openUpwards,
+            leftwards: this._openLeftwards,
           })}
           style="min-width: ${this.menuMinWidth};"
           name=${this.name}
@@ -203,18 +225,30 @@ export class SplitButton extends LitElement {
         this.options
           .find((option) => option.selected)
           ?.scrollIntoView({ block: 'nearest' });
-        // open menu upwards if closer to bottom of viewport
-        const Threshold = 0.6;
-        if (
-          this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * Threshold
-        ) {
-          this._openUpwards = true;
-        } else {
-          this._openUpwards = false;
-        }
+        this._positionMenu();
       }
     }
+  }
+
+  /**
+   * Repositions the menu so it stays within the viewport: opens upwards when
+   * near the bottom edge and anchors to the right (opens leftwards) when a
+   * left-aligned menu would overflow the right edge, preventing page scroll.
+   */
+  private _positionMenu() {
+    const VerticalThreshold = 0.6;
+    const ViewportMargin = 8;
+
+    const wrapperRect = this._wrapperEl.getBoundingClientRect();
+
+    // open menu upwards if closer to bottom of viewport
+    this._openUpwards =
+      wrapperRect.top > window.innerHeight * VerticalThreshold;
+
+    const viewportWidth = document.documentElement.clientWidth;
+    const menuWidth = this._menuEl.offsetWidth;
+    this._openLeftwards =
+      wrapperRect.left + menuWidth > viewportWidth - ViewportMargin;
   }
 
   private handleListBlur(e: any) {
@@ -276,11 +310,6 @@ export class SplitButton extends LitElement {
       if (openDropdown) {
         this.open = true;
         this.options[highlightedIndex].highlighted = true;
-
-        // scroll to highlighted option
-        // if (!this.multiple && this.value !== '') {
-        //   this.options[highlightedIndex].scrollIntoView({ block: 'nearest' });
-        // }
       }
     }
     switch (keyCode) {
