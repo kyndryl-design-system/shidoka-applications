@@ -86,6 +86,54 @@ _Status: **Pass** none found · **Warn** minor/suggestions · **Fail** critical/
 ### Open questions / judgment calls (for the human reviewer)
 
 - <Architectural or product trade-offs you are deliberately not deciding, with options.>
+
+### Proposed PR description (copy-paste)
+
+Filled from this review; mirrors `.github/pull_request_template.md`. Wrapped in a fenced
+block so it pastes as raw markdown. Tick only checklist items the diff/repo objectively
+evidences; leave author-only items (local test run, Figma link) unchecked.
+
+```markdown
+## Summary
+
+<concise description of what changed and why>
+
+## ADO Story or GitHub Issue Link
+
+<link if referenced in the PR/diff, else N/A>
+
+## Figma Link
+
+<link if known, else N/A>
+
+## Notes
+
+- <substantive change note derived from the diff>
+- <...>
+
+## To Do
+
+- <unresolved follow-ups this review surfaced, else "None">
+
+## Checklist
+
+- [ ] Used Conventional Commit messages as outlined in the contributing guide.
+  - [ ] Noted breaking changes (if any).
+- [ ] Documented/updated all props, events, slots, parts, etc with JSDoc.
+  - [ ] Ran the `analyze` command to update Storybook docs.
+- [ ] Added/updated Stories with controls to cover all variants.
+- [ ] Ran `test` locally to address any failures.
+- [ ] Added/updated the Figma link for the Story's Design tab.
+- [ ] Added any new component exports to the src/index.ts file
+
+## Testing Instructions
+
+<concrete steps for a reviewer/tester to validate the change>
+
+## Screenshots
+
+(if any)
+```
 ````
 
 ## Rules for findings
@@ -103,3 +151,24 @@ _Status: **Pass** none found · **Warn** minor/suggestions · **Fail** critical/
 - **Respect stated maintainer intent.** If the author has confirmed a choice (e.g., an
   intentional non-releasing commit type), accept it and don't re-flag it.
 - If the diff was incomplete, state exactly what you could and couldn't assess.
+
+## PR description rules
+
+Every review ends with the **Proposed PR description** section — a copy-paste block the
+author can paste straight into the PR.
+
+- **Structure:** use the repo's `.github/pull_request_template.md` when present (read it —
+  it is the source of truth); otherwise use the embedded template above. Keep every heading.
+- **Wrap it in a ` ```markdown ` fenced block** so it renders with a copy button and pastes
+  as raw markdown.
+- **Summary / Notes / Testing Instructions:** fill from your review — concise, specific,
+  derived from the actual diff. Notes should bullet the substantive changes.
+- **To Do:** list this review's unresolved findings (e.g., "run `analyze`", "add a
+  regression test"); use "None" if clean.
+- **Checklist — tick honestly from evidence only.** Check items the diff/repo objectively
+  shows: JSDoc present, `custom-elements.json`/`analyze` updated, stories with controls
+  added, exports added to `src/index.ts`, Conventional Commits used, breaking changes noted.
+  Leave **author-only / process** items unchecked for the human — never tick "Ran `test`
+  locally" or "Added the Figma link," which you cannot verify.
+- **Links (ADO/GitHub issue, Figma):** fill only if referenced in the PR/diff; otherwise
+  leave `N/A` or `<add link>`. Never invent a link.

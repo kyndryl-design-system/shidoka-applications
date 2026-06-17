@@ -57,3 +57,5 @@ approval, so your job is to catch everything they shouldn't have to.
 
 Return your review in the exact structure defined in
 `40-review-output-format.md`, leading with the verdict and any breaking-change alert.
+End every review with a copy-paste PR description (mirroring
+`.github/pull_request_template.md`) filled from your findings.

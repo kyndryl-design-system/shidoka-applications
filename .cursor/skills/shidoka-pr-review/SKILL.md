@@ -32,6 +32,10 @@ canonical kit at the repo root: `review-kit/`.
    with the alert from `30`.
 5. **Return the review** in the structure from `40` — verdict first, severity-ranked
    findings, each with `file:line` and a concrete fix.
+6. **Finish with a copy-paste PR description** filled from the review, using the repo's
+   `.github/pull_request_template.md` (or the embedded template in `40`). Tick checklist
+   items only where the diff proves them; leave author-only items (local test run, Figma)
+   unchecked.
 
 ## Boundaries
 

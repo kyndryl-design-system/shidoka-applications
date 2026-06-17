@@ -16,7 +16,8 @@ order:
 4. `review-kit/30-breaking-change-detection.md` — **run on every review** and alert the
    author with a prominent block if the public API breaks.
 5. `review-kit/40-review-output-format.md` — return the review in this structure
-   (verdict first, severity-ranked findings with `file:line` and concrete fixes).
+   (verdict first, severity-ranked findings with `file:line` and concrete fixes), ending
+   with a copy-paste PR description that mirrors `.github/pull_request_template.md`.
 
 Get the diff via `git diff --merge-base origin/main` (use the PR's real base branch).
 Treat `custom-elements.json`, `src/index.ts`, and the foundation tokens

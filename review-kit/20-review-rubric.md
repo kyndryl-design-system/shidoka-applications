@@ -21,6 +21,7 @@ Review progress:
 - [ ] 7. Docs, stories, manifest & tests review
 - [ ] 8. Governance review (commit, versioning, exports, "generic" rule)
 - [ ] 9. Severity-rank findings, note what's done well, write verdict
+- [ ] 10. Emit the copy-paste PR description (see 40-review-output-format.md)
 ```
 
 ### Step 1 — Establish context

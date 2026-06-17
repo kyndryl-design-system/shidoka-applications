@@ -14,7 +14,8 @@ at the repo root, in order:
 3. `review-kit/20-review-rubric.md` — the senior checklist and workflow.
 4. `review-kit/30-breaking-change-detection.md` — **run on every review**; alert the
    author if the public API breaks.
-5. `review-kit/40-review-output-format.md` — return the review in this structure.
+5. `review-kit/40-review-output-format.md` — return the review in this structure, ending
+   with a copy-paste PR description that mirrors `.github/pull_request_template.md`.
 
 Use `custom-elements.json`, `src/index.ts`, and the foundation design tokens as ground
 truth. Do not re-run lint/test/analyze (CI handles them) and do not judge pixel-level
