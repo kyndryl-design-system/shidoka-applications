@@ -19,7 +19,9 @@ order:
    (verdict first, severity-ranked findings with `file:line` and concrete fixes), ending
    with a copy-paste PR description that mirrors `.github/pull_request_template.md`.
 
-Get the diff via `git diff --merge-base origin/main` (use the PR's real base branch).
+Resolve the target: a provided PR id/URL → that PR (`gh pr diff <id>`); otherwise default
+to the current branch vs `main` (`git diff --merge-base origin/main HEAD`), noting any
+uncommitted changes. Use the PR's real base branch when it isn't `main`.
 Treat `custom-elements.json`, `src/index.ts`, and the foundation tokens
 (`node_modules/@kyndryl-design-system/shidoka-foundation`) as ground truth.
 

@@ -26,6 +26,10 @@ Review progress:
 
 ### Step 1 — Establish context
 
+- **Resolve the review target.** If a PR id/URL was provided, review that PR
+  (`gh pr diff <id>`, compared to its base branch). If none was specified, default to the
+  **current branch vs `main`** (`git diff --merge-base origin/main HEAD`) and note any
+  uncommitted working-tree changes separately.
 - Identify changed files and whether the change is a new component, an edit to an
   existing one, a shared base/mixin change, a token change, or tooling.
 - Determine the base branch (`main`, `beta`, `next`, or `N.x`). If you cannot see it,

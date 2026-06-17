@@ -22,9 +22,13 @@ canonical kit at the repo root: `review-kit/`.
    - `review-kit/20-review-rubric.md` — the checklist and workflow.
    - `review-kit/30-breaking-change-detection.md` — run this every time.
    - `review-kit/40-review-output-format.md` — return results in this format.
-2. **Get the diff.** Prefer `git diff --merge-base origin/main` (use the PR's actual
-   base branch: `beta`, `next`, or `N.x`). Otherwise use the PR URL, patch, or changed
-   files the user provides.
+2. **Resolve the target, then get the diff:**
+   - **A specific PR id/URL was given** → review that PR: `gh pr diff <id>` (compare
+     against its base branch).
+   - **No PR specified (default)** → review the **current branch vs `main`**:
+     `git diff --merge-base origin/main HEAD`. Also run `git status` and note any
+     uncommitted working-tree changes separately — they aren't part of the PR yet.
+   - For a non-`main` base (`beta`, `next`, `N.x`), compare against that base instead.
 3. **Consult ground truth** rather than memory: `custom-elements.json` (public API),
    `src/index.ts` (exports), and foundation tokens in
    `node_modules/@kyndryl-design-system/shidoka-foundation`.
