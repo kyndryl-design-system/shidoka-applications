@@ -4,6 +4,8 @@
 
 // Matches $column-width-1 in headerCategories.scss
 $single-column-width: 350px;
+// Matches $column-width-2 in headerCategories.scss (narrower per-column track when 2-up)
+$two-column-width: 300px;
 
 :host {
   display: block;
@@ -21,7 +23,7 @@ $single-column-width: 350px;
     calc(100vw - 16px)
   );
   --kyn-header-link-two-column-width: min(
-    calc(230px + 2 * #{$single-column-width} + 32px + 16px),
+    calc(230px + 2 * #{$two-column-width} + 32px + 16px),
     calc(100vw - 16px)
   );
 }
@@ -38,7 +40,7 @@ $single-column-width: 350px;
     calc(100vw - 16px)
   );
   --kyn-header-link-two-column-width: min(
-    calc(246px + 2 * #{$single-column-width} + 32px),
+    calc(246px + 2 * #{$two-column-width} + 32px),
     calc(100vw - 16px)
   );
 }
@@ -430,9 +432,9 @@ kyn-text-input {
   :host([has-multi-column][data-flyout-columns='2'])
     .menu.open
     .menu__content.slotted {
-    // 230px sidebar + 2×350px columns + 32px gap + 16px padding, capped to header width
+    // 230px sidebar + 2×300px columns + 32px gap + 16px padding, capped to header width
     width: min(
-      calc(230px + 2 * #{$single-column-width} + 32px + 16px),
+      calc(230px + 2 * #{$two-column-width} + 32px + 16px),
       calc(100vw - 16px)
     );
     max-width: calc(100vw - 16px);
