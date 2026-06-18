@@ -34,8 +34,9 @@ canonical kit at the repo root: `review-kit/`.
    `node_modules/@kyndryl-design-system/shidoka-foundation`.
 4. **Run breaking-change detection** and, if the public API changed, lead the review
    with the alert from `30`.
-5. **Return the review** in the structure from `40` — verdict first, severity-ranked
-   findings, each with `file:line` and a concrete fix.
+5. **Return the review** in the structure from `40` — verdict first, then findings as
+   **one standalone block per actionable item, tagged `P0`–`P3`** (each with `file:line`
+   and a concrete fix) so every item reads as a discrete review comment.
 6. **Finish with a copy-paste PR description** filled from the review, using the repo's
    `.github/pull_request_template.md` (or the embedded template in `40`). Tick checklist
    items only where the diff proves them; leave author-only items (local test run, Figma)
@@ -47,3 +48,14 @@ canonical kit at the repo root: `review-kit/`.
   right thing (updated the manifest, added stories/tests, documented the API).
 - Don't judge pixel-level visual fidelity (Chromatic + humans handle that).
 - State your confidence and any missing context instead of guessing.
+
+## Local (pre-push) runs
+
+No headless CLI/API review is wired up in this repo, so the local review engine is this
+skill: run it in Cursor against your branch **before** opening the PR
+(`git diff --merge-base origin/main HEAD`). Emit the `P0`–`P3` per-item blocks from `40` so
+each finding stands alone. If an open PR exists and `gh` is authenticated, offer to post
+each `P0`–`P3` item as a **separate** PR comment — `gh pr comment` for top-level notes, or
+`gh api repos/<owner>/<repo>/pulls/<n>/comments` for line-anchored review comments;
+otherwise the blocks are copy-paste ready. Bugbot (`.cursor/BUGBOT.md`) is the automated
+backstop once the PR is open.

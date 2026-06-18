@@ -15,6 +15,22 @@ alert so the most important information is never buried.
 | **Nit**      | Optional polish                                                          | Naming of private helpers, internal readability, micro-optimizations                                                                                                       |
 | **Praise**   | Done well                                                                | Correct pattern reuse, thorough tests, clean API design                                                                                                                    |
 
+## Priority labels (P0–P3)
+
+Tag every actionable finding with a priority so it reads as a discrete, triageable item.
+The labels map onto the severity levels above:
+
+| Priority | Maps to severity   | Meaning                                                                                                                                         | Blocks merge?      |
+| -------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| **P0**   | BREAKING, Critical | Will break consumers or ship a defect: undeclared/mis-declared API break, a11y blocker, memory leak, XSS, broken form association.              | **Yes**            |
+| **P1**   | Major              | Should fix before merge: hardcoded color/token misuse, missing keyboard support, API inconsistent with the system, manifest drift, app concern. | Strongly preferred |
+| **P2**   | Minor              | Worth fixing, not blocking: missing story control, incomplete JSDoc, thin test coverage of new behavior.                                        | No                 |
+| **P3**   | Nit                | Optional polish: naming of private helpers, internal readability, micro-optimizations.                                                          | No                 |
+
+**Confirm** and **Praise** are **not** P-rated — a Confirm is a question for the author
+(surface it, don't block) and Praise is positive reinforcement. Undeclared **BREAKING**
+items are P0 and must **also** appear in the top-of-review alert.
+
 ## Template
 
 ````markdown
@@ -53,29 +69,32 @@ _Status: **Pass** none found · **Warn** minor/suggestions · **Fail** critical/
 
 ### Findings
 
-#### Critical
+Emit **one standalone block per actionable item**, tagged with its priority (`P0`–`P3`),
+ordered P0 → P3, so each item can be posted or pasted as an individual review comment.
+Never bundle multiple issues into one block. If a priority level has no items, write "None."
 
-- **[Critical] <title>** — `path/to/file.ts:LINE`
-  - Problem: <what's wrong>
-  - Why it matters: <impact for a shared design system>
-  - Fix:
-    ```ts
-    <concrete corrected snippet>
-    ```
+#### [P0] <title> — `path/to/file.ts:LINE`
 
-#### Major
+- **Problem:** <what's wrong>
+- **Why it matters:** <impact for a shared design system / downstream consumers>
+- **Fix:**
+  ```ts
+  <concrete corrected snippet>
+  ```
 
-- **[Major] <title>** — `path/to/file.ts:LINE` — <problem, why, fix>
+#### [P1] <title> — `path/to/file.ts:LINE`
 
-#### Minor
+- **Problem / why / fix:** <what's wrong, why it matters, and the concrete fix>
 
-- **[Minor] <title>** — `path/to/file.ts:LINE` — <problem + suggested fix>
+#### [P2] <title> — `path/to/file.ts:LINE`
 
-#### Nits
+- <problem + suggested fix>
 
-- `path/to/file.ts:LINE` — <optional polish>
+#### [P3] <title> — `path/to/file.ts:LINE`
 
-#### Confirmations needed (not blocking)
+- <optional polish>
+
+### Confirmations (not blocking, not P-rated)
 
 - **[Confirm] <title>** — <what to verify with the author, e.g. "user-facing fix shipped as a non-releasing `chore` — intentional hold/batch, or should it be `fix:`?">
 
@@ -96,7 +115,9 @@ evidences; leave author-only items (local test run, Figma link) unchecked.
 ```markdown
 ## Summary
 
-<concise description of what changed and why>
+- <most important change, in one scannable bullet>
+- <next change and/or its purpose>
+- <…3–6 short bullets, one idea each; no single-paragraph summary>
 
 ## ADO Story or GitHub Issue Link
 
@@ -141,8 +162,9 @@ evidences; leave author-only items (local test run, Figma link) unchecked.
 - Every finding cites **`file:line`** (or a range) and names the rule from
   `10`/`20` it relates to.
 - Prefer a **concrete fix** (a snippet or a precise instruction) over a vague concern.
-- Order findings by severity, highest first. If there are no Critical/Breaking items,
-  say so explicitly.
+- Order findings by **priority (P0 → P3)**, highest first, and emit **one standalone block
+  per item** so each maps cleanly to a single review comment — never bundle issues. If there
+  are no P0 (Critical/BREAKING) items, say so explicitly.
 - Keep judgment calls in their own section and defer the final decision to the human —
   do not block a PR on taste.
 - **Confirm** items are not defects: surface them, but they do **not** drive a "Request
@@ -161,8 +183,11 @@ author can paste straight into the PR.
   it is the source of truth); otherwise use the embedded template above. Keep every heading.
 - **Wrap it in a ` ```markdown ` fenced block** so it renders with a copy button and pastes
   as raw markdown.
-- **Summary / Notes / Testing Instructions:** fill from your review — concise, specific,
-  derived from the actual diff. Notes should bullet the substantive changes.
+- **Summary:** render as a **bulleted list (3–6 short, scannable bullets), never a single
+  paragraph** — lead with the most important change, one idea per bullet. Do this even when
+  the repo template shows a prose placeholder; the reader should be able to skim it at a glance.
+- **Notes / Testing Instructions:** fill from your review — concise, specific, derived from
+  the actual diff. Notes should bullet the substantive changes.
 - **To Do:** list this review's unresolved findings (e.g., "run `analyze`", "add a
   regression test"); use "None" if clean.
 - **Checklist — tick honestly from evidence only.** Check items the diff/repo objectively
