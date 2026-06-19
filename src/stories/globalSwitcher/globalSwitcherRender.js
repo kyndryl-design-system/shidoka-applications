@@ -59,12 +59,14 @@ export const renderGlobalSwitcherLink = (link) => html`
           ${link.label}
         </span>`
       : html`<span>${link.label}</span>`}
-    ${createStarSelector(link.starred || false)}
-    ${link.target === '_blank'
-      ? html`<span class="global-switcher-external-icon"
-          >${unsafeSVG(launchIcon)}</span
-        >`
-      : ''}
+    <span class="global-switcher-link-actions">
+      ${createStarSelector(link.starred || false)}
+      ${link.target === '_blank'
+        ? html`<span class="global-switcher-external-icon"
+            >${unsafeSVG(launchIcon)}</span
+          >`
+        : ''}
+    </span>
   </kyn-header-link>
 `;
 
