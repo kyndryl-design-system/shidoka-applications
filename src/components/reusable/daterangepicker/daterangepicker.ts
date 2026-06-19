@@ -8,6 +8,7 @@ import {
   langsArray,
   DateRangeEditableMode,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
@@ -1321,6 +1322,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             }
             const container = getModalContainer(this);
             setCalendarAttributes(instance, container !== document.body);
+            ensureFlatpickrStylesInRoot(instance.calendarContainer);
             instance.calendarContainer.setAttribute(
               'aria-label',
               'Date range calendar'

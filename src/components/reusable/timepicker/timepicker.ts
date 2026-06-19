@@ -5,6 +5,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import {
   langsArray,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   handleInputClick,
@@ -906,6 +907,7 @@ export class TimePicker extends FormMixin(LitElement) {
             const container = getModalContainer(this);
             const modalDetected = container !== document.body;
             setCalendarAttributes(instance, modalDetected);
+            ensureFlatpickrStylesInRoot(instance.calendarContainer);
             if (instance.calendarContainer) {
               const id =
                 this._anchorId ??

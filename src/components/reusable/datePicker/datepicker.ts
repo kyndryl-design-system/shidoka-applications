@@ -6,6 +6,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   langsArray,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
@@ -792,6 +793,7 @@ export class DatePicker extends FormMixin(LitElement) {
             const isInModal = container !== document.body;
 
             setCalendarAttributes(instance, isInModal);
+            ensureFlatpickrStylesInRoot(instance.calendarContainer);
 
             if (instance.calendarContainer) {
               if (isInModal) {

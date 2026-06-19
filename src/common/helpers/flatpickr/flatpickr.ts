@@ -9,6 +9,12 @@ import { fixedOverlayPositionPlugin } from './overlay';
 
 let flatpickrStylesInjected = false;
 
+/** Cached copy of the injected flatpickr theme so it can be re-applied to other roots. */
+let flatpickrThemeCss = '';
+
+/** Tracks shadow roots we have already injected the theme into, to avoid duplicates. */
+const flatpickrStyledRoots = new WeakSet<ShadowRoot>();
+
 export const _defaultCalendarTooltipStrings = {
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
@@ -140,6 +146,7 @@ export function modifyWeekdayShorthands(localeOptions: Partial<Locale>): void {
 }
 
 export function injectFlatpickrStyles(customStyle: string): void {
+  flatpickrThemeCss = customStyle;
   if (!flatpickrStylesInjected) {
     const styleElement = document.createElement('style');
     styleElement.id = 'flatpickr-custom-styles';
@@ -147,6 +154,45 @@ export function injectFlatpickrStyles(customStyle: string): void {
     document.head.appendChild(styleElement);
     flatpickrStylesInjected = true;
   }
+}
+
+/**
+ * Ensures the flatpickr theme is present in the root node that actually renders
+ * the calendar.
+ *
+ * The theme is injected globally into `document.head` by `injectFlatpickrStyles`,
+ * which is sufficient when the calendar lives in the light DOM. However, when the
+ * calendar is appended into an overlay/modal that itself lives inside a shadow root
+ * (e.g. a host application shell, micro-frontend, or any wrapping web component),
+ * the global `document.head` styles cannot pierce that shadow boundary and the
+ * calendar renders completely unstyled.
+ *
+ * This walks to the root node of the rendered calendar and, if it is a `ShadowRoot`
+ * that has not yet received the theme, injects the theme there once. CSS custom
+ * properties (`--kd-color-*`) still inherit across the shadow boundary, so the
+ * calendar picks up the correct tokens.
+ *
+ * @param node - Any node within the rendered calendar (typically `instance.calendarContainer`).
+ * @param customStyle - Optional theme CSS. Defaults to the styles previously passed to `injectFlatpickrStyles`.
+ */
+export function ensureFlatpickrStylesInRoot(
+  node: Node | null | undefined,
+  customStyle?: string
+): void {
+  if (!node) return;
+
+  const root = (node as { getRootNode?: () => Node }).getRootNode?.();
+  if (!(root instanceof ShadowRoot)) return;
+  if (flatpickrStyledRoots.has(root)) return;
+
+  const css = customStyle ?? flatpickrThemeCss;
+  if (!css) return;
+
+  const styleElement = document.createElement('style');
+  styleElement.setAttribute('data-flatpickr-theme', '');
+  styleElement.textContent = css;
+  root.appendChild(styleElement);
+  flatpickrStyledRoots.add(root);
 }
 
 export async function initializeMultiAnchorFlatpickr(
