@@ -13,6 +13,7 @@ export {
   handleInputFocus,
   modifyWeekdayShorthands,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeMultiAnchorFlatpickr,
   initializeSingleAnchorFlatpickr,
   isValidDateFormat,
