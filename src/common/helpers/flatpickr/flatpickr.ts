@@ -9,10 +9,7 @@ import { fixedOverlayPositionPlugin } from './overlay';
 
 let flatpickrStylesInjected = false;
 
-/** Cached copy of the injected flatpickr theme so it can be re-applied to other roots. */
-let flatpickrThemeCss = '';
-
-/** Tracks shadow roots we have already injected the theme into, to avoid duplicates. */
+/** Tracks shadow roots we have already injected the calendar theme into, to avoid duplicates. */
 const flatpickrStyledRoots = new WeakSet<ShadowRoot>();
 
 export const _defaultCalendarTooltipStrings = {
@@ -146,7 +143,6 @@ export function modifyWeekdayShorthands(localeOptions: Partial<Locale>): void {
 }
 
 export function injectFlatpickrStyles(customStyle: string): void {
-  flatpickrThemeCss = customStyle;
   if (!flatpickrStylesInjected) {
     const styleElement = document.createElement('style');
     styleElement.id = 'flatpickr-custom-styles';
@@ -172,25 +168,28 @@ export function injectFlatpickrStyles(customStyle: string): void {
  * properties (`--kd-color-*`) still inherit across the shadow boundary, so the
  * calendar picks up the correct tokens.
  *
+ * Important: callers should pass the calendar-only theme
+ * (`shidoka-flatpickr-calendar.scss`), not the full theme. The full theme bundles
+ * `form-input.scss`, whose broad selectors (`input`, `textarea`, `.label-text`,
+ * `.error`, `.warn`, etc.) would otherwise leak onto the host shadow root's own
+ * elements. The calendar-only theme styles just the `.flatpickr-*` popup.
+ *
  * @param node - Any node within the rendered calendar (typically `instance.calendarContainer`).
- * @param customStyle - Optional theme CSS. Defaults to the styles previously passed to `injectFlatpickrStyles`.
+ * @param calendarStyle - The calendar-only theme CSS to inject.
  */
 export function ensureFlatpickrStylesInRoot(
   node: Node | null | undefined,
-  customStyle?: string
+  calendarStyle: string
 ): void {
-  if (!node) return;
+  if (!node || !calendarStyle) return;
 
   const root = (node as { getRootNode?: () => Node }).getRootNode?.();
   if (!(root instanceof ShadowRoot)) return;
   if (flatpickrStyledRoots.has(root)) return;
 
-  const css = customStyle ?? flatpickrThemeCss;
-  if (!css) return;
-
   const styleElement = document.createElement('style');
   styleElement.setAttribute('data-flatpickr-theme', '');
-  styleElement.textContent = css;
+  styleElement.textContent = calendarStyle;
   root.appendChild(styleElement);
   flatpickrStyledRoots.add(root);
 }

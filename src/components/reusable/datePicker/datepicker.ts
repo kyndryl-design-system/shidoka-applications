@@ -34,6 +34,7 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 
 import DatePickerStyles from './datepicker.scss?inline';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss?inline';
+import ShidokaFlatpickrCalendarTheme from '../../../common/scss/shidoka-flatpickr-calendar.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
@@ -793,7 +794,10 @@ export class DatePicker extends FormMixin(LitElement) {
             const isInModal = container !== document.body;
 
             setCalendarAttributes(instance, isInModal);
-            ensureFlatpickrStylesInRoot(instance.calendarContainer);
+            ensureFlatpickrStylesInRoot(
+              instance.calendarContainer,
+              ShidokaFlatpickrCalendarTheme.toString()
+            );
 
             if (instance.calendarContainer) {
               if (isInModal) {
