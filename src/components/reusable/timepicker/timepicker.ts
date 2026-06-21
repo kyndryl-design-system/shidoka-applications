@@ -5,6 +5,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import {
   langsArray,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   handleInputClick,
@@ -31,6 +32,7 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 
 import TimepickerStyles from './timepicker.scss?inline';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss?inline';
+import ShidokaFlatpickrCalendarTheme from '../../../common/scss/shidoka-flatpickr-calendar.scss?inline';
 
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
@@ -906,6 +908,10 @@ export class TimePicker extends FormMixin(LitElement) {
             const container = getModalContainer(this);
             const modalDetected = container !== document.body;
             setCalendarAttributes(instance, modalDetected);
+            ensureFlatpickrStylesInRoot(
+              instance.calendarContainer,
+              ShidokaFlatpickrCalendarTheme.toString()
+            );
             if (instance.calendarContainer) {
               const id =
                 this._anchorId ??

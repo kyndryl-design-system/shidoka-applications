@@ -116,28 +116,44 @@ an empty state with no categories.
 ## Favorites (Icon Selectors)
 
 Add `kyn-icon-selector` inside leaf links for star-toggle behavior.
-The pattern styles above set hover-to-reveal behavior on `kyn-header-nav`:
+The pattern styles above set hover-to-reveal behavior on `kyn-header-nav`.
+
+Wrap the trailing controls in `span.global-switcher-link-actions`. The cluster is
+right-aligned and shrink-to-fit, so the right-most icon always sits flush to the
+row's right edge regardless of label length or truncation. The persistent icon
+anchors that edge: star-only rows right-align the star, and legacy links push a
+launch icon to the right edge (see [External Links](#external-links)):
 
 ```html
 <kyn-header-link href="/page">
   <span>Page Name</span>
-  <kyn-icon-selector>
-    <span slot="icon-unchecked">{starOutline}</span>
-    <span slot="icon-checked">{starFilled}</span>
-  </kyn-icon-selector>
+  <span class="global-switcher-link-actions">
+    <kyn-icon-selector>
+      <span slot="icon-unchecked">{starOutline}</span>
+      <span slot="icon-checked">{starFilled}</span>
+    </kyn-icon-selector>
+  </span>
 </kyn-header-link>
 ```
 
 ## External Links
 
-Set `target="_blank"` and include a launch icon:
+Launch icons are reserved for **legacy** Global Switcher destinations. Set
+`target="_blank"` and add the launch icon **after** the star inside
+`span.global-switcher-link-actions`. The persistent launch icon then becomes the
+right-most control (flush right, aligned across legacy rows) with the hover-reveal
+star to its left:
 
 ```html
 <kyn-header-link href="https://external.example.com" target="_blank" truncate>
   <span>External Tool</span>
-  <span style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-    >{launchIcon}</span
-  >
+  <span class="global-switcher-link-actions">
+    <kyn-icon-selector>
+      <span slot="icon-unchecked">{starOutline}</span>
+      <span slot="icon-checked">{starFilled}</span>
+    </kyn-icon-selector>
+    <span class="global-switcher-external-icon">{launchIcon}</span>
+  </span>
 </kyn-header-link>
 ```
 

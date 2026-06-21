@@ -245,24 +245,33 @@ export function isEmptyValue(
   return false;
 }
 
-/**
- * Returns true when a manual-input commit should be skipped because it would
- * either be ignored by configuration or would re-enter a Flatpickr-triggered
- * change cycle.
- */
-export function shouldSkipManualInputSync({
-  allowManualInput,
-  isClearing = false,
-  isFromFlatpickr = false,
-  isSyncingFromHost = false,
-}: {
+/** Options describing the current picker state when committing a manual input. */
+export interface ManualInputSyncState {
+  /** Whether manual text entry is enabled on the picker. */
   allowManualInput: boolean;
-  isClearing?: boolean;
-  isFromFlatpickr?: boolean;
+  /** Whether the picker is currently clearing its value. */
+  isClearing: boolean;
+  /** Whether the current change originated from Flatpickr (not the user typing). */
+  isFromFlatpickr: boolean;
+  /** Whether the picker is syncing its value from the host (e.g. a controlled value). */
   isSyncingFromHost?: boolean;
-}): boolean {
+}
+
+/**
+ * Determines whether a manual input commit should be skipped.
+ *
+ * Manual text should only be parsed/committed when manual input is enabled and
+ * the change is genuinely user-driven. Skipping prevents feedback loops when the
+ * value is being cleared, set programmatically by Flatpickr, or synced from the host.
+ */
+export function shouldSkipManualInputSync(
+  state: ManualInputSyncState
+): boolean {
   return (
-    !allowManualInput || isClearing || isFromFlatpickr || isSyncingFromHost
+    !state.allowManualInput ||
+    state.isClearing ||
+    state.isFromFlatpickr ||
+    Boolean(state.isSyncingFromHost)
   );
 }
 

@@ -139,14 +139,18 @@ const buildLinkSource = (link) => {
       ? iconPlaceholder('launch', '', 'global-switcher-external-icon')
       : '';
 
-  return [
-    `<kyn-header-link ${attrs}>`,
+  const actions = [
+    '<span class="global-switcher-link-actions">',
     indentSource(
-      [label, starSelectorSource(link.starred), launch]
-        .filter(Boolean)
-        .join('\n'),
+      [starSelectorSource(link.starred), launch].filter(Boolean).join('\n'),
       2
     ),
+    '</span>',
+  ].join('\n');
+
+  return [
+    `<kyn-header-link ${attrs}>`,
+    indentSource([label, actions].join('\n'), 2),
     '</kyn-header-link>',
   ].join('\n');
 };

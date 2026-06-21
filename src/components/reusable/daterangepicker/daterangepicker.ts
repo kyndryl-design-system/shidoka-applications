@@ -8,6 +8,7 @@ import {
   langsArray,
   DateRangeEditableMode,
   injectFlatpickrStyles,
+  ensureFlatpickrStylesInRoot,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
@@ -36,6 +37,7 @@ import type { Instance } from 'flatpickr/dist/types/instance';
 
 import DateRangePickerStyles from './daterangepicker.scss?inline';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss?inline';
+import ShidokaFlatpickrCalendarTheme from '../../../common/scss/shidoka-flatpickr-calendar.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
@@ -1321,6 +1323,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
             }
             const container = getModalContainer(this);
             setCalendarAttributes(instance, container !== document.body);
+            ensureFlatpickrStylesInRoot(
+              instance.calendarContainer,
+              ShidokaFlatpickrCalendarTheme.toString()
+            );
             instance.calendarContainer.setAttribute(
               'aria-label',
               'Date range calendar'
