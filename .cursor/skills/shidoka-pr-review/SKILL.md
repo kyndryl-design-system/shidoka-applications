@@ -48,6 +48,10 @@ canonical kit at the repo root: `review-kit/`.
   right thing (updated the manifest, added stories/tests, documented the API).
 - Don't judge pixel-level visual fidelity (Chromatic + humans handle that).
 - State your confidence and any missing context instead of guessing.
+- This skill treats internal structure/readability as non-blocking suggestions. For a
+  deep maintainability/architecture pass (file size, spaghetti conditionals, "code-judo"
+  simplifications), recommend the companion `thermo-nuclear-code-quality-review` skill —
+  especially on large refactors or shared base/mixin changes.
 
 ## Local (pre-push) runs
 
