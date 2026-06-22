@@ -119,6 +119,15 @@ export const Small = {
   render: renderStateIndicator,
 };
 
+// Story-only floor for the illustration area per size so every cell in a row
+// aligns its header / description / CTAs (mascots have differing intrinsic
+// heights). Applied via the `visual` part rather than baked into the component.
+const GALLERY_VISUAL_MIN_HEIGHT = {
+  [STATE_SIZES.LARGE]: '260px',
+  [STATE_SIZES.MEDIUM]: '184px',
+  [STATE_SIZES.SMALL]: '72px',
+};
+
 export const Gallery = {
   parameters: { controls: { disable: true } },
   render: () => {
@@ -129,16 +138,28 @@ export const Gallery = {
         .state-indicator-gallery {
           display: flex;
           flex-direction: column;
-          gap: var(--kd-spacing-48);
+          gap: 160px;
         }
-        .state-indicator-gallery__row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--kd-spacing-32);
-          align-items: flex-start;
+        .state-indicator-gallery__grid {
+          row-gap: 80px;
         }
         .state-indicator-gallery__cell {
-          flex: 1 1 280px;
+          display: flex;
+        }
+        .state-indicator-gallery__cell kyn-state-indicator {
+          align-self: stretch;
+        }
+        .state-indicator-gallery__grid[data-size='large']
+          kyn-state-indicator::part(visual) {
+          min-height: ${GALLERY_VISUAL_MIN_HEIGHT[STATE_SIZES.LARGE]};
+        }
+        .state-indicator-gallery__grid[data-size='medium']
+          kyn-state-indicator::part(visual) {
+          min-height: ${GALLERY_VISUAL_MIN_HEIGHT[STATE_SIZES.MEDIUM]};
+        }
+        .state-indicator-gallery__grid[data-size='small']
+          kyn-state-indicator::part(visual) {
+          min-height: ${GALLERY_VISUAL_MIN_HEIGHT[STATE_SIZES.SMALL]};
         }
       </style>
       <div class="state-indicator-gallery">
@@ -151,10 +172,15 @@ export const Gallery = {
               >
                 ${size}
               </div>
-              <div class="state-indicator-gallery__row">
+              <div
+                class="state-indicator-gallery__grid kd-grid kd-grid--no-max kd-grid--align-left"
+                data-size=${size}
+              >
                 ${types.map(
                   (type) => html`
-                    <div class="state-indicator-gallery__cell">
+                    <div
+                      class="state-indicator-gallery__cell kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4"
+                    >
                       <kyn-state-indicator
                         type=${type}
                         size=${size}

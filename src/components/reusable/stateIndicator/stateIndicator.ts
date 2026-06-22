@@ -56,6 +56,7 @@ const ICON_MAP: Record<STATE_TYPES, string> = {
  * @slot primary - Slot for the primary call to action (e.g. `kyn-button`). Always rendered.
  * @slot secondary - Slot for the secondary button. Rendered only when `size="large"` and `showSecondaryAction` is true.
  * @slot link - Slot for the secondary link (e.g. `kyn-link`). Rendered only when `size="medium"` and `showSecondaryAction` is true.
+ * @csspart visual - The illustration / icon container. Exposed so consumers can standardize its height when aligning multiple instances (e.g. in a grid).
  */
 @customElement('kyn-state-indicator')
 export class StateIndicator extends LitElement {
@@ -100,7 +101,7 @@ export class StateIndicator extends LitElement {
 
     return html`
       <div class=${classMap(containerClasses)}>
-        <div class="state-indicator__visual" aria-hidden="true">
+        <div class="state-indicator__visual" part="visual" aria-hidden="true">
           ${unsafeSVG(visual)}
         </div>
         <div class="state-indicator__content">
