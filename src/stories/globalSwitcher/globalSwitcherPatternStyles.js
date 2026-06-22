@@ -54,32 +54,3 @@ export const GLOBAL_SWITCHER_PATTERN_STYLES = `
 /** Tab hosts sized by --global-switcher-tab-width on .global-switcher-nav */
 export const GLOBAL_SWITCHER_EQUAL_TAB_STYLE =
   'width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);';
-
-export const getGlobalSwitcherPatternStyleBlock = () =>
-  `<style>\n${GLOBAL_SWITCHER_PATTERN_STYLES.trim()}\n</style>`;
-
-export const createGlobalSwitcherStorySource = (markup, extraStyles = '') =>
-  `${getGlobalSwitcherPatternStyleBlock()}${
-    extraStyles ? `\n<style>\n${extraStyles.trim()}\n</style>` : ''
-  }\n${markup.trim()}`;
-
-export const createGlobalSwitcherSourceParameters = (
-  markup,
-  extraStyles = ''
-) => ({
-  docs: {
-    source: {
-      language: 'html',
-      code: createGlobalSwitcherStorySource(markup, extraStyles),
-    },
-  },
-});
-
-export const createGlobalSwitcherLogicSourceParameters = (code) => ({
-  docs: {
-    source: {
-      language: 'javascript',
-      code: code.trim(),
-    },
-  },
-});
