@@ -20,6 +20,8 @@ export default {
       page: null,
       description: {
         component: `
+**Deprecated.** Use the [State Pattern](/docs/components-feedback-status-state-pattern--docs) (\`kyn-state-indicator\`) instead. This pattern remains documented for existing consumers.
+
 The Empty State pattern is used to indicate no available data or first-time usage.
 It helps orient users and suggest next steps.
         `,

@@ -120,6 +120,7 @@ export { MetaData } from './components/reusable/metaData';
 export { Divider } from './components/reusable/divider';
 export { SplitView } from './components/reusable/splitView';
 export { StatusButton } from './components/reusable/statusButton';
+export { StateIndicator } from './components/reusable/stateIndicator';
 export {
   QueryBuilder,
   QueryBuilderGroup,
