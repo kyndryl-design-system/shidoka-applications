@@ -24,6 +24,17 @@
       width: auto;
       height: auto;
     }
+
+    // Optical-size normalization: the source mascots ship with differing
+    // aspect ratios / internal padding, so some read larger than others at
+    // the same box size. Trim the tightly-cropped marks down a touch so the
+    // set looks visually consistent. Remove once the assets are re-exported
+    // with normalized dimensions.
+    &--no-results svg,
+    &--no-results img {
+      max-width: 68%;
+      max-height: 68%;
+    }
   }
 
   &__content {

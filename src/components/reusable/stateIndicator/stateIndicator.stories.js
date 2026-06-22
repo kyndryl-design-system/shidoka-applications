@@ -97,12 +97,21 @@ export const Large = {
   render: renderStateIndicator,
 };
 
+// `sleep` is only supported on `large`; offer the remaining types as options
+// for the `medium` / `small` controls.
+const nonSleepTypes = createOptionsArray(STATE_TYPES).filter(
+  (type) => type !== STATE_TYPES.SLEEP
+);
+
 export const Medium = {
   args: {
     ...args,
     size: STATE_SIZES.MEDIUM,
     type: STATE_TYPES.NO_RESULTS,
     showSecondaryAction: true,
+  },
+  argTypes: {
+    type: { options: nonSleepTypes, control: { type: 'select' } },
   },
   render: renderStateIndicator,
 };
@@ -114,6 +123,7 @@ export const Small = {
     type: STATE_TYPES.ERROR,
   },
   argTypes: {
+    type: { options: nonSleepTypes, control: { type: 'select' } },
     showSecondaryAction: { control: false },
   },
   render: renderStateIndicator,
@@ -176,7 +186,10 @@ export const Gallery = {
                 class="state-indicator-gallery__grid kd-grid kd-grid--no-max kd-grid--align-left"
                 data-size=${size}
               >
-                ${types.map(
+                ${(size === STATE_SIZES.LARGE
+                  ? types
+                  : types.filter((type) => type !== STATE_TYPES.SLEEP)
+                ).map(
                   (type) => html`
                     <div
                       class="state-indicator-gallery__cell kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4"

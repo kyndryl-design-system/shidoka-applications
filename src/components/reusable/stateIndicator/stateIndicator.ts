@@ -62,7 +62,11 @@ const ICON_MAP: Record<STATE_TYPES, string> = {
 export class StateIndicator extends LitElement {
   static override styles = unsafeCSS(StateIndicatorScss);
 
-  /** The state type, which determines the illustration/icon shown. */
+  /**
+   * The state type, which determines the illustration/icon shown.
+   * Note: `sleep` is only supported on `size="large"`; on `medium` / `small`
+   * it falls back to `empty`.
+   */
   @property({ type: String })
   accessor type: STATE_TYPES = STATE_TYPES.EMPTY;
 
@@ -87,7 +91,15 @@ export class StateIndicator extends LitElement {
 
   override render() {
     const isSmall = this.size === STATE_SIZES.SMALL;
-    const visual = isSmall ? ICON_MAP[this.type] : MASCOT_MAP[this.type];
+
+    // `sleep` is only supported on the `large` size; fall back to `empty`
+    // for `medium` / `small`.
+    const type =
+      this.type === STATE_TYPES.SLEEP && this.size !== STATE_SIZES.LARGE
+        ? STATE_TYPES.EMPTY
+        : this.type;
+
+    const visual = isSmall ? ICON_MAP[type] : MASCOT_MAP[type];
 
     const showSecondaryButton =
       this.size === STATE_SIZES.LARGE && this.showSecondaryAction;
@@ -99,9 +111,14 @@ export class StateIndicator extends LitElement {
       [`state-indicator--${this.size}`]: true,
     };
 
+    const visualClasses = {
+      'state-indicator__visual': true,
+      [`state-indicator__visual--${type}`]: true,
+    };
+
     return html`
       <div class=${classMap(containerClasses)}>
-        <div class="state-indicator__visual" part="visual" aria-hidden="true">
+        <div class=${classMap(visualClasses)} part="visual" aria-hidden="true">
           ${unsafeSVG(visual)}
         </div>
         <div class="state-indicator__content">
