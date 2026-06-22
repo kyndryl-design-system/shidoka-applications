@@ -7,11 +7,6 @@ import {
   GLOBAL_SWITCHER_PATTERN_STYLES,
 } from './globalSwitcherPatternStyles.js';
 
-export {
-  GLOBAL_SWITCHER_PATTERN_STYLES,
-  createGlobalSwitcherStorySource,
-} from './globalSwitcherPatternStyles.js';
-
 export const GLOBAL_SWITCHER_ICON_KEYS = [
   'recommend-filled',
   'recommend',
@@ -111,11 +106,13 @@ const iconPlaceholder = (icon, slot = '', className = '') => {
   )} icon --></span>`;
 };
 
+// kyn-icon-selector ships default star (outline/filled) icons as slot fallback,
+// so the Global Switcher star uses them directly. Do NOT emit empty
+// <span slot="icon-unchecked/checked"> placeholders: a slotted-but-empty span
+// suppresses the default fallback, leaving an invisible star (no glyph to reveal
+// on hover). Only add slots when overriding with your own icon markup.
 const starSelectorSource = (checked = false) =>
-  `<kyn-icon-selector${checked ? ' checked' : ''}>
-  <span slot="icon-unchecked"></span>
-  <span slot="icon-checked"></span>
-</kyn-icon-selector>`;
+  `<kyn-icon-selector${checked ? ' checked' : ''}></kyn-icon-selector>`;
 
 const buildLinkSource = (link) => {
   const attrs = [
@@ -224,7 +221,7 @@ const buildLinksSlotSource = {
           `<kyn-tab-panel tabId="${escapeSource(tab.id)}" noPadding${
             index === 0 ? ' visible' : ''
           }>
-  <kyn-header-categories layout="masonry" limit-root-links="false">
+  <kyn-header-categories layout="masonry">
 ${indentSource(tab.categories.map(buildCategorySource).join('\n'), 4)}
   </kyn-header-categories>
 </kyn-tab-panel>`
@@ -246,7 +243,7 @@ ${indentSource(tab.categories.map(buildCategorySource).join('\n'), 4)}
       indentSource(
         `<kyn-header-categories slot="links" layout="masonry" maxColumns="${
           section.maxColumns || 3
-        }" limit-root-links="false">`,
+        }">`,
         2
       ),
       indentSource(section.categories.map(buildCategorySource).join('\n'), 4),
@@ -331,6 +328,11 @@ export const createGlobalSwitcherPatternSnippet = (
     GLOBAL_SWITCHER_PATTERN_STYLES.trim(),
     '',
     '/* --- [2] Reference HTML (one exemplar per type; repeat per navData.sections entry) --- */',
+    '/* Notes: replace each <span><!-- ... icon --></span> with your own 16px SVG markup. */',
+    '/* kyn-icon-selector ships default star icons — leave it empty to use them (empty slot */',
+    '/* spans would hide the star). limitRootLinks is a boolean attribute, so it cannot be set */',
+    '/* to false in HTML; to show all root links without a "More" cap, set the property in JS: */',
+    '/* document.querySelector("kyn-header-categories").limitRootLinks = false; */',
     referenceMarkup,
     '',
     '/* --- [3] Navigation data (schema + trimmed exemplar; see example_global_switcher_data.json for full payload) --- */',
