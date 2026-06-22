@@ -18,6 +18,12 @@ export default {
       options: createOptionsArray(STATE_SIZES),
       control: { type: 'select' },
     },
+    // Content is driven by the *Text args below; hide the raw slot rows.
+    header: { control: false, table: { disable: true } },
+    unnamed: { control: false, table: { disable: true } },
+    primary: { control: false, table: { disable: true } },
+    secondary: { control: false, table: { disable: true } },
+    link: { control: false, table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -33,7 +39,9 @@ const args = {
   type: STATE_TYPES.EMPTY,
   size: STATE_SIZES.LARGE,
   showSecondaryAction: true,
-  header: 'State sample header',
+  showDescription: true,
+  showCTA: true,
+  headerText: 'State sample header',
   description:
     'Additional information helps explain the current state and any actions that may be available.',
   primaryText: 'Primary',
@@ -47,8 +55,10 @@ const renderStateIndicator = (args) => {
       type=${args.type}
       size=${args.size}
       ?showSecondaryAction=${args.showSecondaryAction}
+      ?showDescription=${args.showDescription}
+      ?showCTA=${args.showCTA}
     >
-      <span slot="header">${args.header}</span>
+      <span slot="header">${args.headerText}</span>
       <span>${args.description}</span>
       <kyn-button
         slot="primary"

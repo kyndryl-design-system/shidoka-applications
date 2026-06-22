@@ -8,10 +8,10 @@ import { STATE_TYPES, STATE_SIZES } from './defs';
 import '../button';
 import '../link';
 
-// Mascot illustrations (large / medium) from shidoka-foundation.
-import errorMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/warning.svg';
-import accessMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/stop.svg';
-import emptyMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/box.svg';
+// Mascot / illustration images (large / medium) from shidoka-foundation.
+import errorMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/tech-issue.svg';
+import accessMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/warning.svg';
+import emptyMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/emptyState/empty-state-no-data.svg';
 import noResultsMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/search.svg';
 import sleepMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/sleep.svg';
 
@@ -24,8 +24,7 @@ import noResultsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/3
 import sleepIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/time.svg';
 
 /**
- * Type -> mascot illustration (used by `large` and `medium` sizes).
- * NOTE: placeholder mapping using available shidoka-foundation mascots; finalize per design.
+ * Type -> mascot / illustration image (used by `large` and `medium` sizes).
  */
 const MASCOT_MAP: Record<STATE_TYPES, string> = {
   [STATE_TYPES.ERROR]: errorMascot,
@@ -77,6 +76,14 @@ export class StateIndicator extends LitElement {
   @property({ type: Boolean })
   accessor showSecondaryAction = false;
 
+  /** Shows the description / subheader text. */
+  @property({ type: Boolean })
+  accessor showDescription = true;
+
+  /** Shows the call(s) to action. When false, all CTAs are hidden. */
+  @property({ type: Boolean })
+  accessor showCTA = true;
+
   override render() {
     const isSmall = this.size === STATE_SIZES.SMALL;
     const visual = isSmall ? ICON_MAP[this.type] : MASCOT_MAP[this.type];
@@ -99,15 +106,21 @@ export class StateIndicator extends LitElement {
             <div class="state-indicator__header">
               <slot name="header"></slot>
             </div>
-            <div class="state-indicator__description">
-              <slot></slot>
-            </div>
+            ${this.showDescription
+              ? html`<div class="state-indicator__description">
+                  <slot></slot>
+                </div>`
+              : null}
           </div>
-          <div class="state-indicator__actions">
-            <slot name="primary"></slot>
-            ${showSecondaryButton ? html`<slot name="secondary"></slot>` : null}
-            ${showLink ? html`<slot name="link"></slot>` : null}
-          </div>
+          ${this.showCTA
+            ? html`<div class="state-indicator__actions">
+                <slot name="primary"></slot>
+                ${showSecondaryButton
+                  ? html`<slot name="secondary"></slot>`
+                  : null}
+                ${showLink ? html`<slot name="link"></slot>` : null}
+              </div>`
+            : null}
         </div>
       </div>
     `;
