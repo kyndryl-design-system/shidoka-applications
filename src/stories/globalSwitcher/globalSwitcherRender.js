@@ -40,11 +40,12 @@ export const globalSwitcherPatternStyles = html`
 
 const iconSvg = (key) => unsafeSVG(globalSwitcherIconMap[key] ?? circleIcon);
 
+// kyn-icon-selector already defaults to the star outline/filled icons via slot
+// fallback, so we rely on those defaults here. Slotting empty spans would
+// suppress the fallback and leave an invisible star; only slot content when
+// overriding the icons with custom markup.
 export const createStarSelector = (checked = false) => html`
-  <kyn-icon-selector ?checked=${checked}>
-    <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
-    <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
-  </kyn-icon-selector>
+  <kyn-icon-selector ?checked=${checked}></kyn-icon-selector>
 `;
 
 export const renderGlobalSwitcherLink = (link) => html`

@@ -113,10 +113,21 @@ an empty state with no categories.
 
 `kyn-header-categories` directly in `slot="links"` — for categorized admin-style menus.
 
+> **Showing all root links:** `limitRootLinks` is a boolean attribute (default `true`), so it
+> can't be set to `false` in static HTML — `limit-root-links="false"` still resolves to `true`.
+> To remove the "More" cap and show every root link (as these demos do), set the property in JS:
+> `el.limitRootLinks = false` (or `.limitRootLinks=${false}` in Lit templates).
+
 ## Favorites (Icon Selectors)
 
 Add `kyn-icon-selector` inside leaf links for star-toggle behavior.
 The pattern styles above set hover-to-reveal behavior on `kyn-header-nav`.
+
+`kyn-icon-selector` ships the star (outline/filled) icons as defaults, so use the
+element as-is — **do not add empty `slot="icon-unchecked"`/`slot="icon-checked"`
+spans**. A slotted-but-empty span overrides the default fallback and leaves an
+invisible star with no glyph to reveal on hover. Only slot content when you are
+replacing the icons (see below).
 
 Wrap the trailing controls in `span.global-switcher-link-actions`. The cluster is
 right-aligned and shrink-to-fit, so the right-most icon always sits flush to the
@@ -128,12 +139,19 @@ launch icon to the right edge (see [External Links](#external-links)):
 <kyn-header-link href="/page">
   <span>Page Name</span>
   <span class="global-switcher-link-actions">
-    <kyn-icon-selector>
-      <span slot="icon-unchecked">{starOutline}</span>
-      <span slot="icon-checked">{starFilled}</span>
-    </kyn-icon-selector>
+    <kyn-icon-selector></kyn-icon-selector>
   </span>
 </kyn-header-link>
+```
+
+To use custom icons instead of the default stars, slot real icon markup (never
+leave the spans empty):
+
+```html
+<kyn-icon-selector>
+  <span slot="icon-unchecked">{customOutline}</span>
+  <span slot="icon-checked">{customFilled}</span>
+</kyn-icon-selector>
 ```
 
 ## External Links
@@ -148,10 +166,7 @@ star to its left:
 <kyn-header-link href="https://external.example.com" target="_blank" truncate>
   <span>External Tool</span>
   <span class="global-switcher-link-actions">
-    <kyn-icon-selector>
-      <span slot="icon-unchecked">{starOutline}</span>
-      <span slot="icon-checked">{starFilled}</span>
-    </kyn-icon-selector>
+    <kyn-icon-selector></kyn-icon-selector>
     <span class="global-switcher-external-icon">{launchIcon}</span>
   </span>
 </kyn-header-link>
