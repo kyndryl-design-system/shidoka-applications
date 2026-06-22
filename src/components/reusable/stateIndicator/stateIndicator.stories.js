@@ -39,8 +39,8 @@ const args = {
   type: STATE_TYPES.EMPTY,
   size: STATE_SIZES.LARGE,
   showSecondaryAction: true,
-  showDescription: true,
-  showCTA: true,
+  hideDescription: false,
+  hideCtas: false,
   headerText: 'State sample header',
   description:
     'Additional information helps explain the current state and any actions that may be available.',
@@ -55,8 +55,8 @@ const renderStateIndicator = (args) => {
       type=${args.type}
       size=${args.size}
       ?showSecondaryAction=${args.showSecondaryAction}
-      ?showDescription=${args.showDescription}
-      ?showCTA=${args.showCTA}
+      ?hideDescription=${args.hideDescription}
+      ?hideCtas=${args.hideCtas}
     >
       <span slot="header">${args.headerText}</span>
       <span>${args.description}</span>
@@ -117,4 +117,75 @@ export const Small = {
     showSecondaryAction: { control: false },
   },
   render: renderStateIndicator,
+};
+
+export const Gallery = {
+  parameters: { controls: { disable: true } },
+  render: () => {
+    const types = createOptionsArray(STATE_TYPES);
+    const sizes = createOptionsArray(STATE_SIZES);
+    return html`
+      <style>
+        .state-indicator-gallery {
+          display: flex;
+          flex-direction: column;
+          gap: var(--kd-spacing-48);
+        }
+        .state-indicator-gallery__row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--kd-spacing-32);
+          align-items: flex-start;
+        }
+        .state-indicator-gallery__cell {
+          flex: 1 1 280px;
+        }
+      </style>
+      <div class="state-indicator-gallery">
+        ${sizes.map(
+          (size) => html`
+            <div>
+              <div
+                class="kd-type--headline-08"
+                style="margin-bottom: var(--kd-spacing-16); text-transform: capitalize;"
+              >
+                ${size}
+              </div>
+              <div class="state-indicator-gallery__row">
+                ${types.map(
+                  (type) => html`
+                    <div class="state-indicator-gallery__cell">
+                      <kyn-state-indicator
+                        type=${type}
+                        size=${size}
+                        ?showSecondaryAction=${size !== STATE_SIZES.SMALL}
+                      >
+                        <span slot="header">${type}</span>
+                        <span
+                          >Additional information helps explain the current
+                          state.</span
+                        >
+                        <kyn-button slot="primary" size="medium"
+                          >Primary</kyn-button
+                        >
+                        <kyn-button
+                          slot="secondary"
+                          size="medium"
+                          kind="secondary"
+                          >Secondary</kyn-button
+                        >
+                        <kyn-link slot="link" standalone href="#"
+                          >Link</kyn-link
+                        >
+                      </kyn-state-indicator>
+                    </div>
+                  `
+                )}
+              </div>
+            </div>
+          `
+        )}
+      </div>
+    `;
+  },
 };

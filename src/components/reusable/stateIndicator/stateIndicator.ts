@@ -62,11 +62,11 @@ export class StateIndicator extends LitElement {
   static override styles = unsafeCSS(StateIndicatorScss);
 
   /** The state type, which determines the illustration/icon shown. */
-  @property({ type: String, reflect: true })
+  @property({ type: String })
   accessor type: STATE_TYPES = STATE_TYPES.EMPTY;
 
   /** The size variant. */
-  @property({ type: String, reflect: true })
+  @property({ type: String })
   accessor size: STATE_SIZES = STATE_SIZES.LARGE;
 
   /**
@@ -76,13 +76,13 @@ export class StateIndicator extends LitElement {
   @property({ type: Boolean })
   accessor showSecondaryAction = false;
 
-  /** Shows the description / subheader text. */
+  /** Hides the description / subheader text. */
   @property({ type: Boolean })
-  accessor showDescription = true;
+  accessor hideDescription = false;
 
-  /** Shows the call(s) to action. When false, all CTAs are hidden. */
+  /** Hides all call(s) to action. */
   @property({ type: Boolean })
-  accessor showCTA = true;
+  accessor hideCtas = false;
 
   override render() {
     const isSmall = this.size === STATE_SIZES.SMALL;
@@ -100,19 +100,21 @@ export class StateIndicator extends LitElement {
 
     return html`
       <div class=${classMap(containerClasses)}>
-        <div class="state-indicator__visual">${unsafeSVG(visual)}</div>
+        <div class="state-indicator__visual" aria-hidden="true">
+          ${unsafeSVG(visual)}
+        </div>
         <div class="state-indicator__content">
           <div class="state-indicator__text">
             <div class="state-indicator__header">
               <slot name="header"></slot>
             </div>
-            ${this.showDescription
+            ${!this.hideDescription
               ? html`<div class="state-indicator__description">
                   <slot></slot>
                 </div>`
               : null}
           </div>
-          ${this.showCTA
+          ${!this.hideCtas
             ? html`<div class="state-indicator__actions">
                 <slot name="primary"></slot>
                 ${showSecondaryButton
