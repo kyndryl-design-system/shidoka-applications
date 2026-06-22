@@ -3,6 +3,15 @@ import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  autoUpdate,
+  computePosition,
+  offset,
+  flip,
+  shift,
+  size,
+  type Placement,
+} from '@floating-ui/dom';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
@@ -166,6 +175,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Enables the "Add New Option" feature. */
   @property({ type: Boolean })
   accessor allowAddOption = false;
+
+  /** Positions the menu list item relative to the viewport. Useful inside scrollable or overflow-hidden containers. */
+  @property({ type: Boolean })
+  accessor fixedPosition = false;
 
   /** @internal */
   @state()
@@ -371,6 +384,13 @@ export class Dropdown extends FormMixin(LitElement) {
   @state()
   accessor _tags: Array<object> = [];
 
+  /**
+   * Tracks whether viewport-fixed menu positioning is active.
+   * @ignore
+   */
+  @state()
+  accessor _fixedPosition = false;
+
   /** Toggles on clicking enter key in the search input.
    * @internal
    */
@@ -403,6 +423,9 @@ export class Dropdown extends FormMixin(LitElement) {
 
   /** @internal */
   private _addOptionInputCleanup?: () => void;
+
+  /** @internal */
+  private _fixedPositionCleanup?: () => void;
 
   private _handleAddOptionSlotChange() {
     const hasInput =
@@ -609,6 +632,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 options: true,
                 open: this.open,
                 upwards: this._openUpwards,
+                fixed: this._fixedPosition,
               })}
               style="min-width: ${this.menuMinWidth};"
               aria-hidden=${!this.open}
@@ -1686,6 +1710,95 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
+  private _getFixedMenuPlacement(): Placement {
+    if (this.openDirection === 'up') return 'top-start';
+    if (this.openDirection === 'down') return 'bottom-start';
+
+    return this._openUpwards ? 'top-start' : 'bottom-start';
+  }
+
+  /** Fixed Positioning Logic
+   * @ignore
+   */
+  private get _shouldUseFixedPosition() {
+    return this.fixedPosition;
+  }
+
+  private _resetFixedMenuPosition() {
+    const menu = this.listboxEl;
+    if (!menu) return;
+
+    menu.style.removeProperty('position');
+    menu.style.removeProperty('top');
+    menu.style.removeProperty('left');
+    menu.style.removeProperty('width');
+    menu.style.removeProperty('max-height');
+  }
+
+  private async _positionFixedMenu() {
+    const anchor = this.buttonEl;
+    const menu = this.listboxEl;
+    if (!anchor || !menu) return;
+
+    const anchorRect = anchor.getBoundingClientRect();
+    menu.style.width = `${anchorRect.width}px`;
+
+    const viewportOverflowOptions = {
+      boundary: document.body,
+      rootBoundary: 'viewport' as const,
+    };
+
+    const middleware = [
+      offset(4),
+      ...(this.openDirection === 'auto' ? [flip(viewportOverflowOptions)] : []),
+      shift({ padding: 8, ...viewportOverflowOptions }),
+      size({
+        padding: 8,
+        ...viewportOverflowOptions,
+        apply({ availableHeight }) {
+          menu.style.maxHeight = `${Math.max(120, availableHeight)}px`;
+        },
+      }),
+    ];
+
+    const { x, y, placement } = await computePosition(anchor, menu, {
+      strategy: 'fixed',
+      placement: this._getFixedMenuPlacement(),
+      middleware,
+    });
+
+    this._openUpwards = placement.startsWith('top');
+
+    Object.assign(menu.style, {
+      position: 'fixed',
+      left: `${x}px`,
+      top: `${y}px`,
+      right: 'auto',
+      bottom: 'auto',
+      zIndex: 'var(--kd-z-overlay, 5000)',
+    });
+  }
+
+  private _stopFixedMenuPositioning() {
+    this._fixedPositionCleanup?.();
+    this._fixedPositionCleanup = undefined;
+    this._fixedPosition = false;
+    this._resetFixedMenuPosition();
+  }
+
+  private _startFixedMenuPositioning() {
+    if (!this._shouldUseFixedPosition) {
+      this._stopFixedMenuPositioning();
+      return;
+    }
+
+    this._fixedPosition = true;
+    this._fixedPositionCleanup?.();
+    this._fixedPositionCleanup = autoUpdate(this.buttonEl, this.listboxEl, () =>
+      this._positionFixedMenu()
+    );
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this._onConnected();
@@ -1704,6 +1817,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this.removeEventListener('on-click', this._onChildClick);
     this.removeEventListener('on-remove-option', this._onChildRemove);
     this.removeEventListener('on-blur', this._onChildBlur);
+    this._stopFixedMenuPositioning();
     this._addOptionInputCleanup?.();
     super.disconnectedCallback();
   }
@@ -1882,6 +1996,20 @@ export class Dropdown extends FormMixin(LitElement) {
       if (this.open && !this.multiple) {
         const firstSelected = this.options.find((o) => o.selected);
         firstSelected?.scrollIntoView({ block: 'nearest' });
+      }
+
+      if (this.open) {
+        this._startFixedMenuPositioning();
+      } else {
+        this._stopFixedMenuPositioning();
+      }
+    }
+
+    if (changedProps.has('fixedPosition')) {
+      if (this.open) {
+        this._startFixedMenuPositioning();
+      } else if (!this.fixedPosition) {
+        this._stopFixedMenuPositioning();
       }
     }
 
