@@ -1530,6 +1530,7 @@ export const ColumnFiltering: Story = {
                   hideLabel
                   multiple
                   hideTags
+                  fixedPosition
                 >
                   <kyn-dropdown-option value="p1"> P1 </kyn-dropdown-option>
                   <kyn-dropdown-option value="p2">P2</kyn-dropdown-option>
@@ -1578,6 +1579,7 @@ export const ColumnFiltering: Story = {
                   size="sm"
                   hideLabel
                   placeholder=" "
+                  fixedPosition
                   @on-change=${(e: Event) => handleSearch('ticketStatus', e)}
                 >
                   <kyn-dropdown-option value="In Progress">
