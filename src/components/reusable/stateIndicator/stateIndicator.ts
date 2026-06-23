@@ -15,13 +15,13 @@ import emptyMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/em
 import noResultsMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/search.svg';
 import sleepMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/sleep.svg';
 
-// Icons (small) from shidoka-icons. The Figma small variant uses the monochrome
-// circle-style marks (e.g. the circle-"!" for `error`).
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/error.svg';
-import accessIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/no-access.svg';
-import emptyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/box-empty.svg';
-import noResultsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/search.svg';
-import sleepIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/time.svg';
+// Icons (small) from shidoka-icons. The Figma small variant uses the duotone
+// 48px marks (added in shidoka-icons 2.26.0). There is no `sleep` duotone mark;
+// `sleep` is unsupported on `small` and falls back to `empty` before lookup.
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/error.svg';
+import accessIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/no-access.svg';
+import emptyIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/box-empty.svg';
+import noResultsIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/data-search.svg';
 
 /**
  * Type -> mascot / illustration image (used by `large` and `medium` sizes).
@@ -35,15 +35,14 @@ const MASCOT_MAP: Record<STATE_TYPES, string> = {
 };
 
 /**
- * Type -> icon (used by the `small` size).
- * NOTE: placeholder mapping using available shidoka-icons monochrome icons; finalize per design.
+ * Type -> duotone icon (used by the `small` size). The small variant provides
+ * only four marks; `sleep` has no duotone equivalent and falls back to `empty`.
  */
-const ICON_MAP: Record<STATE_TYPES, string> = {
+const ICON_MAP: Record<Exclude<STATE_TYPES, STATE_TYPES.SLEEP>, string> = {
   [STATE_TYPES.ERROR]: errorIcon,
   [STATE_TYPES.ACCESS]: accessIcon,
   [STATE_TYPES.EMPTY]: emptyIcon,
   [STATE_TYPES.NO_RESULTS]: noResultsIcon,
-  [STATE_TYPES.SLEEP]: sleepIcon,
 };
 
 /**
@@ -99,7 +98,10 @@ export class StateIndicator extends LitElement {
         ? STATE_TYPES.EMPTY
         : this.type;
 
-    const visual = isSmall ? ICON_MAP[type] : MASCOT_MAP[type];
+    // `type` is already narrowed away from `sleep` for non-large sizes above.
+    const visual = isSmall
+      ? ICON_MAP[type as Exclude<STATE_TYPES, STATE_TYPES.SLEEP>]
+      : MASCOT_MAP[type];
 
     const showSecondaryButton =
       this.size === STATE_SIZES.LARGE && this.showSecondaryAction;
