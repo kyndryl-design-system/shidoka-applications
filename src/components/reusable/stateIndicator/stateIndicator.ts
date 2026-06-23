@@ -43,10 +43,10 @@ const ICON_MAP: Record<Exclude<STATE_TYPES, STATE_TYPES.SLEEP>, string> = {
 };
 
 /**
- * State Indicator (a.k.a. the "State Pattern"). Communicates a contextual
+ * State Indicator. Communicates a contextual
  * state (error, no access, empty, no results, sleep/idle) with an
  * illustration, header, description, and call(s) to action. Replaces the
- * deprecated `kyn-error-block` and Empty State pattern.
+ * deprecated `kyn-error-block` and Empty State guidance.
  * @slot header - Slot for the state header text.
  * @slot unnamed - Slot for the state description / subheader text.
  * @slot primary - Slot for the primary call to action (e.g. `kyn-button`).

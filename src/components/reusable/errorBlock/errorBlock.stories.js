@@ -8,14 +8,7 @@ import warningImg from '@kyndryl-design-system/shidoka-foundation/assets/svg/mas
 export default {
   title: 'Components/Feedback & Status/Error Block',
   component: 'kyn-error',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          '**Deprecated.** Use the [State Indicator](/docs/components-feedback-status-state-indicator--docs) (`kyn-state-indicator`) instead. This component remains available for existing consumers.',
-      },
-    },
-  },
+  tags: ['deprecated'],
 };
 
 const args = {

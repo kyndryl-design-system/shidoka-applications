@@ -29,7 +29,7 @@ export default {
     docs: {
       description: {
         component:
-          '> **Note:** This component is referred to as the "State Pattern" in Figma.',
+          'State Indicator communicates a contextual state with an illustration, header, description, and call(s) to action.',
       },
     },
   },

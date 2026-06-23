@@ -7,7 +7,7 @@ import '../button';
 /**
  * Error block.
  *
- * @deprecated Use `kyn-state-indicator` (the State Pattern) instead. This
+ * @deprecated Use `kyn-state-indicator` (State Indicator) instead. This
  * component remains available for existing consumers but will not receive new
  * features.
  *
