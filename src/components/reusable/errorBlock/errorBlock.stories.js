@@ -12,7 +12,7 @@ export default {
     docs: {
       description: {
         component:
-          '**Deprecated.** Use the [State Pattern](/docs/components-feedback-status-state-pattern--docs) (`kyn-state-indicator`) instead. This component remains available for existing consumers.',
+          '**Deprecated.** Use the [State Indicator](/docs/components-feedback-status-state-indicator--docs) (`kyn-state-indicator`) instead. This component remains available for existing consumers.',
       },
     },
   },

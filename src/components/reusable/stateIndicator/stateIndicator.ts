@@ -1,12 +1,9 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import StateIndicatorScss from './stateIndicator.scss?inline';
 import { STATE_TYPES, STATE_SIZES } from './defs';
-
-import '../button';
-import '../link';
 
 // Mascot / illustration images (large / medium) from shidoka-foundation.
 import errorMascot from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/tech-issue.svg';
@@ -52,9 +49,9 @@ const ICON_MAP: Record<Exclude<STATE_TYPES, STATE_TYPES.SLEEP>, string> = {
  * deprecated `kyn-error-block` and Empty State pattern.
  * @slot header - Slot for the state header text.
  * @slot unnamed - Slot for the state description / subheader text.
- * @slot primary - Slot for the primary call to action (e.g. `kyn-button`). Always rendered.
- * @slot secondary - Slot for the secondary button. Rendered only when `size="large"` and `showSecondaryAction` is true.
- * @slot link - Slot for the secondary link (e.g. `kyn-link`). Rendered only when `size="medium"` and `showSecondaryAction` is true.
+ * @slot primary - Slot for the primary call to action (e.g. `kyn-button`).
+ * @slot secondary - Slot for the secondary button. Rendered only when `size="large"`.
+ * @slot link - Slot for the secondary link (e.g. `kyn-link`). Rendered only when `size="medium"`.
  * @csspart visual - The illustration / icon container. Exposed so consumers can standardize its height when aligning multiple instances (e.g. in a grid).
  */
 @customElement('kyn-state-indicator')
@@ -73,13 +70,6 @@ export class StateIndicator extends LitElement {
   @property({ type: String })
   accessor size: STATE_SIZES = STATE_SIZES.LARGE;
 
-  /**
-   * Shows the secondary call to action: a secondary button on `large`,
-   * or a link on `medium`. Has no effect on `small` (primary CTA only).
-   */
-  @property({ type: Boolean })
-  accessor showSecondaryAction = false;
-
   /** Hides the description / subheader text. */
   @property({ type: Boolean })
   accessor hideDescription = false;
@@ -87,6 +77,27 @@ export class StateIndicator extends LitElement {
   /** Hides all call(s) to action. */
   @property({ type: Boolean })
   accessor hideCtas = false;
+
+  /**
+   * Tracks whether the primary action slot has content.
+   * @internal
+   */
+  @state()
+  accessor _hasPrimaryAction = false;
+
+  /**
+   * Tracks whether the large secondary action slot has content.
+   * @internal
+   */
+  @state()
+  accessor _hasSecondaryAction = false;
+
+  /**
+   * Tracks whether the medium link action slot has content.
+   * @internal
+   */
+  @state()
+  accessor _hasLinkAction = false;
 
   override render() {
     const isSmall = this.size === STATE_SIZES.SMALL;
@@ -103,10 +114,12 @@ export class StateIndicator extends LitElement {
       ? ICON_MAP[type as Exclude<STATE_TYPES, STATE_TYPES.SLEEP>]
       : MASCOT_MAP[type];
 
-    const showSecondaryButton =
-      this.size === STATE_SIZES.LARGE && this.showSecondaryAction;
-    const showLink =
-      this.size === STATE_SIZES.MEDIUM && this.showSecondaryAction;
+    const showSecondaryButton = this.size === STATE_SIZES.LARGE;
+    const showLink = this.size === STATE_SIZES.MEDIUM;
+    const hasVisibleActions =
+      this._hasPrimaryAction ||
+      (showSecondaryButton && this._hasSecondaryAction) ||
+      (showLink && this._hasLinkAction);
 
     const containerClasses = {
       'state-indicator': true,
@@ -135,17 +148,55 @@ export class StateIndicator extends LitElement {
               : null}
           </div>
           ${!this.hideCtas
-            ? html`<div class="state-indicator__actions">
-                <slot name="primary"></slot>
+            ? html`<div
+                class="state-indicator__actions"
+                ?hidden=${!hasVisibleActions}
+              >
+                <slot
+                  name="primary"
+                  @slotchange=${this._handleActionSlotChange}
+                ></slot>
                 ${showSecondaryButton
-                  ? html`<slot name="secondary"></slot>`
+                  ? html`<slot
+                      name="secondary"
+                      @slotchange=${this._handleActionSlotChange}
+                    ></slot>`
                   : null}
-                ${showLink ? html`<slot name="link"></slot>` : null}
+                ${showLink
+                  ? html`<slot
+                      name="link"
+                      @slotchange=${this._handleActionSlotChange}
+                    ></slot>`
+                  : null}
               </div>`
             : null}
         </div>
       </div>
     `;
+  }
+
+  /**
+   * Syncs action wrapper visibility with slotted CTA content.
+   * @internal
+   */
+  _handleActionSlotChange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    const hasAssignedContent =
+      slot.assignedElements({ flatten: true }).length > 0;
+
+    switch (slot.name) {
+      case 'primary':
+        this._hasPrimaryAction = hasAssignedContent;
+        break;
+      case 'secondary':
+        this._hasSecondaryAction = hasAssignedContent;
+        break;
+      case 'link':
+        this._hasLinkAction = hasAssignedContent;
+        break;
+      default:
+        break;
+    }
   }
 }
 

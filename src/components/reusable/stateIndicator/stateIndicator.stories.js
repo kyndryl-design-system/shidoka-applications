@@ -38,7 +38,6 @@ export default {
 const args = {
   type: STATE_TYPES.EMPTY,
   size: STATE_SIZES.LARGE,
-  showSecondaryAction: true,
   hideDescription: false,
   hideCtas: false,
   headerText: 'State sample header',
@@ -54,7 +53,6 @@ const renderStateIndicator = (args) => {
     <kyn-state-indicator
       type=${args.type}
       size=${args.size}
-      ?showSecondaryAction=${args.showSecondaryAction}
       ?hideDescription=${args.hideDescription}
       ?hideCtas=${args.hideCtas}
     >
@@ -92,7 +90,6 @@ export const Large = {
     ...args,
     size: STATE_SIZES.LARGE,
     type: STATE_TYPES.ERROR,
-    showSecondaryAction: true,
   },
   render: renderStateIndicator,
 };
@@ -108,7 +105,6 @@ export const Medium = {
     ...args,
     size: STATE_SIZES.MEDIUM,
     type: STATE_TYPES.NO_RESULTS,
-    showSecondaryAction: true,
   },
   argTypes: {
     type: { options: nonSleepTypes, control: { type: 'select' } },
@@ -124,7 +120,6 @@ export const Small = {
   },
   argTypes: {
     type: { options: nonSleepTypes, control: { type: 'select' } },
-    showSecondaryAction: { control: false },
   },
   render: renderStateIndicator,
 };
@@ -194,11 +189,7 @@ export const Gallery = {
                     <div
                       class="state-indicator-gallery__cell kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4"
                     >
-                      <kyn-state-indicator
-                        type=${type}
-                        size=${size}
-                        ?showSecondaryAction=${size !== STATE_SIZES.SMALL}
-                      >
+                      <kyn-state-indicator type=${type} size=${size}>
                         <span slot="header">${type}</span>
                         <span
                           >Additional information helps explain the current

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 
 import './index';
 import '../button';
@@ -34,10 +34,7 @@ const getAssignedTo = (el, slotName) => {
 
 export const LargeShowsBothCtas = {
   render: () => html`
-    <kyn-state-indicator
-      type=${STATE_TYPES.ERROR}
-      size=${STATE_SIZES.LARGE}
-      ?showSecondaryAction=${true}
+    <kyn-state-indicator type=${STATE_TYPES.ERROR} size=${STATE_SIZES.LARGE}
       >${content}</kyn-state-indicator
     >
   `,
@@ -55,6 +52,13 @@ export const LargeShowsBothCtas = {
         .querySelector('.state-indicator__visual')
         .getAttribute('aria-hidden')
     ).toBe('true');
+    await waitFor(() => {
+      expect(
+        el.shadowRoot
+          .querySelector('.state-indicator__actions')
+          .hasAttribute('hidden')
+      ).toBe(false);
+    });
   },
 };
 
@@ -63,7 +67,6 @@ export const MediumShowsLink = {
     <kyn-state-indicator
       type=${STATE_TYPES.NO_RESULTS}
       size=${STATE_SIZES.MEDIUM}
-      ?showSecondaryAction=${true}
       >${content}</kyn-state-indicator
     >
   `,
@@ -80,10 +83,7 @@ export const MediumShowsLink = {
 
 export const SmallIsPrimaryOnly = {
   render: () => html`
-    <kyn-state-indicator
-      type=${STATE_TYPES.ERROR}
-      size=${STATE_SIZES.SMALL}
-      ?showSecondaryAction=${true}
+    <kyn-state-indicator type=${STATE_TYPES.ERROR} size=${STATE_SIZES.SMALL}
       >${content}</kyn-state-indicator
     >
   `,
@@ -92,9 +92,28 @@ export const SmallIsPrimaryOnly = {
     await el.updateComplete;
 
     expect(getAssignedTo(el, 'primary')).toHaveLength(1);
-    // showSecondaryAction has no effect on small.
+    // Secondary actions are size-specific; small only renders the primary slot.
     expect(el.shadowRoot.querySelector('slot[name="secondary"]')).toBeNull();
     expect(el.shadowRoot.querySelector('slot[name="link"]')).toBeNull();
+  },
+};
+
+export const NoCtasHidesActionWrapper = {
+  render: () => html`
+    <kyn-state-indicator type=${STATE_TYPES.EMPTY} size=${STATE_SIZES.LARGE}>
+      <span slot="header">State sample header</span>
+      <span>Description text.</span>
+    </kyn-state-indicator>
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-state-indicator');
+    await el.updateComplete;
+
+    expect(
+      el.shadowRoot
+        .querySelector('.state-indicator__actions')
+        .hasAttribute('hidden')
+    ).toBe(true);
   },
 };
 
