@@ -1731,8 +1731,11 @@ export class Dropdown extends FormMixin(LitElement) {
     menu.style.removeProperty('position');
     menu.style.removeProperty('top');
     menu.style.removeProperty('left');
+    menu.style.removeProperty('right');
+    menu.style.removeProperty('bottom');
     menu.style.removeProperty('width');
     menu.style.removeProperty('max-height');
+    menu.style.removeProperty('z-index');
   }
 
   private async _positionFixedMenu() {
@@ -1780,6 +1783,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _stopFixedMenuPositioning() {
+    if (!this._fixedPositionCleanup && !this._fixedPosition) return;
+
     this._fixedPositionCleanup?.();
     this._fixedPositionCleanup = undefined;
     this._fixedPosition = false;
@@ -1787,15 +1792,18 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _startFixedMenuPositioning() {
-    if (!this._shouldUseFixedPosition) {
-      this._stopFixedMenuPositioning();
-      return;
-    }
+    if (!this._shouldUseFixedPosition) return;
 
     this._fixedPosition = true;
     this._fixedPositionCleanup?.();
-    this._fixedPositionCleanup = autoUpdate(this.buttonEl, this.listboxEl, () =>
-      this._positionFixedMenu()
+    this._fixedPositionCleanup = autoUpdate(
+      this.buttonEl,
+      this.listboxEl,
+      () => this._positionFixedMenu(),
+      {
+        elementResize: false,
+        layoutShift: false,
+      }
     );
   }
 
@@ -1998,9 +2006,9 @@ export class Dropdown extends FormMixin(LitElement) {
         firstSelected?.scrollIntoView({ block: 'nearest' });
       }
 
-      if (this.open) {
+      if (this.open && this._shouldUseFixedPosition) {
         this._startFixedMenuPositioning();
-      } else {
+      } else if (!this.open && this._fixedPosition) {
         this._stopFixedMenuPositioning();
       }
     }
@@ -2008,7 +2016,7 @@ export class Dropdown extends FormMixin(LitElement) {
     if (changedProps.has('fixedPosition')) {
       if (this.open) {
         this._startFixedMenuPositioning();
-      } else if (!this.fixedPosition) {
+      } else if (!this._shouldUseFixedPosition) {
         this._stopFixedMenuPositioning();
       }
     }
