@@ -18,6 +18,21 @@ export default {
       options: createOptionsArray(STATE_SIZES),
       control: { type: 'select' },
     },
+    header: {
+      control: { type: 'text' },
+    },
+    unnamed: {
+      control: { type: 'text' },
+    },
+    primary: {
+      control: { type: 'text' },
+    },
+    secondary: {
+      control: { type: 'text' },
+    },
+    link: {
+      control: { type: 'text' },
+    },
   },
   parameters: {
     docs: {
@@ -34,12 +49,12 @@ const args = {
   size: STATE_SIZES.LARGE,
   hideDescription: false,
   hideActionsBtn: false,
-  headerText: 'State sample header',
-  description:
+  header: 'State sample header',
+  unnamed:
     'Additional information helps explain the current state and any actions that may be available.',
-  primaryText: 'Primary',
-  secondaryText: 'Secondary',
-  linkText: 'Link',
+  primary: 'Primary',
+  secondary: 'Secondary',
+  link: 'Link',
 };
 
 const renderStateIndicator = (args) => {
@@ -50,31 +65,37 @@ const renderStateIndicator = (args) => {
       ?hideDescription=${args.hideDescription}
       ?hideActionsBtn=${args.hideActionsBtn}
     >
-      <span slot="header">${args.headerText}</span>
-      <span>${args.description}</span>
-      <kyn-button
-        slot="primary"
-        size="medium"
-        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        ${args.primaryText}
-      </kyn-button>
-      <kyn-button
-        slot="secondary"
-        size="medium"
-        kind="secondary"
-        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        ${args.secondaryText}
-      </kyn-button>
-      <kyn-link
-        slot="link"
-        standalone
-        href="#"
-        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        ${args.linkText}
-      </kyn-link>
+      ${args.header ? html`<span slot="header">${args.header}</span>` : null}
+      ${args.unnamed ? html`<span>${args.unnamed}</span>` : null}
+      ${args.primary
+        ? html`<kyn-button
+            slot="primary"
+            size="medium"
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            ${args.primary}
+          </kyn-button>`
+        : null}
+      ${args.secondary
+        ? html`<kyn-button
+            slot="secondary"
+            size="medium"
+            kind="secondary"
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            ${args.secondary}
+          </kyn-button>`
+        : null}
+      ${args.link
+        ? html`<kyn-link
+            slot="link"
+            standalone
+            href="#"
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            ${args.link}
+          </kyn-link>`
+        : null}
     </kyn-state-indicator>
   `;
 };
