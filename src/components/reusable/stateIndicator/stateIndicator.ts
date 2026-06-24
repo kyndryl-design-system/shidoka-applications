@@ -76,7 +76,11 @@ export class StateIndicator extends LitElement {
 
   /** Hides all call(s) to action. */
   @property({ type: Boolean })
-  accessor hideActionsBtn = false;
+  accessor hideActionsBtns = false;
+
+  /** Hides the secondary call to action (large secondary button or medium link). */
+  @property({ type: Boolean })
+  accessor hideSecondaryAction = false;
 
   /**
    * Tracks whether the primary action slot has content.
@@ -114,8 +118,10 @@ export class StateIndicator extends LitElement {
       ? ICON_MAP[type as Exclude<STATE_TYPES, STATE_TYPES.SLEEP>]
       : MASCOT_MAP[type];
 
-    const showSecondaryButton = this.size === STATE_SIZES.LARGE;
-    const showLink = this.size === STATE_SIZES.MEDIUM;
+    const showSecondaryButton =
+      this.size === STATE_SIZES.LARGE && !this.hideSecondaryAction;
+    const showLink =
+      this.size === STATE_SIZES.MEDIUM && !this.hideSecondaryAction;
     const hasVisibleActions =
       this._hasPrimaryAction ||
       (showSecondaryButton && this._hasSecondaryAction) ||
@@ -147,7 +153,7 @@ export class StateIndicator extends LitElement {
                 </div>`
               : null}
           </div>
-          ${!this.hideActionsBtn
+          ${!this.hideActionsBtns
             ? html`<div
                 class="state-indicator__actions"
                 ?hidden=${!hasVisibleActions}

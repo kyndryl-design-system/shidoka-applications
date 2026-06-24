@@ -34,6 +34,10 @@ export default {
     link: {
       control: { type: 'text' },
     },
+    hideSecondaryAction: {
+      control: { type: 'boolean' },
+      if: { arg: 'size', neq: STATE_SIZES.SMALL },
+    },
   },
   parameters: {
     docs: {
@@ -49,7 +53,8 @@ const args = {
   type: STATE_TYPES.EMPTY,
   size: STATE_SIZES.LARGE,
   hideDescription: false,
-  hideActionsBtn: false,
+  hideActionsBtns: false,
+  hideSecondaryAction: false,
   header: 'State sample header',
   unnamed:
     'Additional information helps explain the current state and any actions that may be available.',
@@ -58,20 +63,26 @@ const args = {
   link: 'Link',
 };
 
+const getActionButtonSize = (size) =>
+  size === STATE_SIZES.LARGE ? 'medium' : 'small';
+
 const renderStateIndicator = (args) => {
+  const actionButtonSize = getActionButtonSize(args.size);
+
   return html`
     <kyn-state-indicator
       type=${args.type}
       size=${args.size}
       ?hideDescription=${args.hideDescription}
-      ?hideActionsBtn=${args.hideActionsBtn}
+      ?hideActionsBtns=${args.hideActionsBtns}
+      ?hideSecondaryAction=${args.hideSecondaryAction}
     >
       ${args.header ? html`<span slot="header">${args.header}</span>` : null}
       ${args.unnamed ? html`<span>${args.unnamed}</span>` : null}
       ${args.primary
         ? html`<kyn-button
             slot="primary"
-            size="medium"
+            size=${actionButtonSize}
             @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${args.primary}
@@ -80,7 +91,7 @@ const renderStateIndicator = (args) => {
       ${args.secondary
         ? html`<kyn-button
             slot="secondary"
-            size="medium"
+            size=${actionButtonSize}
             kind="secondary"
             @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -200,8 +211,10 @@ export const Gallery = {
                 ${(size === STATE_SIZES.LARGE
                   ? types
                   : types.filter((type) => type !== STATE_TYPES.SLEEP)
-                ).map(
-                  (type) => html`
+                ).map((type) => {
+                  const actionButtonSize = getActionButtonSize(size);
+
+                  return html`
                     <div
                       class="state-indicator-gallery__cell kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4"
                     >
@@ -211,12 +224,12 @@ export const Gallery = {
                           >Additional information helps explain the current
                           state.</span
                         >
-                        <kyn-button slot="primary" size="medium"
+                        <kyn-button slot="primary" size=${actionButtonSize}
                           >Primary</kyn-button
                         >
                         <kyn-button
                           slot="secondary"
-                          size="medium"
+                          size=${actionButtonSize}
                           kind="secondary"
                           >Secondary</kyn-button
                         >
@@ -225,8 +238,8 @@ export const Gallery = {
                         >
                       </kyn-state-indicator>
                     </div>
-                  `
-                )}
+                  `;
+                })}
               </div>
             </div>
           `

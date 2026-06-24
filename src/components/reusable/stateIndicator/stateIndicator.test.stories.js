@@ -81,6 +81,44 @@ export const MediumShowsLink = {
   },
 };
 
+export const LargeCanHideSecondaryAction = {
+  render: () => html`
+    <kyn-state-indicator
+      type=${STATE_TYPES.ERROR}
+      size=${STATE_SIZES.LARGE}
+      ?hideSecondaryAction=${true}
+      >${content}</kyn-state-indicator
+    >
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-state-indicator');
+    await el.updateComplete;
+
+    expect(getAssignedTo(el, 'primary')).toHaveLength(1);
+    expect(el.shadowRoot.querySelector('slot[name="secondary"]')).toBeNull();
+    expect(el.shadowRoot.querySelector('slot[name="link"]')).toBeNull();
+  },
+};
+
+export const MediumCanHideSecondaryAction = {
+  render: () => html`
+    <kyn-state-indicator
+      type=${STATE_TYPES.NO_RESULTS}
+      size=${STATE_SIZES.MEDIUM}
+      ?hideSecondaryAction=${true}
+      >${content}</kyn-state-indicator
+    >
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-state-indicator');
+    await el.updateComplete;
+
+    expect(getAssignedTo(el, 'primary')).toHaveLength(1);
+    expect(el.shadowRoot.querySelector('slot[name="secondary"]')).toBeNull();
+    expect(el.shadowRoot.querySelector('slot[name="link"]')).toBeNull();
+  },
+};
+
 export const SmallIsPrimaryOnly = {
   render: () => html`
     <kyn-state-indicator type=${STATE_TYPES.ERROR} size=${STATE_SIZES.SMALL}
@@ -123,7 +161,7 @@ export const HideDescriptionAndCtas = {
       type=${STATE_TYPES.EMPTY}
       size=${STATE_SIZES.LARGE}
       ?hideDescription=${true}
-      ?hideActionsBtn=${true}
+      ?hideActionsBtns=${true}
       >${content}</kyn-state-indicator
     >
   `,
