@@ -283,6 +283,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _flatpickrInitToken = 0;
 
+  /** Tracks config changes that should reinitialize Flatpickr after it closes.
+   * @internal
+   */
+  private _pendingFlatpickrReinit = false;
+
   /** Stable anchor id for accessibility (generate once per instance)
    * @internal
    */
@@ -310,7 +315,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
-    if ((this.flatpickrInstance as any).isOpen) return;
+    if ((this.flatpickrInstance as any).isOpen) {
+      this._pendingFlatpickrReinit = true;
+      return;
+    }
     try {
       await this.initializeFlatpickr();
     } catch (error) {
@@ -330,7 +338,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private handleResize = debounce(async () => {
     if (this.flatpickrInstance && !this._isDestroyed) {
-      if ((this.flatpickrInstance as any).isOpen) return;
+      if ((this.flatpickrInstance as any).isOpen) {
+        this._pendingFlatpickrReinit = true;
+        return;
+      }
       try {
         await this.initializeFlatpickr();
       } catch (error) {
@@ -387,6 +398,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   override disconnectedCallback() {
     this._isDestroyed = true;
     this._flatpickrInitToken++;
+    this._pendingFlatpickrReinit = false;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
@@ -1229,6 +1241,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
+    await this.applyPendingFlatpickrReinit();
+  }
+
+  private async applyPendingFlatpickrReinit() {
+    if (
+      !this._pendingFlatpickrReinit ||
+      this._isDestroyed ||
+      (this.flatpickrInstance as any)?.isOpen
+    ) {
+      return;
+    }
+
+    this._pendingFlatpickrReinit = false;
+    await this.initializeFlatpickr();
   }
 
   private handleNativeInputEvent() {
@@ -1329,6 +1355,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     const initToken = ++this._flatpickrInitToken;
     const inputEl = this._inputEl;
+    this._pendingFlatpickrReinit = false;
 
     try {
       cleanupFlatpickrInstance(this.flatpickrInstance);

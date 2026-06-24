@@ -295,6 +295,11 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _flatpickrInitToken = 0;
 
+  /** Tracks config changes that should reinitialize Flatpickr after it closes.
+   * @internal
+   */
+  private _pendingFlatpickrReinit = false;
+
   /** Store submit event listener reference for cleanup
    * @internal
    */
@@ -305,7 +310,10 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
-    if ((this.flatpickrInstance as any).isOpen) return;
+    if ((this.flatpickrInstance as any).isOpen) {
+      this._pendingFlatpickrReinit = true;
+      return;
+    }
     try {
       await this.initializeFlatpickr();
     } catch (error) {
@@ -356,6 +364,7 @@ export class DatePicker extends FormMixin(LitElement) {
   override disconnectedCallback() {
     this._isDestroyed = true;
     this._flatpickrInitToken++;
+    this._pendingFlatpickrReinit = false;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
@@ -797,6 +806,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const initToken = ++this._flatpickrInitToken;
     const inputEl = this._inputEl;
+    this._pendingFlatpickrReinit = false;
 
     try {
       if (this.flatpickrInstance) {
@@ -1151,6 +1161,21 @@ export class DatePicker extends FormMixin(LitElement) {
     if (isEmptyValue(this.value) && isEmptyValue(this.defaultDate)) {
       this._hasInteracted = true;
     }
+
+    await this.applyPendingFlatpickrReinit();
+  }
+
+  private async applyPendingFlatpickrReinit() {
+    if (
+      !this._pendingFlatpickrReinit ||
+      this._isDestroyed ||
+      (this.flatpickrInstance as any)?.isOpen
+    ) {
+      return;
+    }
+
+    this._pendingFlatpickrReinit = false;
+    await this.initializeFlatpickr();
   }
 
   async handleDateChange(selectedDates: Date[], dateStr: string) {
