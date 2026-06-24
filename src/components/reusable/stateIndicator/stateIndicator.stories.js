@@ -18,12 +18,6 @@ export default {
       options: createOptionsArray(STATE_SIZES),
       control: { type: 'select' },
     },
-    // Content is driven by the *Text args below; hide the raw slot rows.
-    header: { control: false, table: { disable: true } },
-    unnamed: { control: false, table: { disable: true } },
-    primary: { control: false, table: { disable: true } },
-    secondary: { control: false, table: { disable: true } },
-    link: { control: false, table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -39,7 +33,7 @@ const args = {
   type: STATE_TYPES.EMPTY,
   size: STATE_SIZES.LARGE,
   hideDescription: false,
-  hideCtas: false,
+  hideActionsBtn: false,
   headerText: 'State sample header',
   description:
     'Additional information helps explain the current state and any actions that may be available.',
@@ -54,7 +48,7 @@ const renderStateIndicator = (args) => {
       type=${args.type}
       size=${args.size}
       ?hideDescription=${args.hideDescription}
-      ?hideCtas=${args.hideCtas}
+      ?hideActionsBtn=${args.hideActionsBtn}
     >
       <span slot="header">${args.headerText}</span>
       <span>${args.description}</span>

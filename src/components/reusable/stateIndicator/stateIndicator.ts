@@ -76,7 +76,7 @@ export class StateIndicator extends LitElement {
 
   /** Hides all call(s) to action. */
   @property({ type: Boolean })
-  accessor hideCtas = false;
+  accessor hideActionsBtn = false;
 
   /**
    * Tracks whether the primary action slot has content.
@@ -147,7 +147,7 @@ export class StateIndicator extends LitElement {
                 </div>`
               : null}
           </div>
-          ${!this.hideCtas
+          ${!this.hideActionsBtn
             ? html`<div
                 class="state-indicator__actions"
                 ?hidden=${!hasVisibleActions}

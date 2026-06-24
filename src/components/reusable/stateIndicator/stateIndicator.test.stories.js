@@ -123,7 +123,7 @@ export const HideDescriptionAndCtas = {
       type=${STATE_TYPES.EMPTY}
       size=${STATE_SIZES.LARGE}
       ?hideDescription=${true}
-      ?hideCtas=${true}
+      ?hideActionsBtn=${true}
       >${content}</kyn-state-indicator
     >
   `,
