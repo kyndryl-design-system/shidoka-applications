@@ -9,6 +9,7 @@ import { createOptionsArray } from '../../../common/helpers/helpers';
 export default {
   title: 'Components/Feedback & Status/State Indicator',
   component: 'kyn-state-indicator',
+  tags: ['new'],
   argTypes: {
     type: {
       options: createOptionsArray(STATE_TYPES),
