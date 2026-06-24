@@ -42,6 +42,31 @@
     }
   }
 
+  .sbdocs-back-to-top {
+    display: none;
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .sbdocs-back-to-top.is-visible {
+    display: block;
+  }
+
+  .sbdocs-back-to-top__link {
+    padding: 0;
+    color: var(--kd-color-text-link-level-primary, #0255d0);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .sbdocs-back-to-top__link:hover {
+    color: #029cfd !important;
+  }
+
   /* Hide custom TOC on smaller screens */
   @media (max-width: 1024px) {
     .sbdocs-toc--custom {
@@ -67,5 +92,76 @@
     padding: var(--kd-page-gutter);
   }
 </style>
+
+<script>
+  (() => {
+    const backToTopClass = 'sbdocs-back-to-top';
+    const nearPageEndOffset = 120;
+
+    const getScrollMetrics = () => {
+      const doc = document.documentElement;
+      const body = document.body;
+      const scrollTop = window.scrollY || doc.scrollTop || body.scrollTop || 0;
+      const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
+      const viewportHeight = window.innerHeight || doc.clientHeight;
+
+      return { scrollTop, scrollHeight, viewportHeight };
+    };
+
+    const isNearPageEnd = () => {
+      const { scrollTop, scrollHeight, viewportHeight } = getScrollMetrics();
+      return scrollTop + viewportHeight >= scrollHeight - nearPageEndOffset;
+    };
+
+    const updateBackToTopVisibility = () => {
+      const backToTop = document.querySelector(`.${backToTopClass}`);
+      if (!backToTop) return;
+
+      backToTop.classList.toggle('is-visible', isNearPageEnd());
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const ensureBackToTopLink = () => {
+      const tocNav = document.querySelector('.sbdocs-toc--custom nav');
+      if (!tocNav) {
+        document.querySelector(`.${backToTopClass}`)?.remove();
+        return;
+      }
+
+      if (tocNav.querySelector(`.${backToTopClass}`)) {
+        updateBackToTopVisibility();
+        return;
+      }
+
+      const backToTop = document.createElement('div');
+      backToTop.className = backToTopClass;
+
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = `${backToTopClass}__link toc-link`;
+      link.textContent = 'Back to top ↑';
+      link.addEventListener('click', scrollToTop);
+
+      backToTop.appendChild(link);
+      tocNav.appendChild(backToTop);
+      updateBackToTopVisibility();
+    };
+
+    window.addEventListener('scroll', updateBackToTopVisibility, {
+      passive: true,
+    });
+    window.addEventListener('resize', updateBackToTopVisibility);
+    window.addEventListener('DOMContentLoaded', ensureBackToTopLink);
+
+    const observer = new MutationObserver(ensureBackToTopLink);
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+  })();
+</script>
 
 <meta name="color-scheme" content="light dark" />
