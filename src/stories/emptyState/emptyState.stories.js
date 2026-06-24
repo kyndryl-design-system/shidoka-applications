@@ -15,12 +15,13 @@ import noSearchIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/e
 
 export default {
   title: 'Patterns/Empty State',
+  tags: ['deprecated'],
   parameters: {
     docs: {
       page: null,
       description: {
         component: `
-The Empty State pattern is used to indicate no available data or first-time usage.
+Empty State guidance is used to indicate no available data or first-time usage.
 It helps orient users and suggest next steps.
         `,
       },
