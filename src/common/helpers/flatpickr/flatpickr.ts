@@ -7,10 +7,11 @@ import { default as English } from 'flatpickr/dist/esm/l10n/default.js';
 import { loadLocale as loadLocaleFromLangs } from './langs';
 import { fixedOverlayPositionPlugin } from './overlay';
 
-let flatpickrStylesInjected = false;
+const FLATPICKR_GLOBAL_STYLE_ID = 'flatpickr-custom-styles';
+const FLATPICKR_THEME_ATTRIBUTE = 'data-flatpickr-theme';
 
-/** Tracks shadow roots we have already injected the calendar theme into, to avoid duplicates. */
-const flatpickrStyledRoots = new WeakSet<ShadowRoot>();
+/** Tracks injected theme style elements by shadow root, while allowing roots to be garbage-collected. */
+const flatpickrStyledRoots = new WeakMap<ShadowRoot, HTMLStyleElement>();
 
 export const _defaultCalendarTooltipStrings = {
   lockedStartDate: 'Start date is locked',
@@ -143,13 +144,18 @@ export function modifyWeekdayShorthands(localeOptions: Partial<Locale>): void {
 }
 
 export function injectFlatpickrStyles(customStyle: string): void {
-  if (!flatpickrStylesInjected) {
-    const styleElement = document.createElement('style');
-    styleElement.id = 'flatpickr-custom-styles';
-    styleElement.textContent = customStyle;
-    document.head.appendChild(styleElement);
-    flatpickrStylesInjected = true;
+  const existingStyle = document.getElementById(FLATPICKR_GLOBAL_STYLE_ID);
+  if (existingStyle) {
+    if (existingStyle.textContent !== customStyle) {
+      existingStyle.textContent = customStyle;
+    }
+    return;
   }
+
+  const styleElement = document.createElement('style');
+  styleElement.id = FLATPICKR_GLOBAL_STYLE_ID;
+  styleElement.textContent = customStyle;
+  document.head.appendChild(styleElement);
 }
 
 /**
@@ -163,10 +169,10 @@ export function injectFlatpickrStyles(customStyle: string): void {
  * the global `document.head` styles cannot pierce that shadow boundary and the
  * calendar renders completely unstyled.
  *
- * This walks to the root node of the rendered calendar and, if it is a `ShadowRoot`
- * that has not yet received the theme, injects the theme there once. CSS custom
- * properties (`--kd-color-*`) still inherit across the shadow boundary, so the
- * calendar picks up the correct tokens.
+ * This walks to the root node of the rendered calendar and, if it is a `ShadowRoot`,
+ * verifies that the calendar theme is present there. CSS custom properties
+ * (`--kd-color-*`) still inherit across the shadow boundary, so the calendar picks
+ * up the correct tokens.
  *
  * Important: callers should pass the calendar-only theme
  * (`shidoka-flatpickr-calendar.scss`), not the full theme. The full theme bundles
@@ -185,13 +191,34 @@ export function ensureFlatpickrStylesInRoot(
 
   const root = (node as { getRootNode?: () => Node }).getRootNode?.();
   if (!(root instanceof ShadowRoot)) return;
-  if (flatpickrStyledRoots.has(root)) return;
+
+  const cachedThemeStyle = flatpickrStyledRoots.get(root);
+  if (
+    cachedThemeStyle?.isConnected &&
+    cachedThemeStyle.getRootNode() === root
+  ) {
+    if (cachedThemeStyle.textContent !== calendarStyle) {
+      cachedThemeStyle.textContent = calendarStyle;
+    }
+    return;
+  }
+
+  const existingThemeStyle = root.querySelector<HTMLStyleElement>(
+    `style[${FLATPICKR_THEME_ATTRIBUTE}]`
+  );
+  if (existingThemeStyle) {
+    if (existingThemeStyle.textContent !== calendarStyle) {
+      existingThemeStyle.textContent = calendarStyle;
+    }
+    flatpickrStyledRoots.set(root, existingThemeStyle);
+    return;
+  }
 
   const styleElement = document.createElement('style');
-  styleElement.setAttribute('data-flatpickr-theme', '');
+  styleElement.setAttribute(FLATPICKR_THEME_ATTRIBUTE, '');
   styleElement.textContent = calendarStyle;
   root.appendChild(styleElement);
-  flatpickrStyledRoots.add(root);
+  flatpickrStyledRoots.set(root, styleElement);
 }
 
 export async function initializeMultiAnchorFlatpickr(
