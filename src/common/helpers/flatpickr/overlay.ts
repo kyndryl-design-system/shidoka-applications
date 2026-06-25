@@ -58,6 +58,49 @@ export function fixedOverlayPositionPlugin(
       return root && root.host ? (root.host as Element) : null;
     };
 
+    const getOverlayHost = (start: Element | null): Element | null => {
+      let node: Element | null = start;
+      const visited = new Set<Element>();
+
+      while (node && !visited.has(node)) {
+        visited.add(node);
+
+        const tag = node.tagName.toLowerCase();
+        if (tag === 'kyn-modal' || tag === 'kyn-side-drawer') {
+          return node;
+        }
+
+        const host = getRootHost(node);
+        node = (node.parentElement as Element | null) ?? host;
+      }
+
+      return null;
+    };
+
+    const getOverlayBoundaryRect = (start: Element | null): DOMRect | null => {
+      const host = getOverlayHost(start);
+      if (!host) return null;
+
+      const shadowRoot = (host as HTMLElement).shadowRoot;
+      const dialog = shadowRoot?.querySelector<HTMLElement>('dialog[open]');
+      const drawer = shadowRoot?.querySelector<HTMLElement>('[open]');
+      const boundary = dialog ?? drawer ?? (host as HTMLElement);
+
+      return boundary.getBoundingClientRect();
+    };
+
+    const getOverlayScrollTargets = (start: Element | null): Element[] => {
+      const host = getOverlayHost(start);
+      if (!host) return [];
+
+      const shadowRoot = (host as HTMLElement).shadowRoot;
+      if (!shadowRoot) return [];
+
+      return Array.from(
+        shadowRoot.querySelectorAll<HTMLElement>('.body, dialog, [open]')
+      ).filter(isScrollable);
+    };
+
     // initial check for scrollable containers
     const isScrollable = (el: Element) => {
       const cs = getComputedStyle(el);
@@ -100,6 +143,7 @@ export function fixedOverlayPositionPlugin(
         (fp.input as HTMLElement | null);
 
       scrollParents = collectScrollParents(pe ?? null);
+      scrollParents.push(...getOverlayScrollTargets(pe ?? null));
       scrollParents.forEach((t) => {
         (t as any).addEventListener?.('scroll', schedule, { passive: true });
       });
@@ -164,27 +208,51 @@ export function fixedOverlayPositionPlugin(
       cal.style.visibility = prevVis;
       cal.style.display = prevDisp;
 
-      // fix within viewport
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      const overlayBoundary = getOverlayBoundaryRect(pe);
+      const viewportBoundary = {
+        top: 0,
+        right: window.innerWidth,
+        bottom: window.innerHeight,
+        left: 0,
+      };
+      const boundary = overlayBoundary ?? viewportBoundary;
+      const boundaryTop = boundary.top + minViewportMargin;
+      const boundaryRight = boundary.right - minViewportMargin;
+      const boundaryBottom = boundary.bottom - minViewportMargin;
+      const boundaryLeft = boundary.left + minViewportMargin;
 
-      let left = Math.max(minViewportMargin, r.left);
-      if (left + calW + minViewportMargin > vw) {
-        left = Math.max(minViewportMargin, vw - calW - minViewportMargin);
+      const anchorOutsideBoundary =
+        r.bottom < boundaryTop ||
+        r.top > boundaryBottom ||
+        r.right < boundaryLeft ||
+        r.left > boundaryRight;
+
+      if (anchorOutsideBoundary) {
+        cal.style.visibility = 'hidden';
+        return;
+      }
+
+      cal.style.visibility = 'visible';
+      if (cal.classList.contains('open')) {
+        cal.style.display = cal.classList.contains('static')
+          ? 'block'
+          : 'inline-block';
+      }
+
+      let left = Math.max(boundaryLeft, r.left);
+      if (left + calW > boundaryRight) {
+        left = Math.max(boundaryLeft, boundaryRight - calW);
       }
 
       // flip above the input if necessary
-      const spaceBelow = vh - r.bottom;
-      const spaceAbove = r.top;
+      const spaceBelow = boundaryBottom - r.bottom;
+      const spaceAbove = r.top - boundaryTop;
       const shouldFlip = preferTop
         ? calH + offset > spaceBelow && spaceAbove > spaceBelow
         : calH + offset > spaceBelow && spaceAbove > calH + offset;
 
       let top = shouldFlip ? r.top - calH - offset : r.bottom + offset;
-      top = Math.max(
-        minViewportMargin,
-        Math.min(top, vh - calH - minViewportMargin)
-      );
+      top = Math.max(boundaryTop, Math.min(top, boundaryBottom - calH));
 
       // apply final position
       cal.style.top = `${top}px`;

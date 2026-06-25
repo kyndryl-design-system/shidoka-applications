@@ -322,7 +322,8 @@ FixedDeadline.args = {
   ...DateRangeDefault.args,
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-05-01', '2024-05-15'],
+  defaultDate: ['2026-05-01', '2026-05-15'],
+  value: [new Date('2026-05-01'), new Date('2026-05-15')],
   rangeEditMode: 'start',
   allowManualInput: false,
   label: 'Flexible Start - Fixed Deadline',
@@ -333,7 +334,8 @@ ScheduleLockdown_BothDatesFixed.args = {
   ...DateRangeDefault.args,
   name: 'both-dates-fixed-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-01-01', '2024-01-07'],
+  defaultDate: ['2026-01-01', '2026-01-04'],
+  value: [new Date('2026-05-01'), new Date('2026-05-15')],
   rangeEditMode: 'none',
   allowManualInput: false,
   label: 'Fixed Date Range (View Only)',
@@ -490,7 +492,7 @@ export const DateRangePickerInAccordionInModal = {
                 .dateFormat=${args.dateFormat}
                 .value=${args.value}
                 .defaultErrorMessage=${args.defaultErrorMessage}
-                ?staticPosition=${args.staticPosition}
+                staticPosition
                 .textStrings=${args.textStrings}
                 .warnText=${args.warnText}
                 .invalidText=${args.invalidText}
