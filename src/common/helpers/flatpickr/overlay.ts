@@ -138,8 +138,8 @@ export function fixedOverlayPositionPlugin(
       removeListeners();
 
       const pe =
-        (fp.config.positionElement as HTMLElement | null) ??
-        fpp._positionElement ??
+        (fp?.config?.positionElement as HTMLElement | null) ??
+        fpp?._positionElement ??
         (fp.input as HTMLElement | null);
 
       scrollParents = collectScrollParents(pe ?? null);
@@ -220,17 +220,6 @@ export function fixedOverlayPositionPlugin(
       const boundaryRight = boundary.right - minViewportMargin;
       const boundaryBottom = boundary.bottom - minViewportMargin;
       const boundaryLeft = boundary.left + minViewportMargin;
-
-      const anchorOutsideBoundary =
-        r.bottom < boundaryTop ||
-        r.top > boundaryBottom ||
-        r.right < boundaryLeft ||
-        r.left > boundaryRight;
-
-      if (anchorOutsideBoundary) {
-        cal.style.visibility = 'hidden';
-        return;
-      }
 
       cal.style.visibility = 'visible';
       if (cal.classList.contains('open')) {
