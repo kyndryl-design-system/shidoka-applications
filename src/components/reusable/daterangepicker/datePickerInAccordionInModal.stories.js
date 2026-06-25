@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit';
 import { action } from 'storybook/actions';
 
+import '../../../components/reusable/widget';
 import '../../../components/reusable/modal';
 import '../../../components/reusable/accordion';
 import '../../../components/reusable/daterangepicker';
@@ -31,6 +32,13 @@ class ExampleModalHost extends LitElement {
     :host {
       display: block;
     }
+
+    .widget-action-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
   `;
 
   constructor() {
@@ -43,59 +51,56 @@ class ExampleModalHost extends LitElement {
 
   render() {
     return html`
-      <kyn-widget
-        .staticPosition=${this.staticPosition}
-        .dateFormat=${this.dateFormat}
-        .size=${this.size}
-        .locale=${this.locale}
-      >
-        <kyn-modal
-          size="md"
-          titleText="Filters"
-          labelText="Example"
-          okText="Apply"
-          cancelText="Cancel"
-          closeText="Close"
-          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        >
-          <kyn-button slot="anchor" kind="primary">Open modal</kyn-button>
-
-          <kyn-accordion
-            filledHeaders
-            compact
-            expandLabel="Expand all"
-            collapseLabel="Collapse all"
+      <kyn-widget widgetTitle="Date range filters">
+        <div class="widget-action-center">
+          <kyn-modal
+            size="md"
+            titleText="Filters"
+            labelText="Example"
+            okText="Apply"
+            cancelText="Cancel"
+            closeText="Close"
+            @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
-            <kyn-accordion-item opened>
-              <span slot="title">Overview</span>
-              <div slot="body">
-                <p>
-                  This modal lives inside a host web component's shadow root.
-                </p>
-              </div>
-            </kyn-accordion-item>
+            <kyn-button slot="anchor" kind="primary">Open modal</kyn-button>
 
-            <kyn-accordion-item>
-              <span slot="title">Lost Date</span>
-              <span slot="subtitle">All</span>
-              <div slot="body">
-                <kyn-date-range-picker
-                  name="demo-date-range"
-                  label="Filter date by range"
-                  locale=${this.locale}
-                  .dateFormat=${this.dateFormat}
-                  .size=${this.size}
-                  ?staticPosition=${this.staticPosition}
-                  caption="Select a start and end date."
-                  style="width: 100%;"
-                  @on-change=${(e) =>
-                    action(e.type)({ ...e, detail: e.detail })}
-                ></kyn-date-range-picker>
-              </div>
-            </kyn-accordion-item>
-          </kyn-accordion>
-        </kyn-modal>
+            <kyn-accordion
+              filledHeaders
+              compact
+              expandLabel="Expand all"
+              collapseLabel="Collapse all"
+            >
+              <kyn-accordion-item opened>
+                <span slot="title">Overview</span>
+                <div slot="body">
+                  <p>
+                    This modal lives inside a host web component's shadow root.
+                  </p>
+                </div>
+              </kyn-accordion-item>
+
+              <kyn-accordion-item>
+                <span slot="title">Lost Date</span>
+                <span slot="subtitle">All</span>
+                <div slot="body">
+                  <kyn-date-range-picker
+                    name="demo-date-range"
+                    label="Filter date by range"
+                    locale=${this.locale}
+                    .dateFormat=${this.dateFormat}
+                    .size=${this.size}
+                    ?staticPosition=${this.staticPosition}
+                    caption="Select a start and end date."
+                    style="width: 100%;"
+                    @on-change=${(e) =>
+                      action(e.type)({ ...e, detail: e.detail })}
+                  ></kyn-date-range-picker>
+                </div>
+              </kyn-accordion-item>
+            </kyn-accordion>
+          </kyn-modal>
+        </div>
       </kyn-widget>
     `;
   }
@@ -110,8 +115,9 @@ if (!customElements.get('example-modal-host')) {
  * all rendered inside a consumer's own shadow-DOM web component.
  *
  * This is the tricky composition that surfaced the calendar-styling issue and
- * validates the fix for it. Open the modal and expand "Lost Date" to confirm the
- * calendar opens fully styled.
+ * validates the fix for it. Open the modal, expand "Lost Date", select a range,
+ * apply/close the modal, then repeat the same sequence to confirm the calendar
+ * remains fully styled on the second open.
  */
 export default {
   title: 'Examples/Date Range Picker in Accordion in Modal',
@@ -122,7 +128,9 @@ export default {
           'Demonstrates a `kyn-date-range-picker` inside a `kyn-accordion-item`, inside a ' +
           '`kyn-modal`, all rendered within a consumer web component that has its own shadow ' +
           'root. This reproduces the nested shadow-DOM context where the Flatpickr calendar ' +
-          'previously rendered unstyled, and verifies the theme is now applied correctly.',
+          'previously rendered unstyled. Validate both first-open and second-open behavior by ' +
+          'opening the modal, expanding "Lost Date", selecting a range, applying/closing, then ' +
+          'reopening and modifying the range.',
       },
     },
   },
