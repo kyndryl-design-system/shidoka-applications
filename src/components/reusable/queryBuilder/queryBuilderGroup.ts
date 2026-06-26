@@ -84,6 +84,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Boolean })
   accessor showLockButton = false;
 
+  /** Whether to hide the group add button */
+  @property({ type: Boolean })
+  accessor hideGroupBtn = false;
+
   /** Whether drag and drop is disabled */
   @property({ type: Boolean })
   accessor disableDragAndDrop = false;
@@ -136,7 +140,7 @@ export class QueryBuilderGroup extends LitElement {
       <div class="qb-group__header">
         ${!this.disableDragAndDrop ? this._renderDragHandle() : null}
         ${this._renderCombinatorToggle()}
-        ${canAddGroup
+        ${canAddGroup && !this.hideGroupBtn
           ? html`
               <kyn-button
                 kind="outline"
@@ -333,6 +337,7 @@ export class QueryBuilderGroup extends LitElement {
             .searchThreshold=${this.searchThreshold}
             ?showCloneButton=${this.showCloneButton}
             ?showLockButton=${this.showLockButton}
+            ?hideGroupBtn=${this.hideGroupBtn}
             ?disableDragAndDrop=${this.disableDragAndDrop}
             ?disabled=${this.disabled || this.group.disabled}
             @on-group-change=${this._handleNestedGroupChange}

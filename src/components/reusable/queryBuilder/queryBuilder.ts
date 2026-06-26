@@ -106,6 +106,10 @@ export class QueryBuilder extends LitElement {
   @property({ type: Boolean })
   accessor showLockButtons = false;
 
+  /** Hide the group add button */
+  @property({ type: Boolean })
+  accessor hideGroupBtn = false;
+
   /** Maximum nesting depth (default: unlimited) */
   @property({ type: Number })
   accessor maxDepth = Infinity;
@@ -179,6 +183,7 @@ export class QueryBuilder extends LitElement {
             isRoot
             ?showCloneButton=${this.showCloneButtons}
             ?showLockButton=${this.showLockButtons}
+            ?hideGroupBtn=${this.hideGroupBtn}
             ?disableDragAndDrop=${this.disableDragAndDrop}
             ?disabled=${this.disabled}
             @on-group-change=${this._handleGroupChange}
