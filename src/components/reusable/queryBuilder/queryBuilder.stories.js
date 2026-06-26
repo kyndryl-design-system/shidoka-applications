@@ -38,6 +38,13 @@ export default {
     showLockButtons: {
       control: { type: 'boolean' },
     },
+    hideGroupBtn: {
+      control: { type: 'boolean' },
+      description: 'Hide the group add button.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
     disableDragAndDrop: {
       control: { type: 'boolean' },
     },
@@ -249,6 +256,7 @@ const args = {
   fields: sampleFields,
   showCloneButtons: false,
   showLockButtons: false,
+  hideGroupBtn: false,
   maxDepth: 5,
   searchThreshold: 25,
   disableDragAndDrop: false,
@@ -268,6 +276,7 @@ export const Default = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -297,6 +306,7 @@ export const WithInitialQuery = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -326,6 +336,7 @@ export const NestedGroups = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -357,6 +368,38 @@ export const WithAllOptions = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
+        .maxDepth=${args.maxDepth}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
+        ?disabled=${args.disabled}
+        @on-query-change=${(e) => {
+          action('on-query-change')(e.detail);
+          console.log(
+            'Query changed:',
+            JSON.stringify(e.detail.query, null, 2)
+          );
+        }}
+      ></kyn-query-builder>
+    `;
+  },
+};
+
+export const HideGroupButton = {
+  args: {
+    ...args,
+    query: initialQuery,
+    hideGroupBtn: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-query-builder
+        .fields=${args.fields}
+        .query=${args.query}
+        .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
+        ?showCloneButtons=${args.showCloneButtons}
+        ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -392,6 +435,7 @@ export const LimitedDepth = {
           .size=${args.size}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
+          ?hideGroupBtn=${args.hideGroupBtn}
           .maxDepth=${args.maxDepth}
           ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
@@ -423,6 +467,7 @@ export const Disabled = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -458,6 +503,7 @@ export const WithQueryOutput = {
         .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
         .maxDepth=${args.maxDepth}
         ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
@@ -548,6 +594,7 @@ export const AllValueTypes = {
           .size=${args.size}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
+          ?hideGroupBtn=${args.hideGroupBtn}
           .maxDepth=${args.maxDepth}
           ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
@@ -681,6 +728,7 @@ export const WithValidation = {
           .size=${args.size}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
+          ?hideGroupBtn=${args.hideGroupBtn}
           .maxDepth=${args.maxDepth}
           ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
@@ -763,6 +811,7 @@ export const WithSideDrawer = {
             .size=${args.size}
             ?showCloneButtons=${args.showCloneButtons}
             ?showLockButtons=${args.showLockButtons}
+            ?hideGroupBtn=${args.hideGroupBtn}
             .maxDepth=${args.maxDepth}
             ?disableDragAndDrop=${args.disableDragAndDrop}
             ?disabled=${args.disabled}
@@ -871,6 +920,7 @@ export const SearchableDropdowns = {
           .searchThreshold=${args.searchThreshold}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
+          ?hideGroupBtn=${args.hideGroupBtn}
           .maxDepth=${args.maxDepth}
           ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
