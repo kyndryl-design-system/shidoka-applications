@@ -543,7 +543,7 @@ export async function getFlatpickrOptions(
     },
   };
 
-  if (inOverlay) {
+  if (inOverlay && !context.static) {
     options.appendTo = modalContainer;
     options.static = false;
     (options.plugins ||= []).push(
