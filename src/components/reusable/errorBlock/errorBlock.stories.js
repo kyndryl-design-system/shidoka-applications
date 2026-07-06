@@ -8,6 +8,7 @@ import warningImg from '@kyndryl-design-system/shidoka-foundation/assets/svg/mas
 export default {
   title: 'Components/Feedback & Status/Error Block',
   component: 'kyn-error',
+  tags: ['deprecated'],
 };
 
 const args = {

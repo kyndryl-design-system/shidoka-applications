@@ -95,8 +95,8 @@ export function fixedOverlayPositionPlugin(
       removeListeners();
 
       const pe =
-        (fp.config.positionElement as HTMLElement | null) ??
-        fpp._positionElement ??
+        (fp?.config?.positionElement as HTMLElement | null) ??
+        fpp?._positionElement ??
         (fp.input as HTMLElement | null);
 
       scrollParents = collectScrollParents(pe ?? null);
@@ -132,8 +132,8 @@ export function fixedOverlayPositionPlugin(
     const recalc = () => {
       const cal = fp.calendarContainer;
       const pe =
-        (fp.config.positionElement as HTMLElement | null) ??
-        fpp._positionElement ??
+        (fp?.config?.positionElement as HTMLElement | null) ??
+        fpp?._positionElement ??
         (fp.input as HTMLElement | null);
       if (!cal || !pe) return;
 
@@ -182,7 +182,7 @@ export function fixedOverlayPositionPlugin(
 
       let top = shouldFlip ? r.top - calH - offset : r.bottom + offset;
       top = Math.max(
-        minViewportMargin,
+        minViewportMargin + 22,
         Math.min(top, vh - calH - minViewportMargin)
       );
 

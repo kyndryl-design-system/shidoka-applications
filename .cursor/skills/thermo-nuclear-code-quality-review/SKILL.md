@@ -71,9 +71,21 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Push code toward the right package, service, or module instead of normalizing architectural drift.
 
 7. **Treat unnecessary sequential orchestration and non-atomic updates as design smells when the cleaner structure is obvious.**
+
    - If independent work is serialized for no good reason, ask whether the flow should run in parallel instead.
    - If related updates can leave state half-applied, push for a more atomic structure.
    - Do not over-index on micro-optimizations, but do flag avoidable orchestration complexity that makes the implementation more brittle.
+
+8. **Check Storybook sidenav lifecycle badges for new and deprecated surfaces.**
+
+   - All new components and patterns must add `tags: ['new']` in their `*.stories.js`.
+   - All deprecated, soft-deprecated, or otherwise deprecated components and patterns must add `tags: ['deprecated']`.
+   - Treat missing lifecycle tags as review feedback because they make release/navigation state harder for consumers to discover.
+
+9. **Do not allow Storybook stories to hide slot docs from consumers.**
+   - Slot controls must not be hidden in `*.stories.js` via `control: false` / `table: { disable: true }` rows.
+   - This includes rows such as `header`, `unnamed`, `primary`, `secondary`, or `link` when those are slots.
+   - Slots should appear in Storybook Docs from JSDoc/CEM unless the author intentionally replaced autodocs with a custom `*.mdx` docs page.
 
 ## Primary Review Questions
 
@@ -92,6 +104,8 @@ For every meaningful change, ask:
 - Did the diff introduce casts, optionality, or ad-hoc object shapes that obscure the real invariant?
 - Is this logic living in the canonical layer, or did the diff leak details across a boundary?
 - Is this orchestration more sequential or less atomic than it needs to be?
+- If a component or pattern is new or deprecated, did its `*.stories.js` include the required `new` or `deprecated` tag?
+- If the component has slots, did the story keep the JSDoc/CEM slot docs visible instead of hiding those rows?
 
 ## What to Flag Aggressively
 
@@ -114,6 +128,8 @@ Escalate findings when you see:
 - Logic added in the wrong layer/package when it should live somewhere more central.
 - Sequential async flow where obviously independent work could stay simpler and clearer with parallel execution.
 - Partial-update logic that leaves state less atomic than necessary.
+- New or deprecated components/patterns missing the required Storybook sidenav lifecycle tag.
+- Slot docs hidden in `*.stories.js` despite relying on Storybook autodocs instead of a custom `*.mdx` docs page.
 
 ## Preferred Remedies
 

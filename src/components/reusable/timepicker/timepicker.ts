@@ -241,6 +241,11 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
+  /** Invalidates stale async Flatpickr initialization work.
+   * @internal
+   */
+  private _flatpickrInitToken = 0;
+
   /** Track visibility polling timeout ID.
    * @internal
    */
@@ -360,6 +365,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override connectedCallback() {
     super.connectedCallback();
+    this._isDestroyed = false;
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
@@ -372,6 +378,14 @@ export class TimePicker extends FormMixin(LitElement) {
         }
       };
       this._internals.form.addEventListener('submit', this._submitListener);
+    }
+
+    if (this._initialized && !this.flatpickrInstance) {
+      void this.updateComplete.then(() => {
+        if (!this._isDestroyed && !this.flatpickrInstance) {
+          void this.setupAnchor();
+        }
+      });
     }
   }
 
@@ -849,14 +863,32 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private removeCalendarElement(id?: string) {
+  private removeCalendarElement(
+    id?: string,
+    calendarContainer?: HTMLElement | null
+  ) {
     try {
+      if (calendarContainer?.parentNode) {
+        calendarContainer.parentNode.removeChild(calendarContainer);
+        return;
+      }
+
       const calId = id ?? this._anchorId;
       if (calId) {
-        const node = document.querySelector(
-          `[data-kyn-timepicker-id="${calId}"]`
-        ) as HTMLElement | null;
-        if (node && node.parentNode) node.parentNode.removeChild(node);
+        const selector = `[data-kyn-timepicker-id="${calId}"]`;
+        const roots: ParentNode[] = [this.getRootNode() as ParentNode];
+
+        if (!roots.includes(document)) {
+          roots.push(document);
+        }
+
+        for (const root of roots) {
+          const node = root.querySelector(selector) as HTMLElement | null;
+          if (node?.parentNode) {
+            node.parentNode.removeChild(node);
+            return;
+          }
+        }
       }
     } catch (e) {
       // ignore
@@ -874,12 +906,14 @@ export class TimePicker extends FormMixin(LitElement) {
       return;
     }
     const inputEl = this._inputEl;
+    const initToken = ++this._flatpickrInitToken;
     try {
       if (this.flatpickrInstance) {
+        const calendarContainer = this.flatpickrInstance.calendarContainer;
         cleanupFlatpickrInstance(this.flatpickrInstance);
 
         try {
-          this.removeCalendarElement();
+          this.removeCalendarElement(undefined, calendarContainer);
         } catch (e) {
           // ignore
         }
@@ -887,14 +921,22 @@ export class TimePicker extends FormMixin(LitElement) {
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      if (this._isDestroyed || !inputEl.isConnected) {
+      if (
+        this._isDestroyed ||
+        initToken !== this._flatpickrInitToken ||
+        !inputEl.isConnected
+      ) {
         return;
       }
       await new Promise((resolve) => requestAnimationFrame(resolve));
-      if (this._isDestroyed || !inputEl.isConnected) {
+      if (
+        this._isDestroyed ||
+        initToken !== this._flatpickrInitToken ||
+        !inputEl.isConnected
+      ) {
         return;
       }
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      const instance = await initializeSingleAnchorFlatpickr({
         inputEl,
         getFlatpickrOptions: async () => {
           const options = await this.getComponentFlatpickrOptions();
@@ -935,6 +977,18 @@ export class TimePicker extends FormMixin(LitElement) {
         },
         setInitialDates: this.setInitialDates.bind(this),
       });
+
+      if (
+        this._isDestroyed ||
+        initToken !== this._flatpickrInitToken ||
+        !inputEl.isConnected
+      ) {
+        cleanupFlatpickrInstance(instance);
+        return;
+      }
+
+      this.flatpickrInstance = instance;
+
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
       }
@@ -1052,6 +1106,12 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this.readonly) {
       this.flatpickrInstance?.close();
       return;
+    }
+    if (this.flatpickrInstance?.calendarContainer) {
+      ensureFlatpickrStylesInRoot(
+        this.flatpickrInstance.calendarContainer,
+        ShidokaFlatpickrCalendarTheme.toString()
+      );
     }
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
@@ -1311,6 +1371,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback() {
     this._isDestroyed = true;
+    this._flatpickrInitToken++;
 
     if (this._visibilityPollTimeoutId !== null) {
       window.clearTimeout(this._visibilityPollTimeoutId);
@@ -1327,10 +1388,11 @@ export class TimePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance) {
+      const calendarContainer = this.flatpickrInstance.calendarContainer;
       cleanupFlatpickrInstance(this.flatpickrInstance);
 
       try {
-        this.removeCalendarElement();
+        this.removeCalendarElement(undefined, calendarContainer);
       } catch (e) {
         // ignore
       }

@@ -6,6 +6,11 @@ import '../button';
 
 /**
  * Error block.
+ *
+ * @deprecated Use `kyn-state-indicator` (State Indicator) instead. This
+ * component remains available for existing consumers but will not receive new
+ * features.
+ *
  * @slot unnamed - Slot for the error description.
  * @slot image - Slot for the error image.
  * @slot actions - Slot for the action buttons.

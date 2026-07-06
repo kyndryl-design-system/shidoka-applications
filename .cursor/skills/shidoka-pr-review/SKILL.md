@@ -32,12 +32,21 @@ canonical kit at the repo root: `review-kit/`.
 3. **Consult ground truth** rather than memory: `custom-elements.json` (public API),
    `src/index.ts` (exports), and foundation tokens in
    `node_modules/@kyndryl-design-system/shidoka-foundation`.
-4. **Run breaking-change detection** and, if the public API changed, lead the review
+4. **Check Storybook sidenav badges** for lifecycle changes: all new components and
+   patterns must add `tags: ['new']` in their `*.stories.js`; all deprecated,
+   soft-deprecated, or otherwise deprecated components and patterns must add
+   `tags: ['deprecated']`.
+5. **Check Storybook slot docs visibility:** slot controls must not be hidden in
+   `*.stories.js` via `control: false` / `table: { disable: true }` rows (for example,
+   hiding `header`, `unnamed`, `primary`, `secondary`, or `link`). Slots should appear in
+   Storybook Docs from JSDoc/CEM unless the author intentionally replaced autodocs with a
+   custom `*.mdx` docs page.
+6. **Run breaking-change detection** and, if the public API changed, lead the review
    with the alert from `30`.
-5. **Return the review** in the structure from `40` — verdict first, then findings as
+7. **Return the review** in the structure from `40` — verdict first, then findings as
    **one standalone block per actionable item, tagged `P0`–`P3`** (each with `file:line`
    and a concrete fix) so every item reads as a discrete review comment.
-6. **Finish with a copy-paste PR description** filled from the review, using the repo's
+8. **Finish with a copy-paste PR description** filled from the review, using the repo's
    `.github/pull_request_template.md` (or the embedded template in `40`). Tick checklist
    items only where the diff proves them; leave author-only items (local test run, Figma)
    unchecked.

@@ -131,6 +131,7 @@ export interface QueryBuilderConfig {
   combinators?: QueryOption[];
   showCloneButtons?: boolean;
   showLockButtons?: boolean;
+  hideGroupBtn?: boolean;
   maxDepth?: number;
   disableDragAndDrop?: boolean;
 }
