@@ -164,10 +164,13 @@ export class ProgressBar extends LitElement {
     currentValue: number | null
   ) {
     return html`
-      <div
-        class="progress-bar__upper-container${this.hideLabel ? ' sr-only' : ''}"
-      >
-        <label class="progress-bar__label label-text" for=${this.progressBarId}>
+      <div class="progress-bar__upper-container">
+        <label
+          class="progress-bar__label label-text ${this.hideLabel
+            ? ' sr-only'
+            : ''}"
+          for=${this.progressBarId}
+        >
           <span>${this.label}</span>
           <slot name="unnamed"></slot>
         </label>
