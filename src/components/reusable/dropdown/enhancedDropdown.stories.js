@@ -32,6 +32,9 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
+    limitCount: {
+      control: { type: 'number', min: 0 },
+    },
     multiple: { control: { type: 'boolean' } },
     enhanced: {
       table: { disable: true },
@@ -74,6 +77,7 @@ const args = {
   searchText: '',
   value: '',
   menuMinWidth: 'initial',
+  limitCount: 0,
   buttonText: '',
   multiple: false,
   filterSearch: false,
@@ -87,6 +91,8 @@ const args = {
     selectedOptions: 'List of selected options',
     addItem: 'Add item...',
     add: 'Add',
+    showAll: 'Show all',
+    showLess: 'Show less',
     warning: 'Warning',
   },
 };
@@ -125,6 +131,7 @@ export const Default = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         .textStrings=${args.textStrings}
         .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -198,6 +205,7 @@ export const WithIcons = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         .textStrings=${args.textStrings}
         .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -279,6 +287,7 @@ export const ButtonAnchor = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         .textStrings=${args.textStrings}
         .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}

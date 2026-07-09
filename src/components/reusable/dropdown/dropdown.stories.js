@@ -30,6 +30,9 @@ export default {
     searchThreshold: {
       control: { type: 'number', min: 0 },
     },
+    limitCount: {
+      control: { type: 'number', min: 0 },
+    },
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -55,10 +58,13 @@ const args = {
   caption: '',
   value: '',
   menuMinWidth: 'initial',
+  limitCount: 0,
   textStrings: {
     required: 'Required',
     error: 'Error',
     warning: 'Warning',
+    showAll: 'Show all',
+    showLess: 'Show less',
   },
 };
 
@@ -280,6 +286,7 @@ export const MultiSelect = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         .textStrings=${args.textStrings}
         .value=${args.value}
         @on-change=${(e) => {
@@ -347,6 +354,7 @@ export const MultiSelectSearchable = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
         .value=${args.value}
@@ -378,6 +386,81 @@ export const MultiSelectSearchable = {
     `;
   },
 };
+
+export const MultiSelectTagLimit = {
+  args: {
+    ...args,
+    searchable: true,
+    filterSearch: false,
+    searchThreshold: 0,
+    multiple: true,
+    selectAll: false,
+    selectAllText: 'Select all',
+    searchText: '',
+    hideTags: false,
+    limitCount: 3,
+    textStrings: {
+      ...args.textStrings,
+      showAll: 'Show all',
+      showLess: 'Show less',
+    },
+    value: ['1', '2', '4', '5', '6'],
+  },
+  render: (args) => {
+    return html`
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        kind=${args.kind}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?searchable=${args.searchable}
+        searchThreshold=${args.searchThreshold}
+        ?filterSearch=${args.filterSearch}
+        ?multiple=${args.multiple}
+        ?hideLabel=${args.hideLabel}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        ?hideTags=${args.hideTags}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
+        invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
+        searchText=${args.searchText}
+        .textStrings=${args.textStrings}
+        .value=${args.value}
+        openDirection=${args.openDirection}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)({ ...e, detail: e.detail });
+        }}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          Disabled Option
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+MultiSelectTagLimit.storyName = 'Multi Select Tag Limit';
 
 export const Grouped = {
   args: args,
@@ -494,6 +577,7 @@ export const DataDrivenOptions = {
         warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        .limitCount=${args.limitCount}
         .textStrings=${args.textStrings}
         .value=${value}
         @on-change=${handleChange}
