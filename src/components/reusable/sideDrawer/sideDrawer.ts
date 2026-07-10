@@ -107,6 +107,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor secondaryDestructive = false;
 
+  /** Disables the secondary button. */
+  @property({ type: Boolean })
+  accessor secondaryBtnDisabled = false;
+
   /** Hides the cancel button. */
   @property({ type: Boolean })
   accessor hideCancelButton = false;
@@ -245,6 +249,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
+                            ?disabled=${this.secondaryBtnDisabled}
                             kind=${this.secondaryDestructive
                               ? 'secondary-destructive'
                               : 'secondary'}
