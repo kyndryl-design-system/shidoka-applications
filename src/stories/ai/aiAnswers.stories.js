@@ -110,6 +110,7 @@ const handleClick = (e) => {
   //   }
   // });
   //
+  //
   // setTimeout(() => {
   //   allButtons.forEach((btn) => {
   //     btn.classList.add('fade-out');

@@ -126,3 +126,4 @@ export {
   QueryBuilderGroup,
   QueryBuilderRule,
 } from './components/reusable/queryBuilder';
+export { IconSelector } from './components/reusable/iconSelector';
