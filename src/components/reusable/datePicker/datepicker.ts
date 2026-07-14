@@ -290,6 +290,16 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
+  /** Invalidates stale async Flatpickr initialization work.
+   * @internal
+   */
+  private _flatpickrInitToken = 0;
+
+  /** Tracks config changes that should reinitialize Flatpickr after it closes.
+   * @internal
+   */
+  private _pendingFlatpickrReinit = false;
+
   /** Store submit event listener reference for cleanup
    * @internal
    */
@@ -300,6 +310,10 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
+    if ((this.flatpickrInstance as any).isOpen) {
+      this._pendingFlatpickrReinit = true;
+      return;
+    }
     try {
       await this.initializeFlatpickr();
     } catch (error) {
@@ -319,6 +333,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override connectedCallback() {
     super.connectedCallback();
+    this._isDestroyed = false;
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
@@ -336,10 +351,20 @@ export class DatePicker extends FormMixin(LitElement) {
       };
       this._internals.form.addEventListener('submit', this._submitListener);
     }
+
+    if (this._initialized && !this.flatpickrInstance) {
+      void this.updateComplete.then(() => {
+        if (!this._isDestroyed && !this.flatpickrInstance) {
+          void this.setupAnchor();
+        }
+      });
+    }
   }
 
   override disconnectedCallback() {
     this._isDestroyed = true;
+    this._flatpickrInitToken++;
+    this._pendingFlatpickrReinit = false;
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
@@ -779,14 +804,18 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
+    const initToken = ++this._flatpickrInitToken;
+    const inputEl = this._inputEl;
+    this._pendingFlatpickrReinit = false;
+
     try {
       if (this.flatpickrInstance) {
         cleanupFlatpickrInstance(this.flatpickrInstance);
         this.flatpickrInstance = undefined;
       }
 
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
+      const instance = await initializeSingleAnchorFlatpickr({
+        inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
         setCalendarAttributes: (instance) => {
           try {
@@ -817,6 +846,17 @@ export class DatePicker extends FormMixin(LitElement) {
         },
         setInitialDates: this.setInitialDates.bind(this),
       });
+
+      if (
+        this._isDestroyed ||
+        initToken !== this._flatpickrInitToken ||
+        !inputEl.isConnected
+      ) {
+        cleanupFlatpickrInstance(instance);
+        return;
+      }
+
+      this.flatpickrInstance = instance;
 
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
@@ -1087,6 +1127,13 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const instance = this.flatpickrInstance;
     const cfg = instance?.config;
+    if (instance?.calendarContainer) {
+      ensureFlatpickrStylesInRoot(
+        instance.calendarContainer,
+        ShidokaFlatpickrCalendarTheme.toString()
+      );
+    }
+
     if (cfg && instance?.calendarContainer) {
       const minY = this.resolveYearFromConfig(
         cfg.minDate as Date | string | number | undefined
@@ -1114,6 +1161,21 @@ export class DatePicker extends FormMixin(LitElement) {
     if (isEmptyValue(this.value) && isEmptyValue(this.defaultDate)) {
       this._hasInteracted = true;
     }
+
+    await this.applyPendingFlatpickrReinit();
+  }
+
+  private async applyPendingFlatpickrReinit() {
+    if (
+      !this._pendingFlatpickrReinit ||
+      this._isDestroyed ||
+      (this.flatpickrInstance as any)?.isOpen
+    ) {
+      return;
+    }
+
+    this._pendingFlatpickrReinit = false;
+    await this.initializeFlatpickr();
   }
 
   async handleDateChange(selectedDates: Date[], dateStr: string) {

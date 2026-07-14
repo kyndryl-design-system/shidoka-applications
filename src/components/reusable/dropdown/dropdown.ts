@@ -406,6 +406,11 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   private _onDocumentClick = (e: Event) => this._handleClickOut(e);
 
+  /** Event handler for closing this dropdown when another dropdown opens.
+   * @internal
+   */
+  private _onDropdownOpen = (e: Event) => this._handleDropdownOpen(e);
+
   /** Event handlers for child option events (click).
    * @internal
    */
@@ -1284,7 +1289,10 @@ export class Dropdown extends FormMixin(LitElement) {
       }
 
       if (openDropdown) {
-        this.open = true;
+        if (!this.open) {
+          this.requestCloseOtherDropdowns();
+          this.open = true;
+        }
 
         if (
           this.allowAddOption &&
@@ -1510,7 +1518,10 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleSearchClick(e: MouseEvent) {
     if (this.readonly) return;
     e.stopPropagation();
-    this.open = true;
+    if (!this.open) {
+      this.requestCloseOtherDropdowns();
+      this.open = true;
+    }
     if ((this.searchText ?? '').trim() === '') this.searchText = '';
   }
 
@@ -1572,7 +1583,10 @@ export class Dropdown extends FormMixin(LitElement) {
 
     const value = e.target.value;
     this.searchText = value;
-    this.open = true;
+    if (!this.open) {
+      this.requestCloseOtherDropdowns();
+      this.open = true;
+    }
 
     this._emitSearch();
 
@@ -1710,6 +1724,21 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
+  private requestCloseOtherDropdowns() {
+    document.dispatchEvent(
+      new CustomEvent('kyn-dropdown-open', {
+        detail: { source: this },
+      })
+    );
+  }
+
+  private _handleDropdownOpen(e: Event) {
+    const source = (e as CustomEvent<{ source?: Dropdown }>).detail?.source;
+    if (source !== this && this.open) {
+      this.open = false;
+    }
+  }
+
   private _getFixedMenuPlacement(): Placement {
     if (this.openDirection === 'up') return 'top-start';
     if (this.openDirection === 'down') return 'bottom-start';
@@ -1812,6 +1841,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this._onConnected();
 
     document.addEventListener('click', this._onDocumentClick);
+    document.addEventListener('kyn-dropdown-open', this._onDropdownOpen);
 
     this.addEventListener('on-click', this._onChildClick);
     this.addEventListener('on-remove-option', this._onChildRemove);
@@ -1822,6 +1852,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this._onDisconnected();
 
     document.removeEventListener('click', this._onDocumentClick);
+    document.removeEventListener('kyn-dropdown-open', this._onDropdownOpen);
     this.removeEventListener('on-click', this._onChildClick);
     this.removeEventListener('on-remove-option', this._onChildRemove);
     this.removeEventListener('on-blur', this._onChildBlur);

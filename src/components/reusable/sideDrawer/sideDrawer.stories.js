@@ -25,6 +25,7 @@ const args = {
   hideFooter: false,
   destructive: false,
   secondaryDestructive: false,
+  secondaryBtnDisabled: false,
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
   hideCancelButton: false,
@@ -48,6 +49,7 @@ export const SideDrawer = {
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?secondaryDestructive=${args.secondaryDestructive}
+        ?secondaryBtnDisabled=${args.secondaryBtnDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -102,6 +104,7 @@ export const BeforeClose = {
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?secondaryDestructive=${args.secondaryDestructive}
+        ?secondaryBtnDisabled=${args.secondaryBtnDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -163,6 +166,7 @@ export const NoBackdrop = {
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?secondaryDestructive=${args.secondaryDestructive}
+        ?secondaryBtnDisabled=${args.secondaryBtnDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -216,6 +220,7 @@ export const AIConnected = {
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?secondaryDestructive=${args.secondaryDestructive}
+        ?secondaryBtnDisabled=${args.secondaryBtnDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -269,6 +274,7 @@ export const Resizable = {
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?secondaryDestructive=${args.secondaryDestructive}
+        ?secondaryBtnDisabled=${args.secondaryBtnDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
