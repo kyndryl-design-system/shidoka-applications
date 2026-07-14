@@ -953,7 +953,7 @@ export class Dropdown extends FormMixin(LitElement) {
               class="dropdown-tag-group"
               ?filter=${this.disabled || this.readonly ? false : true}
               ?limitTags=${this.limitCount > 0}
-              ?data-lock-width-on-reveal=${this.limitCount > 0}
+              ?data-lock-width-on-reveal=${this.multiple && this.limitCount > 0}
               .limitCount=${this.limitCount}
               .textStrings=${{
                 showAll: this._textStrings.showAll,
