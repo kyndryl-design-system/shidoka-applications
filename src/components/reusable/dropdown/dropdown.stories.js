@@ -406,6 +406,7 @@ export const MultiSelectTagLimit = {
     },
     value: ['1', '2', '4', '5', '6'],
   },
+  tags: ['new'],
   render: (args) => {
     return html`
       <kyn-dropdown
