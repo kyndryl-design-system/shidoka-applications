@@ -1,5 +1,6 @@
 import { html, LitElement, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
@@ -63,6 +64,9 @@ export class TableCell extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor dimmed = false;
 
+  @state()
+  private accessor hasProgressBarComponent = false;
+
   /**
    * Context consumer for the table context.
    * Updates the cell's dense properties when the context changes.
@@ -104,11 +108,35 @@ export class TableCell extends LitElement {
     if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-td-min-width', this.minWidth);
     }
+
+    this.applyProgressBarStyles();
+  }
+
+  private applyProgressBarStyles() {
+    const slot = this.shadowRoot?.querySelector('slot');
+    if (!slot) return;
+
+    const assignedElements = slot?.assignedElements();
+    let hasProgress = false;
+
+    assignedElements.forEach((el) => {
+      const tagName = el?.tagName?.toLowerCase();
+      if (tagName === 'kyn-progress-bar') {
+        hasProgress = true;
+      }
+    });
+
+    this.hasProgressBarComponent = hasProgress;
   }
 
   override render() {
     return html`
-      <div class="slot-wrapper">
+      <div
+        class=${classMap({
+          'slot-wrapper': true,
+          'has-progress': this.hasProgressBarComponent,
+        })}
+      >
         <slot></slot>
       </div>
     `;

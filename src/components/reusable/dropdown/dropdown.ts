@@ -42,6 +42,8 @@ const _defaultTextStrings = {
   add: 'Add',
   duplicateOption: 'Duplicate option. Please select a unique option.',
   addOptionInvalid: 'Please check this value and try again.',
+  showAll: 'Show all',
+  showLess: 'Show less',
   warning: 'Warning',
 };
 
@@ -139,6 +141,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Hide the tags below multi-select. */
   @property({ type: Boolean })
   accessor hideTags = false;
+
+  /** Maximum number of selected tags to display before showing a "Show all" toggle. Set to `0` to disable limiting. */
+  @property({ type: Number })
+  accessor limitCount = 0;
 
   /** Adds a "Select all" option to the top of a multi-select dropdown. */
   @property({ type: Boolean })
@@ -943,7 +949,14 @@ export class Dropdown extends FormMixin(LitElement) {
       ${this.multiple && !this.hideTags && this._tags.length
         ? html`
             <kyn-tag-group
+              class="dropdown-tag-group"
               ?filter=${this.disabled || this.readonly ? false : true}
+              ?limitTags=${this.limitCount > 0}
+              .limitCount=${this.limitCount}
+              .textStrings=${{
+                showAll: this._textStrings.showAll,
+                showLess: this._textStrings.showLess,
+              }}
               role="list"
               aria-label=${this._textStrings.selectedOptions}
               data-readonly=${this.readonly ? '' : nothing}
