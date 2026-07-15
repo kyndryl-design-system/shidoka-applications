@@ -19,6 +19,8 @@ import '../link';
 export class TagGroup extends LitElement {
   static override styles = unsafeCSS(TagGroupScss);
 
+  private _toggleWrapMeasureFrame?: number;
+
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = {
@@ -35,6 +37,12 @@ export class TagGroup extends LitElement {
    */
   @state()
   accessor limitRevealed = false;
+
+  /** Toggle wrapped state.
+   * @internal
+   */
+  @state()
+  accessor _toggleWrapped = false;
 
   /** Tag group filter */
   @property({ type: Boolean })
@@ -61,6 +69,7 @@ export class TagGroup extends LitElement {
     const toggleBtnClasses = {
       'tag-reveal-toggle': true,
       [`tag-reveal-toggle-${this.tagSize}`]: true,
+      'tag-reveal-toggle-wrapped': this._toggleWrapped,
     };
 
     const hasOverflow =
@@ -100,9 +109,69 @@ export class TagGroup extends LitElement {
     }
   }
 
+  override disconnectedCallback() {
+    if (this._toggleWrapMeasureFrame) {
+      cancelAnimationFrame(this._toggleWrapMeasureFrame);
+      this._toggleWrapMeasureFrame = undefined;
+    }
+    super.disconnectedCallback();
+  }
+
   private _handleSlotChange() {
     this._updateChildren();
     this.requestUpdate();
+  }
+
+  private _updateToggleWrapped() {
+    if (this._toggleWrapMeasureFrame) {
+      cancelAnimationFrame(this._toggleWrapMeasureFrame);
+    }
+
+    this._toggleWrapMeasureFrame = requestAnimationFrame(() => {
+      this._toggleWrapMeasureFrame = undefined;
+      this._toggleWrapped = this._isToggleWrapped();
+    });
+  }
+
+  private _isToggleWrapped(): boolean {
+    // Restrict wrapped-spacing behavior to dropdown usage only.
+    if (!this.classList.contains('dropdown-tag-group') || !this.limitTags) {
+      return false;
+    }
+
+    const slotEl = this.renderRoot.querySelector(
+      'slot'
+    ) as HTMLSlotElement | null;
+    const toggleEl = this.renderRoot.querySelector(
+      '.tag-reveal-toggle'
+    ) as HTMLElement | null;
+
+    if (!toggleEl || !slotEl) {
+      return false;
+    }
+
+    const visibleTags = slotEl
+      .assignedElements({ flatten: true })
+      .filter(
+        (el) =>
+          el instanceof HTMLElement &&
+          el.localName === 'kyn-tag' &&
+          getComputedStyle(el).display !== 'none'
+      ) as HTMLElement[];
+
+    if (visibleTags.length === 0) {
+      return false;
+    }
+
+    const firstRowTop = Math.min(
+      ...visibleTags.map((tag) => tag.getBoundingClientRect().top)
+    );
+    const toggleRectTop = toggleEl.getBoundingClientRect().top;
+    const appliedMarginTop =
+      parseFloat(getComputedStyle(toggleEl).marginTop || '0') || 0;
+    const toggleTop = toggleRectTop - appliedMarginTop;
+
+    return toggleTop - firstRowTop > 2;
   }
 
   private _updateChildren() {
@@ -140,6 +209,7 @@ export class TagGroup extends LitElement {
     }
 
     if (!Array.isArray(this.tags) || this.tags.length === 0) {
+      this._toggleWrapped = false;
       return;
     }
 
@@ -148,6 +218,7 @@ export class TagGroup extends LitElement {
       this.tags.forEach((t) => {
         t.style.display = 'inline-block';
       });
+      this._updateToggleWrapped();
       return;
     }
 
@@ -159,6 +230,7 @@ export class TagGroup extends LitElement {
       this.tags.forEach((t) => {
         t.style.display = 'inline-block';
       });
+      this._updateToggleWrapped();
       return;
     }
 
@@ -171,6 +243,8 @@ export class TagGroup extends LitElement {
     persistentTags.forEach((t) => {
       t.style.display = 'inline-block';
     });
+
+    this._updateToggleWrapped();
   }
 }
 
