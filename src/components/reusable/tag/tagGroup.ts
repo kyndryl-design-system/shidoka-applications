@@ -195,19 +195,6 @@ export class TagGroup extends LitElement {
   private _toggleRevealed(revealed: boolean) {
     this.limitRevealed = revealed;
 
-    if (this.hasAttribute('data-lock-width-on-reveal') && this.limitTags) {
-      if (revealed) {
-        const lockedWidth = Math.ceil(this.getBoundingClientRect().width);
-        this.style.width = `${lockedWidth}px`;
-        this.style.minWidth = `${lockedWidth}px`;
-        this.style.maxWidth = `${lockedWidth}px`;
-      } else {
-        this.style.removeProperty('width');
-        this.style.removeProperty('min-width');
-        this.style.removeProperty('max-width');
-      }
-    }
-
     if (!Array.isArray(this.tags) || this.tags.length === 0) {
       this._toggleWrapped = false;
       return;
