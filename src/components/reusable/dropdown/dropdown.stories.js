@@ -398,18 +398,47 @@ export const MultiSelectTagLimit = {
     selectAllText: 'Select all',
     searchText: '',
     hideTags: false,
-    limitCount: 3,
+    limitCount: 15,
     textStrings: {
       ...args.textStrings,
       showAll: 'Show all',
       showLess: 'Show less',
     },
-    value: ['1', '2', '4', '5', '6'],
+    value: [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+    ],
   },
   tags: ['new'],
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown[data-story='multi-select-tag-limit'] {
+          min-width: 420px;
+          max-width: 520px;
+        }
+      </style>
+
       <kyn-dropdown
+        data-story="multi-select-tag-limit"
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
@@ -450,19 +479,28 @@ export const MultiSelectTagLimit = {
         </kyn-tooltip>
         <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
-        <kyn-dropdown-option value="3" disabled>
-          Disabled Option
-        </kyn-dropdown-option>
+        <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
         <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
         <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
         <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+        <kyn-dropdown-option value="8">Option 8</kyn-dropdown-option>
+        <kyn-dropdown-option value="9">Option 9</kyn-dropdown-option>
+        <kyn-dropdown-option value="10">Option 10</kyn-dropdown-option>
+        <kyn-dropdown-option value="11">Option 11</kyn-dropdown-option>
+        <kyn-dropdown-option value="12">Option 12</kyn-dropdown-option>
+        <kyn-dropdown-option value="13">Option 13</kyn-dropdown-option>
+        <kyn-dropdown-option value="14">Option 14</kyn-dropdown-option>
+        <kyn-dropdown-option value="15">Option 15</kyn-dropdown-option>
+        <kyn-dropdown-option value="16">Option 16</kyn-dropdown-option>
+        <kyn-dropdown-option value="17">Option 17</kyn-dropdown-option>
+        <kyn-dropdown-option value="18">Option 18</kyn-dropdown-option>
+        <kyn-dropdown-option value="19">Option 19</kyn-dropdown-option>
+        <kyn-dropdown-option value="20">Option 20</kyn-dropdown-option>
       </kyn-dropdown>
     `;
   },
 };
-MultiSelectTagLimit.storyName = 'Multi Select Tag Limit';
-
 export const Grouped = {
   args: args,
   parameters: {
