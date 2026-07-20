@@ -521,7 +521,6 @@ export class Dropdown extends FormMixin(LitElement) {
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this._isSearchVisible}
-        ?tag-limit=${this.multiple && this.limitCount > 0}
       >
         <label
           id="label-${this.name}"
