@@ -1,0 +1,57 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+
+:host {
+  display: inline-block;
+  width: 100%;
+}
+
+.health-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kd-spacing-4);
+
+  &__label {
+    @include typography.type-body-02;
+    color: var(--kd-color-text-level-secondary);
+
+    &.sr-only {
+      @include visibility.sr-only;
+    }
+  }
+
+  &__bar {
+    width: 100%;
+    height: var(--kd-spacing-32);
+    border-radius: var(--kd-spacing-16);
+    border: 1px solid var(--kd-color-border-level-secondary);
+    background-color: var(--kd-color-background-loader-bar-secondary);
+    box-sizing: border-box;
+    padding: 2px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: calc(var(--kd-spacing-16) - 3px);
+    transition: width 0.25s ease-in-out;
+
+    &--healthy {
+      background-color: var(--kd-color-status-success-dark);
+    }
+
+    &--warning {
+      background-color: var(--kd-color-status-warning-dark);
+    }
+
+    &--at-risk {
+      background-color: var(--kd-color-status-error-dark);
+    }
+
+    &--critical {
+      background-color: var(--kd-color-status-critical-dark);
+    }
+  }
+}
