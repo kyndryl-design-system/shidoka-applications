@@ -7,7 +7,7 @@ import {
 } from './defs';
 
 export default {
-  title: 'Components/Feedback & Status/Health Indicator',
+  title: 'Components/Indicators & Labels/Health Indicator',
   component: 'kyn-health-indicator',
   tags: ['new'],
   argTypes: {
@@ -43,7 +43,7 @@ export const Default = {
       .value=${args.value}
       ?hideLabel=${args.hideLabel}
       healthIndicatorId="health-indicator-default"
-      style="max-width: 280px;"
+      style="max-width: 84px;"
     ></kyn-health-indicator>
   `,
 };
@@ -56,7 +56,7 @@ export const Gallery = {
     const statuses = createOptionsArray(HEALTH_INDICATOR_STATUS);
 
     return html`
-      <div style="display: grid; gap: var(--kd-spacing-24); max-width: 280px;">
+      <div style="display: grid; gap: var(--kd-spacing-24); max-width: 84px;">
         ${statuses.map(
           (status) => html`
             <kyn-health-indicator
@@ -78,7 +78,7 @@ export const DesignReference = {
     <div
       style="
         display: grid;
-        grid-template-columns: repeat(2, minmax(220px, 280px));
+        grid-template-columns: repeat(2, minmax(84px, max-content));
         gap: var(--kd-spacing-48);
         align-items: start;
       "
