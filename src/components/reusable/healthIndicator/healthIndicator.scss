@@ -1,5 +1,4 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
@@ -39,19 +38,25 @@
     transition: width 0.25s ease-in-out;
 
     &--healthy {
-      background-color: var(--kd-color-status-success-dark);
+      background-color: var(--kd-color-badge-heavy-background-success);
     }
 
     &--warning {
-      background-color: var(--kd-color-status-warning-dark);
+      background-color: var(--kd-color-badge-heavy-background-warning);
     }
 
     &--at-risk {
-      background-color: var(--kd-color-status-error-dark);
+      background-color: var(--kd-color-badge-heavy-background-error);
     }
 
     &--critical {
-      background-color: var(--kd-color-status-critical-dark);
+      background-color: var(--kd-color-badge-heavy-background-critical);
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .health-indicator__fill {
+    transition: none;
   }
 }
