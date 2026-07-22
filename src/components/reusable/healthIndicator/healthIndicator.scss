@@ -5,6 +5,7 @@
 :host {
   display: inline-block;
   width: 100%;
+  max-width: var(--kyn-health-indicator-width, 84px);
 }
 
 .health-indicator {
@@ -23,8 +24,8 @@
 
   &__bar {
     width: 100%;
-    height: var(--kd-spacing-32);
-    border-radius: var(--kd-spacing-16);
+    height: var(--kyn-health-indicator-height, var(--kd-spacing-16));
+    border-radius: var(--kd-spacing-8);
     border: 1px solid var(--kd-color-border-level-secondary);
     background-color: var(--kd-color-background-loader-bar-secondary);
     box-sizing: border-box;
@@ -34,7 +35,7 @@
 
   &__fill {
     height: 100%;
-    border-radius: calc(var(--kd-spacing-16) - 3px);
+    border-radius: calc(var(--kd-spacing-8) - 3px);
     transition: width 0.25s ease-in-out;
 
     &--healthy {
