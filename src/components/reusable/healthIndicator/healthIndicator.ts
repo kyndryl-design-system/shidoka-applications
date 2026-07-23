@@ -48,7 +48,9 @@ export class HealthIndicator extends LitElement {
     return html`
       <div class="health-indicator">
         <label
-          class="health-indicator__label ${this.hideLabel ? 'sr-only' : ''}"
+          class="health-indicator__label label-text ${this.hideLabel
+            ? 'sr-only'
+            : ''}"
           for=${ifDefined(this.healthIndicatorId || undefined)}
         >
           ${label}
