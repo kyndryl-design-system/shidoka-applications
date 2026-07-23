@@ -1,6 +1,12 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  query,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -13,6 +19,7 @@ import SideDrawerScss from './sideDrawer.scss?inline';
  * Side Drawer.
  * @slot unnamed - Slot for drawer body content.
  * @slot anchor - Slot for the anchor button content.
+ * @slot label - Optional label below the title. Supports rich content such as `kyn-link`. Falls back to `labelText` when empty.
  * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the drawer open event.
  * @fires on-resize - Emits when the drawer is resized via drag. `detail: { width: number }`
@@ -58,7 +65,7 @@ export class SideDrawer extends LitElement {
   accessor titleText = '';
 
   /**
-   * Label text, optional.
+   * Label text, optional. Used as fallback when the `label` slot is empty.
    */
   @property({ type: String })
   accessor labelText = '';
@@ -131,6 +138,14 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor resizable = false;
 
+  /** @internal */
+  @queryAssignedElements({ slot: 'label' })
+  private accessor _labelSlotItems!: Array<Element>;
+
+  /** @internal - whether the label slot has assigned content */
+  @state()
+  private accessor _hasLabelSlot = false;
+
   /** @internal - tracks active drag state for handle styling */
   @state()
   private accessor _dragging = false;
@@ -149,6 +164,14 @@ export class SideDrawer extends LitElement {
    */
   @query('dialog')
   accessor _dialog!: any;
+
+  private get _showLabel() {
+    return (
+      Boolean(this.labelText) ||
+      this._hasLabelSlot ||
+      this.querySelector(':scope > [slot="label"]') !== null
+    );
+  }
 
   override render() {
     const classes = {
@@ -199,8 +222,12 @@ export class SideDrawer extends LitElement {
               <h1 class="${classMap(dialogHeaderClasses)}" id="dialogLabel">
                 ${this.titleText}
               </h1>
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
+              ${this._showLabel
+                ? html`<div class="label">
+                    <slot name="label" @slotchange=${this._onLabelSlotChange}
+                      >${this.labelText}</slot
+                    >
+                  </div>`
                 : null}
             </div>
 
@@ -280,6 +307,10 @@ export class SideDrawer extends LitElement {
         </form>
       </dialog>
     `;
+  }
+
+  private _onLabelSlotChange() {
+    this._hasLabelSlot = this._labelSlotItems.length > 0;
   }
 
   private _openDrawer() {
