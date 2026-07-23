@@ -56,69 +56,35 @@ export const Gallery = {
     const statuses = createOptionsArray(HEALTH_INDICATOR_STATUS);
 
     return html`
-      <div style="display: grid; gap: var(--kd-spacing-24); max-width: 84px;">
-        ${statuses.map(
-          (status) => html`
-            <kyn-health-indicator
-              status=${status}
-              label=${HEALTH_INDICATOR_STATUS_LABELS[status]}
-            ></kyn-health-indicator>
-          `
-        )}
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(2, minmax(84px, max-content));
+          gap: var(--kd-spacing-48);
+          align-items: start;
+        "
+      >
+        <div style="display: grid; gap: var(--kd-spacing-24);">
+          ${statuses.map(
+            (status) => html`
+              <kyn-health-indicator
+                status=${status}
+                label="Label"
+              ></kyn-health-indicator>
+            `
+          )}
+        </div>
+        <div style="display: grid; gap: var(--kd-spacing-24);">
+          ${statuses.map(
+            (status) => html`
+              <kyn-health-indicator
+                status=${status}
+                label=${HEALTH_INDICATOR_STATUS_LABELS[status]}
+              ></kyn-health-indicator>
+            `
+          )}
+        </div>
       </div>
     `;
   },
-};
-
-export const DesignReference = {
-  parameters: {
-    controls: { disable: true },
-  },
-  render: () => html`
-    <div
-      style="
-        display: grid;
-        grid-template-columns: repeat(2, minmax(84px, max-content));
-        gap: var(--kd-spacing-48);
-        align-items: start;
-      "
-    >
-      <div style="display: grid; gap: var(--kd-spacing-24);">
-        <kyn-health-indicator
-          status="healthy"
-          label="Label"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="warning"
-          label="Label"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="at-risk"
-          label="Label"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="critical"
-          label="Label"
-        ></kyn-health-indicator>
-      </div>
-      <div style="display: grid; gap: var(--kd-spacing-24);">
-        <kyn-health-indicator
-          status="healthy"
-          label="Healthy"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="warning"
-          label="Warning"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="at-risk"
-          label="At Risk"
-        ></kyn-health-indicator>
-        <kyn-health-indicator
-          status="critical"
-          label="Critical"
-        ></kyn-health-indicator>
-      </div>
-    </div>
-  `,
 };
