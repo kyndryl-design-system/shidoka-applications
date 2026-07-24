@@ -15,8 +15,8 @@
 
   &__label {
     @include typography.type-ui-04;
-    font-size: var(--kyn-health-indicator-label-font-size, 10px);
-    color: var(--kd-color-text-level-secondary);
+    font-size: 10px;
+    color: var(--kd-color-text-forms-label-secondary);
 
     &.sr-only {
       @include visibility.sr-only;
@@ -27,16 +27,19 @@
     width: 100%;
     height: var(--kyn-health-indicator-height, var(--kd-spacing-16));
     border-radius: var(--kd-spacing-8);
-    border: 1px solid var(--kd-color-border-level-secondary);
-    background-color: var(--kd-color-background-loader-bar-secondary);
+    border: 1px solid var(--kd-color-border-ui-default);
+    background-color: var(--kd-color-background-accent-subtle);
     box-sizing: border-box;
-    padding: 2px;
     overflow: hidden;
+
+    &--healthy {
+      border-color: var(--kd-color-badge-medium-border-success);
+    }
   }
 
   &__fill {
     height: 100%;
-    border-radius: calc(var(--kd-spacing-8) - 3px);
+    border-radius: var(--kd-spacing-8);
     transition: width 0.25s ease-in-out;
 
     &--healthy {

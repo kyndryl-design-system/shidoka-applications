@@ -57,7 +57,7 @@ export class HealthIndicator extends LitElement {
         </label>
         <div
           id=${ifDefined(this.healthIndicatorId || undefined)}
-          class="health-indicator__bar"
+          class="health-indicator__bar health-indicator__bar--${status}"
           role="meter"
           aria-valuemin="0"
           aria-valuemax="100"
