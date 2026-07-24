@@ -165,6 +165,7 @@ export class SideDrawer extends LitElement {
   @query('dialog')
   accessor _dialog!: any;
 
+  /** @internal */
   private get _showLabel() {
     return (
       Boolean(this.labelText) ||
