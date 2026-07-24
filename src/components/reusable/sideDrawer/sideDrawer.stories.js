@@ -311,7 +311,6 @@ export const Resizable = {
 export const LabelSlotWithLink = {
   args: {
     ...args,
-    open: true,
     labelText: '',
     titleText: 'Dashboard settings',
     hideFooter: true,
@@ -350,12 +349,13 @@ export const LabelSlotWithLink = {
         <span slot="label">
           Adjust how this dashboard summarizes operations signals.
           <kyn-link
-            href="https://www.kyndryl.com"
+            href="/docs/dashboard"
             kind="secondary"
             linkFontWeight="lighter"
-            target="_blank"
-            rel="noopener noreferrer"
-            @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
+            @on-click=${(e) => {
+              e.detail.origEvent.preventDefault();
+              action('on-click')({ ...e, detail: e.detail });
+            }}
             >Learn more</kyn-link
           >
         </span>
@@ -364,6 +364,8 @@ export const LabelSlotWithLink = {
           The subtitle above is rendered via
           <code>&lt;span slot="label"&gt;</code> and supports inline links.
           Plain text labels still work with the <code>labelText</code> property.
+          Click “Learn more” to log <code>on-click</code> in the Actions panel
+          without navigating away.
         </div>
       </kyn-side-drawer>
     `;
