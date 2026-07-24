@@ -1,12 +1,20 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import HealthIndicatorScss from './healthIndicator.scss?inline';
 import {
-  HEALTH_INDICATOR_DEFAULT_PERCENTAGE,
   HEALTH_INDICATOR_STATUS,
   HEALTH_INDICATOR_STATUS_LABELS,
 } from './defs';
+
+const HEALTH_INDICATOR_DEFAULT_PERCENTAGE: Record<
+  HEALTH_INDICATOR_STATUS,
+  number
+> = {
+  [HEALTH_INDICATOR_STATUS.HEALTHY]: 100,
+  [HEALTH_INDICATOR_STATUS.WARNING]: 72,
+  [HEALTH_INDICATOR_STATUS.ERROR]: 46,
+  [HEALTH_INDICATOR_STATUS.CRITICAL]: 26,
+};
 
 const HEALTH_INDICATOR_STATUSES = new Set(
   Object.values(HEALTH_INDICATOR_STATUS)
@@ -20,13 +28,9 @@ const HEALTH_INDICATOR_STATUSES = new Set(
 export class HealthIndicator extends LitElement {
   static override styles = unsafeCSS(HealthIndicatorScss);
 
-  /** Optional label shown above the indicator bar. */
+  /** Label shown above the indicator bar. */
   @property({ type: String })
   accessor label = '';
-
-  /** Optional host-defined id for the progressbar element. */
-  @property({ type: String })
-  accessor healthIndicatorId = '';
 
   /** Semantic health state that controls color and default fill. */
   @property({ type: String })
@@ -51,12 +55,10 @@ export class HealthIndicator extends LitElement {
           class="health-indicator__label label-text ${this.hideLabel
             ? 'sr-only'
             : ''}"
-          for=${ifDefined(this.healthIndicatorId || undefined)}
         >
           ${label}
         </label>
         <div
-          id=${ifDefined(this.healthIndicatorId || undefined)}
           class="health-indicator__bar health-indicator__bar--${status}"
           role="meter"
           aria-valuemin="0"
@@ -74,6 +76,10 @@ export class HealthIndicator extends LitElement {
     `;
   }
 
+  /**
+   * @internal
+   * @ignore
+   */
   private get _resolvedStatus(): HEALTH_INDICATOR_STATUS {
     return HEALTH_INDICATOR_STATUSES.has(this.status)
       ? this.status

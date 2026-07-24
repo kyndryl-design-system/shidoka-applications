@@ -42,7 +42,6 @@ export const Default = {
       label=${args.label}
       .value=${args.value}
       ?hideLabel=${args.hideLabel}
-      healthIndicatorId="health-indicator-default"
       style="max-width: 84px;"
     ></kyn-health-indicator>
   `,
