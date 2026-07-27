@@ -20,8 +20,13 @@ import {
 } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
 import '../../reusable/dropdown';
+import '../../reusable/healthIndicator';
 import '../../reusable/tag';
 import '../../reusable/textInput';
+import {
+  HEALTH_INDICATOR_STATUS,
+  HEALTH_INDICATOR_STATUS_LABELS,
+} from '../healthIndicator/defs';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-male.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-female.svg';
@@ -57,6 +62,13 @@ export default meta;
 // Type definition for the story
 type Story = StoryObj;
 
+const healthStatusByIndex = [
+  HEALTH_INDICATOR_STATUS.HEALTHY,
+  HEALTH_INDICATOR_STATUS.WARNING,
+  HEALTH_INDICATOR_STATUS.ERROR,
+  HEALTH_INDICATOR_STATUS.CRITICAL,
+];
+
 export const Basic: Story = {
   render: () => {
     return html`
@@ -76,6 +88,7 @@ export const Basic: Story = {
               <kyn-th>Birthday</kyn-th>
               <kyn-th .align=${'right'}>Age</kyn-th>
               <kyn-th>Full Name</kyn-th>
+              <kyn-th>Health</kyn-th>
               <kyn-th .align=${'center'}>Gender</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
@@ -83,21 +96,35 @@ export const Basic: Story = {
             ${repeat(
               characters,
               (row: any) => row.id,
-              (row: any) => html`
-                <kyn-tr .rowId=${row.id} key="row-${row.id}">
-                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                  <kyn-td> ${row.firstName} </kyn-td>
-                  <kyn-td>${row.lastName}</kyn-td>
-                  <kyn-td>${row.birthday}</kyn-td>
-                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                  <kyn-td .align=${'center'}>
-                    ${row.gender === 'Male'
-                      ? html`<span>${unsafeSVG(maleIcon)}</span>`
-                      : html`<span>${unsafeSVG(femaleIcon)}</span>`}
-                  </kyn-td>
-                </kyn-tr>
-              `
+              (row: any) => {
+                const status =
+                  healthStatusByIndex[
+                    (Number(row.id) - 1) % healthStatusByIndex.length
+                  ] ?? HEALTH_INDICATOR_STATUS.HEALTHY;
+
+                return html`
+                  <kyn-tr .rowId=${row.id} key="row-${row.id}">
+                    <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                    <kyn-td> ${row.firstName} </kyn-td>
+                    <kyn-td>${row.lastName}</kyn-td>
+                    <kyn-td>${row.birthday}</kyn-td>
+                    <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                    <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                    <kyn-td>
+                      <kyn-health-indicator
+                        status=${status}
+                        label=${HEALTH_INDICATOR_STATUS_LABELS[status]}
+                        ?hideLabel=${true}
+                      ></kyn-health-indicator>
+                    </kyn-td>
+                    <kyn-td .align=${'center'}>
+                      ${row.gender === 'Male'
+                        ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                        : html`<span>${unsafeSVG(femaleIcon)}</span>`}
+                    </kyn-td>
+                  </kyn-tr>
+                `;
+              }
             )}
           </kyn-tbody>
         </kyn-table>

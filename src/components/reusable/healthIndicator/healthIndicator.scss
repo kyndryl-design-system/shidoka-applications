@@ -4,14 +4,16 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
 :host {
-  display: inline-block;
+  display: block;
   width: 100%;
 }
 
 .health-indicator {
   display: flex;
   flex-direction: column;
-  max-width: var(--kyn-health-indicator-width, 84px);
+  gap: var(--kyn-health-indicator-label-gap, var(--kd-spacing-2));
+  width: var(--kyn-health-indicator-width, 84px);
+  max-width: 100%;
 
   &__label {
     @include typography.type-ui-04;
@@ -51,7 +53,7 @@
       background-color: var(--kd-color-badge-heavy-background-warning);
     }
 
-    &--at-risk {
+    &--error {
       background-color: var(--kd-color-badge-heavy-background-error);
     }
 
