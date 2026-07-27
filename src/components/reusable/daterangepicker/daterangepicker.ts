@@ -1372,7 +1372,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             setCalendarAttributes(instance, container !== document.body);
             ensureFlatpickrStylesInRoot(
               instance.calendarContainer,
-              ShidokaFlatpickrCalendarTheme.toString()
+              ShidokaFlatpickrCalendarTheme.toString(),
+              container
             );
             instance.calendarContainer.setAttribute(
               'aria-label',
@@ -1671,9 +1672,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance?.calendarContainer) {
+      const container = getModalContainer(this);
       ensureFlatpickrStylesInRoot(
         this.flatpickrInstance.calendarContainer,
-        ShidokaFlatpickrCalendarTheme.toString()
+        ShidokaFlatpickrCalendarTheme.toString(),
+        container
       );
     }
 
