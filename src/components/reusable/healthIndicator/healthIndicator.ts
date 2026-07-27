@@ -6,16 +6,6 @@ import {
   HEALTH_INDICATOR_STATUS_LABELS,
 } from './defs';
 
-const HEALTH_INDICATOR_DEFAULT_PERCENTAGE: Record<
-  HEALTH_INDICATOR_STATUS,
-  number
-> = {
-  [HEALTH_INDICATOR_STATUS.HEALTHY]: 100,
-  [HEALTH_INDICATOR_STATUS.WARNING]: 72,
-  [HEALTH_INDICATOR_STATUS.ERROR]: 46,
-  [HEALTH_INDICATOR_STATUS.CRITICAL]: 26,
-};
-
 const HEALTH_INDICATOR_STATUSES = new Set(
   Object.values(HEALTH_INDICATOR_STATUS)
 );
@@ -36,9 +26,9 @@ export class HealthIndicator extends LitElement {
   @property({ type: String })
   accessor status: HEALTH_INDICATOR_STATUS = HEALTH_INDICATOR_STATUS.HEALTHY;
 
-  /** Optional percentage override (0-100). */
+  /** Percentage value (0-100). */
   @property({ type: Number })
-  accessor value: number | null = null;
+  accessor value = 100;
 
   /** Visually hide the label while keeping it for screen readers. */
   @property({ type: Boolean })
@@ -47,7 +37,7 @@ export class HealthIndicator extends LitElement {
   override render() {
     const status = this._resolvedStatus;
     const label = this.label || HEALTH_INDICATOR_STATUS_LABELS[status];
-    const percentage = this._resolvedPercentage(status);
+    const percentage = this._resolvedPercentage();
 
     return html`
       <div class="health-indicator">
@@ -86,13 +76,9 @@ export class HealthIndicator extends LitElement {
       : HEALTH_INDICATOR_STATUS.HEALTHY;
   }
 
-  private _resolvedPercentage(status: HEALTH_INDICATOR_STATUS): number {
-    if (
-      this.value === null ||
-      this.value === undefined ||
-      Number.isNaN(this.value)
-    ) {
-      return HEALTH_INDICATOR_DEFAULT_PERCENTAGE[status];
+  private _resolvedPercentage(): number {
+    if (!Number.isFinite(this.value)) {
+      return 100;
     }
 
     return Math.max(0, Math.min(100, Math.round(this.value)));
