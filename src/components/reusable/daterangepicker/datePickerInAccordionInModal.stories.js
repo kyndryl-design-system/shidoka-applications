@@ -19,6 +19,7 @@ import '../../../components/reusable/button';
  *
  * The fix (`ensureFlatpickrStylesInRoot`) injects the theme into the root node
  * that actually contains the rendered calendar, so it is styled correctly here.
+ *
  */
 class ExampleModalHost extends LitElement {
   static properties = {
