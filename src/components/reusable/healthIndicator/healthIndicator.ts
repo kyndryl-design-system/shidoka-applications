@@ -67,7 +67,6 @@ export class HealthIndicator extends LitElement {
   }
 
   /**
-   * @internal
    * @ignore
    */
   private get _resolvedStatus(): HEALTH_INDICATOR_STATUS {
