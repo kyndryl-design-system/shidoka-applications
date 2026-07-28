@@ -185,11 +185,16 @@ export function injectFlatpickrStyles(customStyle: string): void {
  */
 export function ensureFlatpickrStylesInRoot(
   node: Node | null | undefined,
-  calendarStyle: string
+  calendarStyle: string,
+  fallbackNode?: Node | null
 ): void {
   if (!node || !calendarStyle) return;
 
-  const root = (node as { getRootNode?: () => Node }).getRootNode?.();
+  const nodeRoot = (node as { getRootNode?: () => Node }).getRootNode?.();
+  const fallbackRoot =
+    fallbackNode &&
+    (fallbackNode as { getRootNode?: () => Node }).getRootNode?.();
+  const root = nodeRoot instanceof ShadowRoot ? nodeRoot : fallbackRoot;
   if (!(root instanceof ShadowRoot)) return;
 
   const cachedThemeStyle = flatpickrStyledRoots.get(root);
