@@ -230,6 +230,7 @@ export function ensureFlatpickrStylesInRoot(
   styleElement.textContent = calendarStyle;
   root.appendChild(styleElement);
   flatpickrStyledRoots.set(root, styleElement);
+  console.log('Testing pickr');
 }
 
 export async function initializeMultiAnchorFlatpickr(
