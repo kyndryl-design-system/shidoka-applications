@@ -336,7 +336,8 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     white-space: nowrap;
   }
 
-  .account-chevron,
+  /* Do not set .account-chevron display here — uiImplementationStyles owns
+   * flex + the mobile display:none rule, and shell styles concatenate last. */
   .header-icon,
   .local-nav-icon {
     display: inline-flex;
@@ -357,10 +358,6 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-  }
-
-  .account-chevron {
-    transition: transform 0.2s;
   }
 
   .flyout-action-list,
