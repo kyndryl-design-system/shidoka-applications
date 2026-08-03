@@ -188,14 +188,20 @@ export function ensureFlatpickrStylesInRoot(
   calendarStyle: string,
   fallbackNode?: Node | null
 ): void {
-  if (!node || !calendarStyle) return;
+  if (!calendarStyle || (!node && !fallbackNode)) return;
 
-  const nodeRoot = (node as { getRootNode?: () => Node }).getRootNode?.();
+  const nodeRoot = node
+    ? (node as { getRootNode?: () => Node }).getRootNode?.()
+    : undefined;
   const fallbackRoot =
     fallbackNode &&
     (fallbackNode as { getRootNode?: () => Node }).getRootNode?.();
-  const root = nodeRoot instanceof ShadowRoot ? nodeRoot : fallbackRoot;
-  if (!(root instanceof ShadowRoot)) return;
+
+  // Prefer the overlay/modal root when provided; otherwise use the calendar node root.
+  const root =
+    (fallbackRoot instanceof ShadowRoot && fallbackRoot) ||
+    (nodeRoot instanceof ShadowRoot ? nodeRoot : null);
+  if (!root) return;
 
   const cachedThemeStyle = flatpickrStyledRoots.get(root);
   if (
@@ -224,6 +230,7 @@ export function ensureFlatpickrStylesInRoot(
   styleElement.textContent = calendarStyle;
   root.appendChild(styleElement);
   flatpickrStyledRoots.set(root, styleElement);
+  console.log('Testing pickr');
 }
 
 export async function initializeMultiAnchorFlatpickr(

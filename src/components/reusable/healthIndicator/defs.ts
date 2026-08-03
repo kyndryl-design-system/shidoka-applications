@@ -1,0 +1,16 @@
+export enum HEALTH_INDICATOR_STATUS {
+  HEALTHY = 'healthy',
+  WARNING = 'warning',
+  ERROR = 'error',
+  CRITICAL = 'critical',
+}
+
+export const HEALTH_INDICATOR_STATUS_LABELS: Record<
+  HEALTH_INDICATOR_STATUS,
+  string
+> = {
+  [HEALTH_INDICATOR_STATUS.HEALTHY]: 'Healthy',
+  [HEALTH_INDICATOR_STATUS.WARNING]: 'Warning',
+  [HEALTH_INDICATOR_STATUS.ERROR]: 'Error',
+  [HEALTH_INDICATOR_STATUS.CRITICAL]: 'Critical',
+};

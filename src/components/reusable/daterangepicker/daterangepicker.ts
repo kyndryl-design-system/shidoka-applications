@@ -1357,6 +1357,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const inputEl = this._inputEl;
     this._pendingFlatpickrReinit = false;
 
+    const container = getModalContainer(this);
+    // Pre-inject right before Flatpickr init/reinit
+    ensureFlatpickrStylesInRoot(
+      inputEl,
+      ShidokaFlatpickrCalendarTheme.toString(),
+      container
+    );
+
     try {
       cleanupFlatpickrInstance(this.flatpickrInstance);
       this.flatpickrInstance = undefined;
