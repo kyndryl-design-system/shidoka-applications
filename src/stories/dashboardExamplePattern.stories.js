@@ -305,15 +305,16 @@ const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
 `;
 
 const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
-  /* Storybook shell glue for the demo header/flyouts; not dashboard pattern CSS. */
+  /* Storybook shell glue for the demo header/flyouts; not dashboard pattern CSS.
+   * Elevate header/nav containers only — never individual kyn-header-flyout hosts.
+   * Per-flyout stacking contexts let later overflow siblings paint over an open
+   * mobile flyout and break workspace-switcher drilldown. */
   .ui-shell-dashboard-demo kyn-header {
-    position: relative;
     z-index: 30;
   }
 
   .ui-shell-dashboard-demo kyn-header-nav,
-  .ui-shell-dashboard-demo kyn-header-flyouts,
-  .ui-shell-dashboard-demo kyn-header-flyout {
+  .ui-shell-dashboard-demo kyn-header-flyouts {
     position: relative;
     z-index: 31;
   }
@@ -323,15 +324,8 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     z-index: 10;
   }
 
-  .ui-shell-dashboard-demo kyn-side-drawer,
-  .ui-shell-dashboard-demo kyn-modal {
-    position: relative;
-    z-index: 0;
-  }
-
   .ui-shell-dashboard-demo kyn-side-drawer[open],
   .ui-shell-dashboard-demo kyn-modal[open] {
-    position: relative;
     z-index: 32;
   }
 
@@ -342,7 +336,8 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     white-space: nowrap;
   }
 
-  .account-chevron,
+  /* Do not set .account-chevron display here — uiImplementationStyles owns
+   * flex + the mobile display:none rule, and shell styles concatenate last. */
   .header-icon,
   .local-nav-icon {
     display: inline-flex;
@@ -363,16 +358,6 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-  }
-
-  .account-chevron {
-    transition: transform 0.2s;
-  }
-
-  .ui-impl-switcher {
-    width: 625px;
-    min-width: 625px;
-    max-width: calc(100vw - 2rem);
   }
 
   .flyout-action-list,
@@ -398,23 +383,14 @@ const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
     min-width: 0;
     padding: 0;
   }
-
-  @media (max-width: calc(52rem - 0.001px)) {
-    .ui-impl-switcher {
-      width: min(375px, calc(100vw - 2rem));
-      min-width: 0;
-    }
-
-    .account-chevron {
-      display: none;
-    }
-  }
 `;
 
 const DASHBOARD_STYLES = [
   DASHBOARD_PATTERN_STYLES,
   GLOBAL_SWITCHER_PATTERN_STYLES,
   DASHBOARD_VISUAL_TREATMENT_STYLES,
+  // Keep switcher host widths in sync with Patterns/Workspace Switcher UI Implementation.
+  WorkspaceSwitcherPattern.uiImplementationStyles,
   DASHBOARD_SHELL_DEMO_STYLES,
 ].join('\n\n');
 
