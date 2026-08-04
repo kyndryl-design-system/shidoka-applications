@@ -109,6 +109,12 @@ export class NumberInput extends FormMixin(LitElement) {
   @query('input')
   accessor _inputEl!: HTMLInputElement;
 
+  /**
+   * After a stepper commit, native `change` can still fire on blur for the
+   * same value. Skip that duplicate `on-change`.
+   */
+  private _skipNativeChangeForValue: number | null = null;
+
   override render() {
     return html`
       <div class="number-input" ?disabled=${this.disabled}>
@@ -180,6 +186,7 @@ export class NumberInput extends FormMixin(LitElement) {
             step=${ifDefined(this.step)}
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
+            @focus=${this._handleFocus}
             @input=${(e: any) => this._handleInput(e)}
             @change=${(e: Event) => this._handleChange(e)}
             @keydown=${(e: KeyboardEvent) => this._handleKeydown(e)}
@@ -276,6 +283,8 @@ export class NumberInput extends FormMixin(LitElement) {
     this._validate(true, false);
     this._emitValue();
     this._emitChange();
+    // Stepper already committed; ignore a later blur `change` for this value.
+    this._skipNativeChangeForValue = this.value;
   }
 
   private _handleAdd() {
@@ -286,6 +295,14 @@ export class NumberInput extends FormMixin(LitElement) {
     this._validate(true, false);
     this._emitValue();
     this._emitChange();
+    // Stepper already committed; ignore a later blur `change` for this value.
+    this._skipNativeChangeForValue = this.value;
+  }
+
+  private _handleFocus() {
+    // New edit session: allow a later blur commit even if it matches a
+    // previous stepper value (e.g. user changes away and back).
+    this._skipNativeChangeForValue = null;
   }
 
   private _handleInput(e: any) {
@@ -301,6 +318,15 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleChange(e: Event) {
+    if (
+      this._skipNativeChangeForValue !== null &&
+      this.value === this._skipNativeChangeForValue
+    ) {
+      this._skipNativeChangeForValue = null;
+      return;
+    }
+
+    this._skipNativeChangeForValue = null;
     this._validate(true, false);
     this._emitChange(e);
   }
