@@ -77,6 +77,7 @@ export const NumberInput = {
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-number-input>
     `;

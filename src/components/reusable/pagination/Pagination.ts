@@ -16,7 +16,7 @@ import './pagination-navigation-buttons';
  * Integrates with other utility components like items range display, page size dropdown,
  * and navigation buttons.
  * @fires on-page-size-change - Dispatched when the page size changes.`detail:{ value: number }`
- * @fires on-page-number-change - Dispatched when the currently active page changes.`detail:{ value: number }`
+ * @fires on-page-number-change - Dispatched when the currently active page is committed.`detail:{ value: number }`
  *
  */
 @customElement('kyn-pagination')
@@ -97,7 +97,12 @@ export class Pagination extends LitElement {
    * @param e - The emitted custom event with the selected page number.
    */
   private handlePageNumberChange(e: CustomEvent) {
-    this.pageNumber = e.detail.value;
+    const value = Number(e.detail.value);
+    if (!Number.isFinite(value)) return;
+    this.pageNumber = Math.min(
+      this._numberOfPages,
+      Math.max(1, Math.trunc(value))
+    );
   }
 
   override render() {

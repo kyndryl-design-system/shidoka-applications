@@ -25,6 +25,7 @@ const _defaultTextStrings = {
  * Number input.
  *
  * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number }`
+ * @fires on-change - Emitted when the value is committed (blur after edit, Enter, or stepper click).`detail:{ value: number }`
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -180,6 +181,8 @@ export class NumberInput extends FormMixin(LitElement) {
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
             @input=${(e: any) => this._handleInput(e)}
+            @change=${(e: Event) => this._handleChange(e)}
+            @keydown=${(e: KeyboardEvent) => this._handleKeydown(e)}
           />
 
           ${!this.inline
@@ -272,6 +275,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
     this._validate(true, false);
     this._emitValue();
+    this._emitChange();
   }
 
   private _handleAdd() {
@@ -281,6 +285,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
     this._validate(true, false);
     this._emitValue();
+    this._emitChange();
   }
 
   private _handleInput(e: any) {
@@ -295,6 +300,17 @@ export class NumberInput extends FormMixin(LitElement) {
     this._emitValue(e);
   }
 
+  private _handleChange(e: Event) {
+    this._validate(true, false);
+    this._emitChange(e);
+  }
+
+  private _handleKeydown(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return;
+    // Blur commits via the native change event when the value changed.
+    (e.target as HTMLInputElement).blur();
+  }
+
   private _emitValue(e?: any) {
     const Detail: any = {
       value: this.value,
@@ -307,6 +323,21 @@ export class NumberInput extends FormMixin(LitElement) {
       detail: Detail,
     });
     this.dispatchEvent(event);
+  }
+
+  private _emitChange(e?: Event) {
+    const Detail: any = {
+      value: this.value,
+    };
+    if (e) {
+      Detail.origEvent = e;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: Detail,
+      })
+    );
   }
 
   private _validate(interacted: Boolean, report: Boolean) {

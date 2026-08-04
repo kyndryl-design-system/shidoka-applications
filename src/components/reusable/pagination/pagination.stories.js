@@ -38,28 +38,37 @@ const args = {
   },
 };
 
+const renderPagination = (args) => html`
+  <kyn-pagination
+    .count=${args.count}
+    .pageSize=${args.pageSize}
+    .pageNumber=${args.pageNumber}
+    .pageSizeOptions=${args.pageSizeOptions}
+    .pageSizeDropdownLabel=${args.pageSizeDropdownLabel}
+    ?hideItemsRange=${args.hideItemsRange}
+    ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
+    ?hideNavigationButtons=${args.hideNavigationButtons}
+    openDirection=${args.openDirection}
+    .textStrings=${args.textStrings}
+    @on-page-size-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+    @on-page-number-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+  ></kyn-pagination>
+`;
+
 export const Pagination = {
   args,
-  render: (args) => {
-    return html`
-      <kyn-pagination
-        .count=${args.count}
-        .pageSize=${args.pageSize}
-        .pageNumber=${args.pageNumber}
-        .pageSizeOptions=${args.pageSizeOptions}
-        .pageSizeDropdownLabel=${args.pageSizeDropdownLabel}
-        ?hideItemsRange=${args.hideItemsRange}
-        ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
-        ?hideNavigationButtons=${args.hideNavigationButtons}
-        openDirection=${args.openDirection}
-        .textStrings=${args.textStrings}
-        @on-page-size-change=${(e) =>
-          action(e.type)({ ...e, detail: e.detail })}
-        @on-page-number-change=${(e) =>
-          action(e.type)({ ...e, detail: e.detail })}
-      ></kyn-pagination>
-    `;
+  render: renderPagination,
+};
+
+/** Uses the free-text page input (shown when there are more than 20 pages). */
+export const ManyPages = {
+  args: {
+    ...args,
+    count: 500,
+    pageSize: 10,
+    pageNumber: 1,
   },
+  render: renderPagination,
 };
 
 export const Skeleton = {
