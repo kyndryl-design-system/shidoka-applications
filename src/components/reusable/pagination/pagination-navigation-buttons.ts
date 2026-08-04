@@ -54,6 +54,13 @@ export class PaginationNavigationButtons extends LitElement {
   @state()
   accessor _draftPageNumber: number | null = null;
 
+  /**
+   * When true, the next page-input commit (blur) is ignored.
+   * Set on prev/next pointerdown so button navigation is relative to the
+   * committed page, not an in-progress draft.
+   */
+  private _suppressPageInputCommit = false;
+
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;
 
@@ -64,10 +71,22 @@ export class PaginationNavigationButtons extends LitElement {
   accessor pageNumberLabel = 'Page number';
 
   /**
+   * Discards an in-progress page draft before the input blurs into a nav button.
+   * Runs on pointerdown so it precedes the input's change/commit.
+   */
+  private _onNavButtonPointerDown() {
+    if (this.pageNumberOptions.length <= 20) return;
+    this._suppressPageInputCommit = true;
+    this._draftPageNumber = null;
+  }
+
+  /**
    * Handles the button click event, either moving to the next page or previous page
    * @param {boolean} next - If true, will move to the next page, otherwise to the previous page
    */
   private handleButtonClick(next: boolean) {
+    this._suppressPageInputCommit = false;
+    this._draftPageNumber = null;
     const currentPage = next ? this.pageNumber + 1 : this.pageNumber - 1;
     this._emitPageNumberChange(currentPage);
   }
@@ -85,6 +104,7 @@ export class PaginationNavigationButtons extends LitElement {
    * @param {CustomEvent} event
    */
   private _handlePageInputDraft(event: CustomEvent) {
+    this._suppressPageInputCommit = false;
     this._draftPageNumber = Number(event.detail.value);
   }
 
@@ -93,6 +113,13 @@ export class PaginationNavigationButtons extends LitElement {
    * @param {CustomEvent} event
    */
   private _handlePageInputCommit(event: CustomEvent) {
+    if (this._suppressPageInputCommit) {
+      this._suppressPageInputCommit = false;
+      this._draftPageNumber = null;
+      this.requestUpdate();
+      return;
+    }
+
     const raw = Number(
       event.detail?.value ?? this._draftPageNumber ?? this.pageNumber
     );
@@ -158,6 +185,7 @@ export class PaginationNavigationButtons extends LitElement {
         type="button"
         size="small"
         ?disabled=${disableBackButton}
+        @pointerdown=${this._onNavButtonPointerDown}
         @on-click=${() => this.handleButtonClick(false)}
         description=${this.textStrings.previousPage}
       >
@@ -215,6 +243,7 @@ export class PaginationNavigationButtons extends LitElement {
         type="button"
         size="small"
         ?disabled=${disableNextButton}
+        @pointerdown=${this._onNavButtonPointerDown}
         @on-click=${() => this.handleButtonClick(true)}
         description=${this.textStrings.nextPage}
       >
@@ -229,9 +258,12 @@ export class PaginationNavigationButtons extends LitElement {
         { length: this.numberOfPages },
         (_, i) => i + 1
       );
+      // Draft is invalid across page-count changes (incl. dropdown ↔ input swap).
+      this._draftPageNumber = null;
+      this._suppressPageInputCommit = false;
     }
 
-    // Drop a stale draft if the page was changed externally (e.g. prev/next).
+    // Drop a stale draft if the page was changed externally (e.g. parent update).
     if (
       changedProps.has('pageNumber') &&
       this._draftPageNumber !== null &&
