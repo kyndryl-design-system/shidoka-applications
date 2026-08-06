@@ -33,6 +33,8 @@ import {
   normalizeToDate,
   isValidDate,
   filterValidDates,
+  formatDatesForEmit,
+  formatDateForEmit,
   isEmptyValue,
   shouldSkipManualInputSync,
   timesEqual,
@@ -457,6 +459,66 @@ describe('filterValidDates', () => {
     const date3 = new Date(2024, 11, 31);
     const result = filterValidDates([date1, null, date2, 'invalid', date3]);
     expect(result).toEqual([date1, date2, date3]);
+  });
+});
+
+describe('formatDatesForEmit', () => {
+  /** Mimics Flatpickr Y-m-d using local calendar components. */
+  const formatYmd = (date: Date, format: string): string => {
+    if (format !== 'Y-m-d') {
+      throw new Error(`Unexpected format in test: ${format}`);
+    }
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  it('should emit ISO strings for valueFormat iso (default contract)', () => {
+    // Local midnight on 2026-06-01 — in positive-offset TZs, toISOString shifts the UTC day.
+    const localMidnight = new Date(2026, 5, 1);
+    const result = formatDatesForEmit(
+      [localMidnight],
+      'iso',
+      'Y-m-d',
+      formatYmd
+    );
+    expect(result).toEqual([localMidnight.toISOString()]);
+  });
+
+  it('should emit calendar dateFormat strings without timezone day-shift', () => {
+    const localMidnight = new Date(2026, 5, 1);
+    const result = formatDatesForEmit(
+      [localMidnight],
+      'dateFormat',
+      'Y-m-d',
+      formatYmd
+    );
+    expect(result).toEqual(['2026-06-01']);
+  });
+
+  it('should demonstrate iso vs dateFormat divergence for local midnight', () => {
+    const localMidnight = new Date(2026, 5, 1);
+    const iso = formatDateForEmit(localMidnight, 'iso', 'Y-m-d', formatYmd);
+    const calendar = formatDateForEmit(
+      localMidnight,
+      'dateFormat',
+      'Y-m-d',
+      formatYmd
+    );
+
+    expect(calendar).toBe('2026-06-01');
+    // When the runtime TZ is east of UTC, ISO starts on the previous calendar day.
+    if (localMidnight.getTimezoneOffset() < 0) {
+      expect(iso.startsWith('2026-05-31')).toBe(true);
+    }
+  });
+
+  it('should format multiple dates', () => {
+    const dates = [new Date(2026, 5, 1), new Date(2026, 5, 15)];
+    expect(formatDatesForEmit(dates, 'dateFormat', 'Y-m-d', formatYmd)).toEqual(
+      ['2026-06-01', '2026-06-15']
+    );
   });
 });
 

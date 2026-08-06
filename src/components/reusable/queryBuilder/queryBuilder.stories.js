@@ -611,6 +611,105 @@ export const AllValueTypes = {
   },
 };
 
+const dateCalendarFields = [
+  { name: 'birthDate', label: 'Birth Date', dataType: 'date' },
+  { name: 'hireDate', label: 'Hire Date', dataType: 'date' },
+];
+
+const dateCalendarQuery = {
+  id: 'root',
+  combinator: 'and',
+  rules: [
+    {
+      id: 'rule-birth-date',
+      field: 'birthDate',
+      operator: 'equal',
+      value: '2026-06-01',
+    },
+    {
+      id: 'rule-hire-date-between',
+      field: 'hireDate',
+      operator: 'between',
+      value: ['2026-01-01', '2026-12-31'],
+    },
+  ],
+};
+
+/**
+ * Illustrates #931: date fields emit calendar strings (Y-m-d) into the query
+ * rule — matching the picker selection — instead of timezone-shifted ISO
+ * instants (e.g. Mumbai selecting 2026-06-01 no longer becomes
+ * 2026-05-31T18:30:00.000Z). Change a date and confirm the Query Output stays
+ * date-only.
+ */
+export const DateValuesAsCalendarStrings = {
+  args: {
+    ...args,
+    fields: dateCalendarFields,
+    query: dateCalendarQuery,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Date fields use DatePicker `valueFormat="dateFormat"` so rule values are calendar strings (e.g. `2026-06-01`) rather than UTC ISO datetimes. Select or change a date and verify the Query Output matches the selected day with no time component.',
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .query-output {
+          margin-top: 24px;
+        }
+        .date-calendar-note {
+          margin-bottom: 16px;
+          color: var(--kd-color-text-level-secondary);
+          max-width: 48rem;
+        }
+      </style>
+      <p class="date-calendar-note">
+        Date fields emit calendar strings matching the picker selection (e.g.
+        <code>2026-06-01</code>), not timezone-shifted ISO datetimes. Change a
+        date below and confirm the Query Output stays date-only — including in
+        positive-offset timezones such as Asia/Kolkata.
+      </p>
+      <kyn-query-builder
+        id="query-builder-date-calendar"
+        .fields=${args.fields}
+        .query=${args.query}
+        .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
+        ?showCloneButtons=${args.showCloneButtons}
+        ?showLockButtons=${args.showLockButtons}
+        ?hideGroupBtn=${args.hideGroupBtn}
+        .maxDepth=${args.maxDepth}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
+        ?disabled=${args.disabled}
+        @on-query-change=${(e) => {
+          action('on-query-change')(e.detail);
+          const outputEl = document.getElementById(
+            'query-output-date-calendar'
+          );
+          if (outputEl) {
+            outputEl.codeSnippet = JSON.stringify(e.detail.query, null, 2);
+          }
+        }}
+      ></kyn-query-builder>
+      <div class="query-output">
+        <kyn-block-code-view
+          id="query-output-date-calendar"
+          language="json"
+          codeViewLabel="Query Output"
+          codeSnippet=${JSON.stringify(args.query, null, 2)}
+          .maxHeight=${300}
+          copyOptionVisible
+        ></kyn-block-code-view>
+      </div>
+    `;
+  },
+};
+
 // Fields with validators for the validation story
 const fieldsWithValidation = [
   {

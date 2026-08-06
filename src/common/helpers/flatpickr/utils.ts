@@ -222,6 +222,43 @@ export function filterValidDates(dates: unknown[]): Date[] {
   return dates.filter((d): d is Date => isValidDate(d));
 }
 
+/** Emit format for picker `on-change.detail.dates` / form values. */
+export type DateValueFormat = 'iso' | 'dateFormat';
+
+/** Flatpickr-compatible date formatter (`flatpickr.formatDate`). */
+export type FormatDateFn = (date: Date, format: string) => string;
+
+/**
+ * Formats dates for on-change / form emission.
+ *
+ * - `'iso'` (default contract): `Date.toISOString()` — UTC instant strings.
+ * - `'dateFormat'`: calendar strings via `formatDateFn` matching `dateFormat`
+ *   (e.g. `Y-m-d` → `2026-06-01`), avoiding timezone day-shifts from local midnight.
+ */
+export function formatDatesForEmit(
+  dates: Date[],
+  valueFormat: DateValueFormat,
+  dateFormat: string,
+  formatDateFn: FormatDateFn
+): string[] {
+  if (valueFormat === 'dateFormat') {
+    return dates.map((date) => formatDateFn(date, dateFormat));
+  }
+  return dates.map((date) => date.toISOString());
+}
+
+/**
+ * Formats a single date for emission. Same rules as {@link formatDatesForEmit}.
+ */
+export function formatDateForEmit(
+  date: Date,
+  valueFormat: DateValueFormat,
+  dateFormat: string,
+  formatDateFn: FormatDateFn
+): string {
+  return formatDatesForEmit([date], valueFormat, dateFormat, formatDateFn)[0];
+}
+
 /**
  * Checks if a value is empty (null, undefined, empty string, or empty array).
  */
