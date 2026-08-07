@@ -40,6 +40,12 @@ export default {
       ],
       control: { type: 'select' },
     },
+    valueFormat: {
+      options: ['iso', 'dateFormat'],
+      control: { type: 'select' },
+      description:
+        'Format for on-change.detail.dates and form value. Default iso preserves UTC ISO strings; dateFormat emits strings matching dateFormat (e.g. Y-m-d).',
+    },
     size: {
       options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
@@ -165,6 +171,7 @@ const Template = (args) => {
       .label=${args.label}
       .locale=${args.locale}
       .dateFormat=${args.dateFormat}
+      .valueFormat=${args.valueFormat}
       .rangeEditMode=${args.rangeEditMode}
       .value=${args.value}
       .defaultErrorMessage=${args.defaultErrorMessage}
@@ -196,6 +203,7 @@ DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  valueFormat: 'iso',
   value: [null, null],
   required: false,
   staticPosition: false,

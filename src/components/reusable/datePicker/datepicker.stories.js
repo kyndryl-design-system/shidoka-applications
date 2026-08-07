@@ -34,6 +34,12 @@ export default {
       ],
       control: { type: 'select' },
     },
+    valueFormat: {
+      options: ['iso', 'dateFormat'],
+      control: { type: 'select' },
+      description:
+        'Format for on-change.detail.dates. Default iso preserves UTC ISO strings; dateFormat emits strings matching dateFormat (e.g. Y-m-d).',
+    },
     mode: {
       options: ['single', 'multiple'],
       control: { type: 'select' },
@@ -123,6 +129,7 @@ const Template = (args) => {
       .locale=${args.locale}
       .label=${args.label}
       .dateFormat=${args.dateFormat}
+      .valueFormat=${args.valueFormat}
       ?staticPosition=${args.staticPosition}
       .defaultErrorMessage=${args.defaultErrorMessage}
       ?required=${args.required}
@@ -152,6 +159,7 @@ DatePickerDefault.args = {
   name: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
+  valueFormat: 'iso',
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',

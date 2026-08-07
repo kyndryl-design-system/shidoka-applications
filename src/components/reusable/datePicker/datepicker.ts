@@ -23,6 +23,8 @@ import {
   generateRandomId,
   isEmptyValue,
   filterValidDates,
+  formatDatesForEmit,
+  type DateValueFormat,
   shouldSkipManualInputSync,
   cleanupFlatpickrInstance,
   CONFIG_DEBOUNCE_DELAY,
@@ -70,7 +72,9 @@ type DatePickerValueInput = string | string[] | Date | Date[] | null;
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Emitted when the selected date(s) change. Event.detail has the shape:
  *   { dates: string | string[] | null | [], dateString?: string, source?: string }
- *   - dates: ISO string for single selection, or array of ISO strings for multiple selections.
+ *   - dates: By default (`valueFormat="iso"`), an ISO string for single selection, or an array of
+ *            ISO strings for multiple selections. With `valueFormat="dateFormat"`, strings match
+ *            `dateFormat` (e.g. `Y-m-d` → `2026-06-01`) to avoid timezone day-shifts.
  *            An empty array or null indicates the value was cleared.
  *   - dateString: the display string from the input (may be empty when cleared)
  *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
@@ -79,6 +83,7 @@ type DatePickerValueInput = string | string[] | Date | Date[] | null;
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  * @attr {Date | Date[] | string | string[] } [value=''] - The value of the input.
  * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
+ * @attr {'iso' | 'dateFormat'} [valueFormat='iso'] - Format used for `on-change.detail.dates`.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -102,6 +107,14 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
+
+  /**
+   * Format for `on-change.detail.dates`.
+   * - `'iso'` (default): UTC ISO strings via `Date.toISOString()` (existing contract).
+   * - `'dateFormat'`: calendar strings matching `dateFormat` (avoids timezone day-shifts).
+   */
+  @property({ type: String })
+  accessor valueFormat: DateValueFormat = 'iso';
 
   /**
    * Sets the initial selected date(s).
@@ -1205,13 +1218,22 @@ export class DatePicker extends FormMixin(LitElement) {
 
       let formattedDates: string | string[] | null | [];
       const isMultiple = this.mode === 'multiple';
+      const formatDateFn = (
+        flatpickr as typeof flatpickr & {
+          formatDate: (date: Date, format: string) => string;
+        }
+      ).formatDate;
 
-      if (isMultiple) {
-        formattedDates = validDates.map((date) => date.toISOString());
-      } else if (validDates.length > 0) {
-        formattedDates = validDates[0].toISOString();
-      } else {
+      if (validDates.length === 0) {
         formattedDates = isMultiple ? [] : null;
+      } else {
+        const formatted = formatDatesForEmit(
+          validDates,
+          this.valueFormat,
+          this.dateFormat,
+          formatDateFn
+        );
+        formattedDates = isMultiple ? formatted : formatted[0];
       }
 
       const dateObjects = isMultiple

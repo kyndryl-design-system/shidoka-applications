@@ -88,6 +88,10 @@ Date & Time Picker components have been updated to use Flatpicker for a custom c
   - Add `twentyFourHourFormat` property for time format (if needed)
   - Add `defaultDate` property for DatePicker, DateRangePicker, and TimePicker
   - Add `defaultHour` and `defaultMinute` properties for Timepicker
+  - Optional `valueFormat` on DatePicker and DateRangePicker (`'iso'` | `'dateFormat'`, default `'iso'`).
+    - Default remains UTC ISO strings in `on-change.detail.dates` (no breaking change).
+    - Use `valueFormat="dateFormat"` to emit calendar strings matching `dateFormat` (e.g. `Y-m-d` → `2026-06-01`), which avoids timezone day-shifts from local midnight.
+    - Query Builder `dataType: 'date'` fields opt into `dateFormat` mode automatically.
 - Event handling
   - Update event listeners from `@on-input` to `@on-change`
   - Update event detail structure in event handler

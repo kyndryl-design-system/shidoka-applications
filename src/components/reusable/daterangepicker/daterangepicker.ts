@@ -26,12 +26,15 @@ import {
   generateRandomId,
   cleanupFlatpickrInstance,
   filterValidDates,
+  formatDatesForEmit,
+  type DateValueFormat,
   shouldSkipManualInputSync,
   CONFIG_DEBOUNCE_DELAY,
   RESIZE_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
 import '../../reusable/button';
 
+import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 import type { Instance } from 'flatpickr/dist/types/instance';
 
@@ -72,8 +75,9 @@ const _defaultTextStrings = {
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Emitted when the selected date range changes. Event.detail has the shape:
  *   { dates: string[] | (Date | null)[] | null, dateString?: string, source?: string }
- *   - dates: array of ISO strings for selected dates (length 1 or 2), or an array containing Date/null values,
- *            or null/empty when cleared.
+ *   - dates: By default (`valueFormat="iso"`), an array of ISO strings for selected dates (length 1 or 2).
+ *            With `valueFormat="dateFormat"`, strings match `dateFormat`. Cleared values may be
+ *            an array containing Date/null values, or null/empty.
  *   - dateString: the display string from the input (may be empty when cleared)
  *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
@@ -81,6 +85,7 @@ const _defaultTextStrings = {
  * @attr {[Date | null, Date | null]} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
+ * @attr {'iso' | 'dateFormat'} [valueFormat='iso'] - Format used for `on-change.detail.dates` and form value.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -104,6 +109,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
+
+  /**
+   * Format for `on-change.detail.dates` and the joined form value.
+   * - `'iso'` (default): UTC ISO strings via `Date.toISOString()` (existing contract).
+   * - `'dateFormat'`: calendar strings matching `dateFormat` (avoids timezone day-shifts).
+   */
+  @property({ type: String })
+  accessor valueFormat: DateValueFormat = 'iso';
 
   /**
    * Sets the initial selected date(s) for the range.
@@ -446,13 +459,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return locale?.rangeSeparator ?? ' to ';
   }
 
+  private getFlatpickrFormatDate(): (date: Date, format: string) => string {
+    return (
+      flatpickr as typeof flatpickr & {
+        formatDate: (date: Date, format: string) => string;
+      }
+    ).formatDate;
+  }
+
   private updateFormValue() {
     if (!this._internals || !this._inputEl) return;
 
     const [start, end] = this.value;
 
     if (start instanceof Date && end instanceof Date) {
-      const formattedValue = [start.toISOString(), end.toISOString()].join(',');
+      const formattedValue = formatDatesForEmit(
+        [start, end],
+        this.valueFormat,
+        this.dateFormat,
+        this.getFlatpickrFormatDate()
+      ).join(',');
       this._internals.setFormValue(formattedValue);
 
       if (this.name) {
@@ -1741,21 +1767,31 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
 
         emitValue(this, 'on-change', {
-          dates: [validDates[0].toISOString()],
+          dates: formatDatesForEmit(
+            [validDates[0]],
+            this.valueFormat,
+            this.dateFormat,
+            this.getFlatpickrFormatDate()
+          ),
           dateObjects: [validDates[0], null],
           dateString: dateStr,
           source: 'date-selection',
         });
       } else {
         this.value = [validDates[0], validDates[1]];
-        const iso = validDates.slice(0, 2).map((d) => d.toISOString());
+        const formatted = formatDatesForEmit(
+          validDates.slice(0, 2),
+          this.valueFormat,
+          this.dateFormat,
+          this.getFlatpickrFormatDate()
+        );
         const display = this.flatpickrInstance!.input.value;
         if (this._inputEl) {
           this._inputEl.value = display;
           this.updateFormValue();
         }
         emitValue(this, 'on-change', {
-          dates: iso,
+          dates: formatted,
           dateObjects: validDates.slice(0, 2),
           dateString: display,
           source: 'date-selection',

@@ -359,6 +359,7 @@ export class QueryBuilderRule extends LitElement {
         label=${field.label || this.textStrings.selectDate || 'Select date'}
         size=${this.size}
         hideLabel
+        .valueFormat=${'dateFormat'}
         placeholder=${field.placeholder ||
         this.textStrings.selectDate ||
         'Select date'}
@@ -596,6 +597,7 @@ export class QueryBuilderRule extends LitElement {
     }
 
     if (field.dataType === 'date' || field.dataType === 'datetime') {
+      const dateValueFormat = field.dataType === 'date' ? 'dateFormat' : 'iso';
       return html`
         <div class="qb-rule__between">
           <kyn-date-picker
@@ -604,6 +606,7 @@ export class QueryBuilderRule extends LitElement {
             label=${startLabel}
             size=${this.size}
             hideLabel
+            .valueFormat=${dateValueFormat}
             ?enableTime=${field.dataType === 'datetime'}
             placeholder=${this.textStrings.start || 'Start'}
             .value=${val1}
@@ -621,6 +624,7 @@ export class QueryBuilderRule extends LitElement {
             label=${endLabel}
             size=${this.size}
             hideLabel
+            .valueFormat=${dateValueFormat}
             ?enableTime=${field.dataType === 'datetime'}
             placeholder=${this.textStrings.end || 'End'}
             .value=${val2}
