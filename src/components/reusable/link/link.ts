@@ -1,6 +1,12 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LINK_TYPES, LINK_TARGETS } from './defs';
 
 import LinkStyles from './link.scss?inline';
@@ -55,6 +61,23 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   accessor animationInactive = false;
 
+  /** When true, long link text truncates with an ellipsis. */
+  @property({ type: Boolean, reflect: true })
+  accessor truncate = false;
+
+  /** Auto-derived title from slot content
+   * @internal
+   */
+  @state()
+  accessor _autoTitle = '';
+
+  /**
+   * Queries unnamed slotted HTML elements.
+   * @ignore
+   */
+  @queryAssignedElements({ slot: '' })
+  accessor slottedEls!: Array<HTMLElement>;
+
   override render() {
     const classes = this.returnClassMap();
 
@@ -68,9 +91,16 @@ export class Link extends LitElement {
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         @click=${(e: Event) => this.handleClick(e)}
+        title=${ifDefined(
+          (this.truncate && this.slottedEls.length === 0
+            ? this._autoTitle
+            : '') || undefined
+        )}
       >
         <span class="kyn-link-text-span-flex">
-          <slot></slot>
+          <span class="kyn-link-text-label"
+            ><slot @slotchange=${this._handleDefaultSlotChange}></slot
+          ></span>
           <slot name="icon"></slot>
         </span>
       </a>
@@ -84,6 +114,7 @@ export class Link extends LitElement {
       'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
       'kyn-link-text-font-lighter': this.linkFontWeight === 'lighter',
       'animation-inactive': this.animationInactive,
+      truncate: this.truncate,
     };
 
     if (this.disabled) {
@@ -97,6 +128,17 @@ export class Link extends LitElement {
         'kyn-link-text-standalone': this.standalone,
       });
     }
+  }
+
+  private _handleDefaultSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const nodes = slot.assignedNodes({ flatten: true });
+    this.slottedEls.length = nodes.length;
+    let textContent = '';
+    for (const node of nodes) {
+      textContent += node.textContent?.trim() ?? '';
+    }
+    this._autoTitle = textContent.trim();
   }
 
   private handleClick(e: Event) {

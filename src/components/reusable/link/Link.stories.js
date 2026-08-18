@@ -48,6 +48,7 @@ const args = {
   iconLeft: false,
   linkFontWeight: 'default',
   animationInactive: false,
+  truncate: false,
   'on-click': fn(),
 };
 
@@ -66,6 +67,7 @@ export const Link = {
         kind=${args.kind}
         linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
+        ?truncate=${args.truncate}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
@@ -89,6 +91,7 @@ export const LinkWithIcon = {
       ?standalone=${args.standalone}
       ?iconLeft=${args.iconLeft}
       ?animationInactive=${args.animationInactive}
+      ?truncate=${args.truncate}
       href=${args.href}
       target=${args.target}
       kind=${args.kind}
@@ -124,6 +127,7 @@ export const LinkAISpecific = {
         kind=${args.kind}
         linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
+        ?truncate=${args.truncate}
         @on-click=${args['on-click']}
       >
         ${args.unnamed}
