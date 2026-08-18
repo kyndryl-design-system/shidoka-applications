@@ -61,7 +61,7 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   accessor animationInactive = false;
 
-  /** When true, long link text truncates with an ellipsis. */
+  /** When true, long link text truncates with an ellipsis. Default: false (text wraps normally). */
   @property({ type: Boolean, reflect: true })
   accessor truncate = false;
 
