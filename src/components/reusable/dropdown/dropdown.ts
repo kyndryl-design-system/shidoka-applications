@@ -514,6 +514,10 @@ export class Dropdown extends FormMixin(LitElement) {
       ? this._addOptionBlocked.blocked
       : false;
 
+    const selectedTitle = this.multiple ? this._textStrings.title : this.text;
+
+    const selectTitle = selectedTitle || this._textStrings.title;
+
     return html`
       <div
         class=${classMap(mainDropdownClasses)}
@@ -572,7 +576,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 role="combobox"
                 id=${this.name}
                 name=${this.name}
-                title=${this._textStrings.title}
+                title=${selectTitle}
                 ?required=${this.required}
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
