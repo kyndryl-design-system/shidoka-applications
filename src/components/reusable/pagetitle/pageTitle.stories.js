@@ -107,7 +107,6 @@ const handleChange = (e) => {
 };
 
 export const Contextual = {
-  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',
@@ -134,7 +133,6 @@ export const Contextual = {
 };
 
 export const ContextualWithSubtitle = {
-  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',
