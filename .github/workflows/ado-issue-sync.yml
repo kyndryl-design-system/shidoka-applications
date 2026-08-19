@@ -11,6 +11,9 @@ concurrency:
   group: issue-${{ github.event.issue.number }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   alert:
     if: ${{ !github.event.issue.pull_request }}
