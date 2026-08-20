@@ -36,7 +36,7 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor subTitle = '';
 
-  /** Type of page title. Controls typography, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
+  /** Type of page title. Controls typography, color, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
   @property({ type: String, reflect: true })
   accessor type = 'primary';
 
