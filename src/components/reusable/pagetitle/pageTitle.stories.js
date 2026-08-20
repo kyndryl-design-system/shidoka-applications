@@ -2,7 +2,9 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import './index';
-import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
+import cloudDownloadDuotoneIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
+import cloudDownloadMono32Icon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cloud-download.svg';
+import cloudDownloadMono20Icon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cloud-download.svg';
 
 export default {
   title: 'Components/Layout & Structure/Page Title',
@@ -28,24 +30,55 @@ const args = {
   open: false,
 };
 
+const handleChange = (e) => {
+  action(e.type)({ ...e, detail: e.detail });
+};
+
+/** Duotone at primary; monotone for secondary and tertiary. */
+const getPageTitleIcon = (type = 'primary') => {
+  switch (type) {
+    case 'secondary':
+      return cloudDownloadMono32Icon;
+    case 'tertiary':
+      return cloudDownloadMono20Icon;
+    default:
+      return cloudDownloadDuotoneIcon;
+  }
+};
+
+const iconSlotStyles = html`
+  <style>
+    kyn-page-title [slot='icon'] svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+`;
+
+const renderIconSlot = (type = 'primary') =>
+  html`<span slot="icon">${unsafeSVG(getPageTitleIcon(type))}</span>`;
+
+const renderPageTitle = (args, slots = '') => html`
+  <kyn-page-title
+    type=${args.type}
+    headLine=${args.headLine}
+    pageTitle=${args.pageTitle}
+    subTitle=${args.subTitle}
+    ?aiConnected=${args.aiConnected}
+    ?contextual=${args.contextual}
+    ?open=${args.open}
+    @on-change=${handleChange}
+  >
+    ${slots}
+  </kyn-page-title>
+`;
+
 export const PageTitle = {
   args,
   argTypes: {
     contextual: { control: false, table: { disable: true } },
   },
-  render: (args) => {
-    return html`
-      <kyn-page-title
-        type=${args.type}
-        headLine=${args.headLine}
-        pageTitle=${args.pageTitle}
-        subTitle=${args.subTitle}
-        ?aiConnected=${args.aiConnected}
-        ?open=${args.open}
-        @on-change=${handleChange}
-      ></kyn-page-title>
-    `;
-  },
+  render: (args) => renderPageTitle(args),
 };
 
 export const WithIcon = {
@@ -53,33 +86,10 @@ export const WithIcon = {
   argTypes: {
     contextual: { control: false, table: { disable: true } },
   },
-  render: (args) => {
-    return html`
-      <style>
-        .cloud-icon {
-          display: flex;
-          svg {
-            width: 56px;
-            height: 56px;
-          }
-        }
-      </style>
-      <kyn-page-title
-        type=${args.type}
-        headLine=${args.headLine}
-        pageTitle=${args.pageTitle}
-        subTitle=${args.subTitle}
-        ?aiConnected=${args.aiConnected}
-        ?open=${args.open}
-        @on-change=${handleChange}
-      >
-        <!-- Note: use icon size 56 * 56 for Page title as per UX guidelines -->
-        <span slot="icon" class="cloud-icon"
-          >${unsafeSVG(cloudDownloadIcon)}</span
-        >
-      </kyn-page-title>
-    `;
-  },
+  render: (args) => html`
+    ${iconSlotStyles}
+    ${renderPageTitle(args, renderIconSlot(args.type))}
+  `,
 };
 
 export const AIConnected = {
@@ -87,23 +97,7 @@ export const AIConnected = {
   argTypes: {
     contextual: { control: false, table: { disable: true } },
   },
-  render: (args) => {
-    return html`
-      <kyn-page-title
-        type=${args.type}
-        headLine=${args.headLine}
-        pageTitle=${args.pageTitle}
-        subTitle=${args.subTitle}
-        ?aiConnected=${args.aiConnected}
-        ?open=${args.open}
-        @on-change=${handleChange}
-      ></kyn-page-title>
-    `;
-  },
-};
-
-const handleChange = (e) => {
-  action(e.type)({ ...e, detail: e.detail });
+  render: (args) => renderPageTitle(args),
 };
 
 export const Contextual = {
@@ -112,24 +106,15 @@ export const Contextual = {
     pageTitle: 'Application Name',
     contextual: true,
   },
-  render: (args) => {
-    return html`
-      <kyn-page-title
-        type=${args.type}
-        headLine=${args.headLine}
-        pageTitle=${args.pageTitle}
-        subTitle=${args.subTitle}
-        ?aiConnected=${args.aiConnected}
-        ?contextual=${args.contextual}
-        ?open=${args.open}
-        @on-change=${handleChange}
-      >
+  render: (args) =>
+    renderPageTitle(
+      args,
+      html`
         <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
         <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
         <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
-      </kyn-page-title>
-    `;
-  },
+      `
+    ),
 };
 
 export const ContextualWithSubtitle = {
@@ -139,22 +124,62 @@ export const ContextualWithSubtitle = {
     subTitle: 'Application subtitle description',
     contextual: true,
   },
-  render: (args) => {
-    return html`
-      <kyn-page-title
-        type=${args.type}
-        headLine=${args.headLine}
-        pageTitle=${args.pageTitle}
-        subTitle=${args.subTitle}
-        ?aiConnected=${args.aiConnected}
-        ?contextual=${args.contextual}
-        ?open=${args.open}
-        @on-change=${handleChange}
-      >
+  render: (args) =>
+    renderPageTitle(
+      args,
+      html`
         <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
         <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
         <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
-      </kyn-page-title>
-    `;
-  },
+      `
+    ),
+};
+
+const typeGalleryItems = [
+  { type: 'primary', heading: 'h1', pageTitle: 'Page Title' },
+  { type: 'secondary', heading: 'h2', pageTitle: 'Title' },
+  { type: 'tertiary', heading: 'h3', pageTitle: 'Title' },
+];
+
+export const TypeGallery = {
+  name: 'Type Gallery',
+  parameters: { controls: { disable: true } },
+  render: () => html`
+    ${iconSlotStyles}
+    <style>
+      .page-title-type-gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .page-title-type-gallery__row {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+      .page-title-type-gallery__label {
+        flex-shrink: 0;
+        min-width: 168px;
+        white-space: nowrap;
+        color: var(--kd-color-text-level-secondary);
+        font-family: var(--kd-font-family-code-view, monospace);
+        font-size: 14px;
+        text-transform: capitalize;
+      }
+    </style>
+    <div class="page-title-type-gallery">
+      ${typeGalleryItems.map(
+        ({ type, heading, pageTitle }) => html`
+          <div class="page-title-type-gallery__row">
+            <span class="page-title-type-gallery__label"
+              >${type} · ${heading}</span
+            >
+            <kyn-page-title type=${type} pageTitle=${pageTitle}>
+              ${renderIconSlot(type)}
+            </kyn-page-title>
+          </div>
+        `
+      )}
+    </div>
+  `,
 };

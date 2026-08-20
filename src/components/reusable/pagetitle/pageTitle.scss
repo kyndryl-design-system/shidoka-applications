@@ -3,6 +3,21 @@
 
 :host {
   display: block;
+  --page-title-icon-size: 56px;
+  --page-title-icon-gap: 16px;
+  --page-title-chevron-size: 24px;
+}
+
+:host([type='secondary']) {
+  --page-title-icon-size: 32px;
+  --page-title-icon-gap: 12px;
+  --page-title-chevron-size: 20px;
+}
+
+:host([type='tertiary']) {
+  --page-title-icon-size: 20px;
+  --page-title-icon-gap: 8px;
+  --page-title-chevron-size: 16px;
 }
 
 .page-title {
@@ -61,10 +76,24 @@
   }
 }
 
-.icon-wrapper slot[name='icon']::slotted(*) {
-  max-width: 56px;
-  max-height: 56px;
-  margin-right: 16px;
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-wrapper slot[name='icon']::slotted(*),
+.icon-wrapper slot[name='icon']::slotted(svg) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--page-title-icon-size);
+  height: var(--page-title-icon-size);
+  max-width: var(--page-title-icon-size);
+  max-height: var(--page-title-icon-size);
+  margin-right: var(--page-title-icon-gap);
+  flex-shrink: 0;
 }
 
 // Contextual dropdown variant
@@ -112,19 +141,14 @@
   transition: transform 150ms ease-out;
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: var(--page-title-chevron-size);
+    height: var(--page-title-chevron-size);
     fill: currentColor;
   }
 
   &--open {
     transform: rotate(-180deg);
   }
-}
-
-.page-title-tertiary .chevron-icon svg {
-  width: 16px;
-  height: 16px;
 }
 
 // Panel — matches dropdown .options

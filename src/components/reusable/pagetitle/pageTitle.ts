@@ -15,7 +15,7 @@ import type { PageTitleOption } from './pageTitleOption';
  * Page Title
  *
  * If the contextual variant is used to trigger navigation, consider using anchor elements instead, as buttons do not convey destination information to assistive technology users.
- * @slot icon - Slot for icon. Use size 56 * 56 as per UX guidelines.
+ * @slot icon - Slot for icon. Use a duotone icon up to 56px for `type="primary"`, or a monotone icon sized to match smaller types.
  * @slot unnamed - Slot for `kyn-pagetitle-option` elements when using the contextual variant.
  * @fires on-change - Fired when a contextual dropdown item is selected. Detail: `{ value: string, text: string }`.
  */
@@ -36,8 +36,8 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor subTitle = '';
 
-  /** Type of page title `'primary'` , `'secondary'` & `'tertiary'`. */
-  @property({ type: String })
+  /** Type of page title. Controls typography, color, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
+  @property({ type: String, reflect: true })
   accessor type = 'primary';
 
   /** Set this to `true` for AI theme. */
@@ -224,6 +224,31 @@ export class PageTitle extends LitElement {
       ?.focus();
   }
 
+  private _getHeadingTag(): 'h1' | 'h2' | 'h3' {
+    switch (this.type) {
+      case 'secondary':
+        return 'h2';
+      case 'tertiary':
+        return 'h3';
+      default:
+        return 'h1';
+    }
+  }
+
+  private _renderHeading(
+    classes: Record<string, boolean>,
+    content: unknown
+  ) {
+    switch (this._getHeadingTag()) {
+      case 'h2':
+        return html`<h2 class="${classMap(classes)}">${content}</h2>`;
+      case 'h3':
+        return html`<h3 class="${classMap(classes)}">${content}</h3>`;
+      default:
+        return html`<h1 class="${classMap(classes)}">${content}</h1>`;
+    }
+  }
+
   override render() {
     const classes = {
       'page-title': true,
@@ -252,7 +277,7 @@ export class PageTitle extends LitElement {
           <!-- Title -->
           ${this.contextual
             ? this._renderContextualTitle(classes, displayTitle)
-            : html`<h1 class="${classMap(classes)}">${displayTitle}</h1>`}
+            : this._renderHeading(classes, displayTitle)}
           <!-- Subtitle -->
           ${this.subTitle !== ''
             ? html`<div class="${classMap(subTitleClasses)}">
@@ -270,8 +295,9 @@ export class PageTitle extends LitElement {
   ) {
     return html`
       <div class="contextual-wrapper">
-        <h1 class="${classMap(classes)}">
-          <button
+        ${this._renderHeading(
+          classes,
+          html`<button
             class="contextual-trigger"
             aria-expanded="${this.open}"
             aria-haspopup="listbox"
@@ -283,8 +309,8 @@ export class PageTitle extends LitElement {
             <span class="chevron-icon ${this.open ? 'chevron-icon--open' : ''}">
               ${unsafeSVG(downIcon)}
             </span>
-          </button>
-        </h1>
+          </button>`
+        )}
         <div
           id="contextual-listbox"
           class="contextual-dropdown ${this.open
