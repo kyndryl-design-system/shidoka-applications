@@ -10,12 +10,13 @@ import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/che
 import PageTitleScss from './pageTitle.scss?inline';
 import './pageTitleOption';
 import type { PageTitleOption } from './pageTitleOption';
+import { PAGE_TITLE_SIZES } from './defs';
 
 /**
  * Page Title
  *
  * If the contextual variant is used to trigger navigation, consider using anchor elements instead, as buttons do not convey destination information to assistive technology users.
- * @slot icon - Slot for icon. Use size 56 * 56 as per UX guidelines.
+ * @slot icon - Slot for icon. Use a duotone icon at `size="large"`; use monotone icons for `medium`, `small`, and `extra-small`. Icon dimensions scale with `size`: 56px (large), 24px (medium), 20px (small), 16px (extra-small).
  * @slot unnamed - Slot for `kyn-pagetitle-option` elements when using the contextual variant.
  * @fires on-change - Fired when a contextual dropdown item is selected. Detail: `{ value: string, text: string }`.
  */
@@ -39,6 +40,10 @@ export class PageTitle extends LitElement {
   /** Type of page title `'primary'` , `'secondary'` & `'tertiary'`. */
   @property({ type: String })
   accessor type = 'primary';
+
+  /** Title size. `'large'`, `'medium'`, `'small'` & `'extra-small'`. */
+  @property({ type: String, reflect: true })
+  accessor size: PAGE_TITLE_SIZES = PAGE_TITLE_SIZES.LARGE;
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
@@ -224,10 +229,40 @@ export class PageTitle extends LitElement {
       ?.focus();
   }
 
+  private _getHeadingTag(): 'h1' | 'h2' | 'h3' | 'h4' {
+    switch (this.size) {
+      case PAGE_TITLE_SIZES.MEDIUM:
+        return 'h2';
+      case PAGE_TITLE_SIZES.SMALL:
+        return 'h3';
+      case PAGE_TITLE_SIZES.EXTRA_SMALL:
+        return 'h4';
+      default:
+        return 'h1';
+    }
+  }
+
+  private _renderHeading(
+    classes: Record<string, boolean>,
+    content: unknown
+  ) {
+    switch (this._getHeadingTag()) {
+      case 'h2':
+        return html`<h2 class="${classMap(classes)}">${content}</h2>`;
+      case 'h3':
+        return html`<h3 class="${classMap(classes)}">${content}</h3>`;
+      case 'h4':
+        return html`<h4 class="${classMap(classes)}">${content}</h4>`;
+      default:
+        return html`<h1 class="${classMap(classes)}">${content}</h1>`;
+    }
+  }
+
   override render() {
     const classes = {
       'page-title': true,
       [`page-title-${this.type}`]: true,
+      [`page-title-${this.size}`]: true,
       'ai-connected': this.aiConnected,
     };
 
@@ -252,7 +287,7 @@ export class PageTitle extends LitElement {
           <!-- Title -->
           ${this.contextual
             ? this._renderContextualTitle(classes, displayTitle)
-            : html`<h1 class="${classMap(classes)}">${displayTitle}</h1>`}
+            : this._renderHeading(classes, displayTitle)}
           <!-- Subtitle -->
           ${this.subTitle !== ''
             ? html`<div class="${classMap(subTitleClasses)}">
@@ -270,8 +305,9 @@ export class PageTitle extends LitElement {
   ) {
     return html`
       <div class="contextual-wrapper">
-        <h1 class="${classMap(classes)}">
-          <button
+        ${this._renderHeading(
+          classes,
+          html`<button
             class="contextual-trigger"
             aria-expanded="${this.open}"
             aria-haspopup="listbox"
@@ -283,8 +319,8 @@ export class PageTitle extends LitElement {
             <span class="chevron-icon ${this.open ? 'chevron-icon--open' : ''}">
               ${unsafeSVG(downIcon)}
             </span>
-          </button>
-        </h1>
+          </button>`
+        )}
         <div
           id="contextual-listbox"
           class="contextual-dropdown ${this.open
