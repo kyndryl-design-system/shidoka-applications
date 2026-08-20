@@ -6,7 +6,7 @@ import '../components/reusable/link';
 import '../components/reusable/pagetitle';
 import '../components/reusable/button';
 import '../components/reusable/tabs';
-import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
+import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cloud-download.svg';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
 import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import refreshIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/refresh.svg';
@@ -52,6 +52,11 @@ export const Default = {
           align-self: stretch;
         }
 
+        kyn-page-title [slot='icon'] svg {
+          width: 100%;
+          height: 100%;
+        }
+
         @media (min-width: 42rem) {
           .page-header__content {
             flex-direction: row;
@@ -81,9 +86,7 @@ export const Default = {
               subTitle="Subtitle"
               contextual
             >
-              <span slot="icon" class="cloud-icon"
-                >${unsafeSVG(cloudDownloadIcon)}</span
-              >
+              <span slot="icon">${unsafeSVG(cloudDownloadIcon)}</span>
               <kyn-pagetitle-option value="app-1"
                 >Page Title 1</kyn-pagetitle-option
               >

@@ -10,13 +10,12 @@ import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/che
 import PageTitleScss from './pageTitle.scss?inline';
 import './pageTitleOption';
 import type { PageTitleOption } from './pageTitleOption';
-import { PAGE_TITLE_SIZES } from './defs';
 
 /**
  * Page Title
  *
  * If the contextual variant is used to trigger navigation, consider using anchor elements instead, as buttons do not convey destination information to assistive technology users.
- * @slot icon - Slot for icon. Use a duotone icon at `size="large"`; use monotone icons for `medium`, `small`, and `extra-small`. Icon dimensions scale with `size`: 56px (large), 24px (medium), 20px (small), 16px (extra-small).
+ * @slot icon - Slot for icon. Use a duotone icon up to 56px for `type="primary"`, or a monotone icon sized to match smaller types.
  * @slot unnamed - Slot for `kyn-pagetitle-option` elements when using the contextual variant.
  * @fires on-change - Fired when a contextual dropdown item is selected. Detail: `{ value: string, text: string }`.
  */
@@ -37,13 +36,9 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor subTitle = '';
 
-  /** Type of page title `'primary'` , `'secondary'` & `'tertiary'`. */
-  @property({ type: String })
-  accessor type = 'primary';
-
-  /** Title size. `'large'`, `'medium'`, `'small'` & `'extra-small'`. */
+  /** Type of page title. Controls typography, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
   @property({ type: String, reflect: true })
-  accessor size: PAGE_TITLE_SIZES = PAGE_TITLE_SIZES.LARGE;
+  accessor type = 'primary';
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
@@ -229,14 +224,12 @@ export class PageTitle extends LitElement {
       ?.focus();
   }
 
-  private _getHeadingTag(): 'h1' | 'h2' | 'h3' | 'h4' {
-    switch (this.size) {
-      case PAGE_TITLE_SIZES.MEDIUM:
+  private _getHeadingTag(): 'h1' | 'h2' | 'h3' {
+    switch (this.type) {
+      case 'secondary':
         return 'h2';
-      case PAGE_TITLE_SIZES.SMALL:
+      case 'tertiary':
         return 'h3';
-      case PAGE_TITLE_SIZES.EXTRA_SMALL:
-        return 'h4';
       default:
         return 'h1';
     }
@@ -251,8 +244,6 @@ export class PageTitle extends LitElement {
         return html`<h2 class="${classMap(classes)}">${content}</h2>`;
       case 'h3':
         return html`<h3 class="${classMap(classes)}">${content}</h3>`;
-      case 'h4':
-        return html`<h4 class="${classMap(classes)}">${content}</h4>`;
       default:
         return html`<h1 class="${classMap(classes)}">${content}</h1>`;
     }
@@ -262,7 +253,6 @@ export class PageTitle extends LitElement {
     const classes = {
       'page-title': true,
       [`page-title-${this.type}`]: true,
-      [`page-title-${this.size}`]: true,
       'ai-connected': this.aiConnected,
     };
 

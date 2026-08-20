@@ -8,29 +8,26 @@
   --page-title-chevron-size: 24px;
 }
 
-:host([size='medium']) {
-  --page-title-icon-size: 24px;
+:host([type='secondary']) {
+  --page-title-icon-size: 32px;
   --page-title-icon-gap: 12px;
   --page-title-chevron-size: 20px;
 }
 
-:host([size='small']) {
+:host([type='tertiary']) {
   --page-title-icon-size: 20px;
   --page-title-icon-gap: 8px;
   --page-title-chevron-size: 16px;
 }
 
-:host([size='extra-small']) {
-  --page-title-icon-size: 16px;
-  --page-title-icon-gap: 8px;
-  --page-title-chevron-size: 12px;
-}
-
 .page-title {
-  font-family: var(--kd-font-family-primary);
-  font-weight: var(--kd-font-weight-regular);
-  letter-spacing: var(--kd-letter-spacing-3);
+  @include typography.type-body-01;
   margin: 0;
+  color: var(--kd-color-text-title-primary);
+
+  &.ai-connected {
+    color: var(--kd-color-text-title-ai-primary);
+  }
 
   &-wrapper {
     display: flex;
@@ -38,49 +35,18 @@
     align-items: center;
   }
 
-  &-large {
-    font-size: 40px;
-    line-height: 48px;
-  }
-
-  &-medium {
-    font-size: 32px;
-    line-height: 40px;
-  }
-
-  &-small {
-    font-size: 20px;
-    line-height: 28px;
-  }
-
-  &-extra-small {
-    font-size: 16px;
-    line-height: 24px;
-  }
-
   &-primary {
-    color: var(--kd-color-text-title-primary);
-
-    &.ai-connected {
-      color: var(--kd-color-text-title-ai-primary);
-    }
+    @include typography.type-headline-04;
   }
 
   &-secondary {
-    color: var(--kd-color-text-title-secondary);
-
-    &.ai-connected {
-      color: var(--kd-color-text-title-ai-secondary);
-    }
+    @include typography.type-headline-06;
   }
 
   &-tertiary {
     font-weight: var(--kd-font-weight-medium);
-    color: var(--kd-color-text-title-tertiary);
 
-    &.ai-connected {
-      color: var(--kd-color-text-title-ai-tertiary);
-    }
+    @include typography.type-body-01;
   }
 }
 .page {
@@ -103,7 +69,6 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-right: var(--page-title-icon-gap);
 }
 
 .icon-wrapper slot[name='icon']::slotted(*),
@@ -115,6 +80,7 @@
   height: var(--page-title-icon-size);
   max-width: var(--page-title-icon-size);
   max-height: var(--page-title-icon-size);
+  margin-right: var(--page-title-icon-gap);
   flex-shrink: 0;
 }
 
