@@ -175,7 +175,8 @@ export const SizeGallery = {
       }
       .page-title-size-gallery__label {
         flex-shrink: 0;
-        width: 120px;
+        min-width: 168px;
+        white-space: nowrap;
         color: var(--kd-color-text-level-secondary);
         font-family: var(--kd-font-family-code-view, monospace);
         font-size: 14px;
