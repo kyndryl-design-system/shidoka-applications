@@ -2104,6 +2104,7 @@ export const BulkSelection: Story = {
 };
 
 export const Empty: Story = {
+  tags: ['new'],
   render: () => {
     return html`
       <kyn-table-toolbar
@@ -2111,7 +2112,6 @@ export const Empty: Story = {
         tableSubtitle=${'Table Subtitle'}
       >
       </kyn-table-toolbar>
-
       <kyn-table-container>
         <kyn-table>
           <kyn-thead>
