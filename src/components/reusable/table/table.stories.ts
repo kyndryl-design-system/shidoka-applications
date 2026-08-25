@@ -23,6 +23,8 @@ import '../../reusable/dropdown';
 import '../../reusable/tag';
 import '../../reusable/textInput';
 import '../../reusable/stateIndicator';
+import '../../reusable/button';
+import '../../reusable/link';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-male.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-female.svg';
@@ -2126,12 +2128,30 @@ export const Empty: Story = {
             </kyn-header-tr>
           </kyn-thead>
           <kyn-tbody>
-            <kyn-empty-tr colspan="7"
-              ><kyn-state-indicator
-                type="empty"
-                size="large"
-              ></kyn-state-indicator
-            ></kyn-empty-tr>
+            <kyn-empty-tr colspan="7">
+              <kyn-state-indicator type="empty" size="medium">
+                <span slot="header">State sample header</span>
+                <span
+                  >Additional information helps explain the current state and
+                  any actions that may be available.</span
+                >
+                <kyn-button
+                  slot="primary"
+                  size="small"
+                  @on-click=${(e: Event) => action(e.type)(e)}
+                >
+                  Primary
+                </kyn-button>
+                <kyn-link
+                  slot="link"
+                  standalone
+                  href="#"
+                  @on-click=${(e: Event) => action(e.type)(e)}
+                >
+                  Link
+                </kyn-link>
+              </kyn-state-indicator>
+            </kyn-empty-tr>
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
