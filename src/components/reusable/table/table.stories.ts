@@ -22,6 +22,7 @@ import allData from './story-helpers/table-data.json';
 import '../../reusable/dropdown';
 import '../../reusable/tag';
 import '../../reusable/textInput';
+import '../../reusable/stateIndicator';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-male.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/gender-female.svg';
@@ -49,6 +50,7 @@ const meta: Meta = {
     'kyn-table-footer': 'kyn-table-footer',
     'kyn-table-legend': 'kyn-table-legend',
     'kyn-table-legend-item': 'kyn-table-legend-item',
+    'kyn-empty-tr': 'kyn-empty-tr',
   },
 };
 
@@ -2095,6 +2097,49 @@ export const BulkSelection: Story = {
           .hideNavigationButtons=${args.hideNavigationButtons}
           @on-page-size-change=${handlePageSizeChange}
           @on-page-number-change=${handlePageNumberChange}
+        ></kyn-pagination>
+      </kyn-table-footer>
+    `;
+  },
+};
+
+export const Empty: Story = {
+  tags: ['new'],
+  render: () => {
+    return html`
+      <kyn-table-toolbar
+        .tableTitle=${'Basic'}
+        tableSubtitle=${'Table Subtitle'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th .align=${'center'}> ID </kyn-th>
+              <kyn-th> First Name </kyn-th>
+              <kyn-th> Last Name </kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+              <kyn-th .align=${'center'}>Gender</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            <kyn-empty-tr colspan="7"
+              ><kyn-state-indicator
+                type="empty"
+                size="large"
+              ></kyn-state-indicator
+            ></kyn-empty-tr>
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+      <kyn-table-footer>
+        <kyn-pagination
+          .count=${allData.length}
+          pageSize=${5}
+          pageNumber=${1}
         ></kyn-pagination>
       </kyn-table-footer>
     `;

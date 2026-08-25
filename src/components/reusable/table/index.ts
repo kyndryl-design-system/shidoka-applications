@@ -14,3 +14,4 @@ export { TableHeaderRow } from './table-header-row';
 export { TableExpandedRow } from './table-expanded-row';
 export { TableSkeleton } from './table.skeleton';
 export { TableHeaderGroup } from './table-header-group';
+export { TableEmptyRow } from './table-empty-row';
