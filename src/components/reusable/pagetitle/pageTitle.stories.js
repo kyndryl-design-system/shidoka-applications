@@ -26,12 +26,30 @@ const args = {
   pageTitle: 'Page Title',
   subTitle: '',
   aiConnected: false,
+  truncationOverride: false,
   contextual: false,
   open: false,
 };
 
 const handleChange = (e) => {
   action(e.type)({ ...e, detail: e.detail });
+};
+
+const hiddenControl = { control: false, table: { disable: true } };
+
+const basicStoryArgTypes = {
+  contextual: hiddenControl,
+  open: hiddenControl,
+  truncationOverride: hiddenControl,
+};
+
+const contextualStoryArgTypes = {
+  truncationOverride: hiddenControl,
+};
+
+const truncationStoryArgTypes = {
+  contextual: hiddenControl,
+  open: hiddenControl,
 };
 
 /** Duotone at primary; monotone for secondary and tertiary. */
@@ -65,6 +83,7 @@ const renderPageTitle = (args, slots = '') => html`
     pageTitle=${args.pageTitle}
     subTitle=${args.subTitle}
     ?aiConnected=${args.aiConnected}
+    ?truncationOverride=${args.truncationOverride}
     ?contextual=${args.contextual}
     ?open=${args.open}
     @on-change=${handleChange}
@@ -75,17 +94,13 @@ const renderPageTitle = (args, slots = '') => html`
 
 export const PageTitle = {
   args,
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => renderPageTitle(args),
 };
 
 export const WithIcon = {
   args,
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => html`
     ${iconSlotStyles}
     ${renderPageTitle(args, renderIconSlot(args.type))}
@@ -94,9 +109,7 @@ export const WithIcon = {
 
 export const AIConnected = {
   args: { ...args, aiConnected: true },
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => renderPageTitle(args),
 };
 
@@ -106,6 +119,7 @@ export const Contextual = {
     pageTitle: 'Application Name',
     contextual: true,
   },
+  argTypes: contextualStoryArgTypes,
   render: (args) =>
     renderPageTitle(
       args,
@@ -124,6 +138,7 @@ export const ContextualWithSubtitle = {
     subTitle: 'Application subtitle description',
     contextual: true,
   },
+  argTypes: contextualStoryArgTypes,
   render: (args) =>
     renderPageTitle(
       args,
@@ -182,4 +197,16 @@ export const TypeGallery = {
       )}
     </div>
   `,
+};
+
+export const TruncationExample = {
+  name: 'Truncation Example',
+  args: {
+    ...args,
+    pageTitle: 'A long page title that will be truncated',
+    subTitle:
+      'Page titles truncate at 35 characters by default. Set truncationOverride to show the full title.',
+  },
+  argTypes: truncationStoryArgTypes,
+  render: (args) => renderPageTitle(args),
 };
