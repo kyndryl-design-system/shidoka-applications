@@ -26,6 +26,7 @@ const args = {
   pageTitle: 'Page Title',
   subTitle: '',
   aiConnected: false,
+  truncationOverride: false,
   contextual: false,
   open: false,
 };
@@ -65,6 +66,7 @@ const renderPageTitle = (args, slots = '') => html`
     pageTitle=${args.pageTitle}
     subTitle=${args.subTitle}
     ?aiConnected=${args.aiConnected}
+    ?truncationOverride=${args.truncationOverride}
     ?contextual=${args.contextual}
     ?open=${args.open}
     @on-change=${handleChange}
@@ -182,4 +184,18 @@ export const TypeGallery = {
       )}
     </div>
   `,
+};
+
+export const TruncationExample = {
+  name: 'Truncation Example',
+  args: {
+    ...args,
+    pageTitle: 'A long page title that will be truncated',
+    subTitle:
+      'Page titles truncate at 35 characters by default. Set truncationOverride to show the full title.',
+  },
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
+  render: (args) => renderPageTitle(args),
 };

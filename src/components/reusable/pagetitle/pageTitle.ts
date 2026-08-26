@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, nothing, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -28,13 +28,17 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor headLine = '';
 
-  /** Page title text (required). Used as fallback when no contextual item is selected. */
+  /** Page title text (required). Used as fallback when no contextual item is selected. Truncated to 35 characters by default. */
   @property({ type: String })
   accessor pageTitle = '';
 
   /** Page subtitle text. */
   @property({ type: String })
   accessor subTitle = '';
+
+  /** When true, disables the default 35-character title truncation. */
+  @property({ type: Boolean })
+  accessor truncationOverride = false;
 
   /** Type of page title. Controls typography, color, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
   @property({ type: String, reflect: true })
@@ -130,12 +134,25 @@ export class PageTitle extends LitElement {
     this.requestUpdate();
   }
 
-  private _getDisplayTitle(): string {
+  /** Default max characters for the displayed page title. */
+  private static readonly TITLE_MAX_LENGTH = 35;
+
+  private _getFullTitle(): string {
     if (this.contextual) {
       const selected = this._options?.find((o) => o.selected);
       return selected?.text || this.pageTitle;
     }
     return this.pageTitle;
+  }
+
+  private _getDisplayTitle(fullTitle: string): string {
+    if (
+      this.truncationOverride ||
+      fullTitle.length <= PageTitle.TITLE_MAX_LENGTH
+    ) {
+      return fullTitle;
+    }
+    return `${fullTitle.slice(0, PageTitle.TITLE_MAX_LENGTH)}...`;
   }
 
   private _emitChange(item: { value: string; text: string }) {
@@ -237,15 +254,22 @@ export class PageTitle extends LitElement {
 
   private _renderHeading(
     classes: Record<string, boolean>,
-    content: unknown
+    content: unknown,
+    titleTooltip: string | typeof nothing = nothing
   ) {
     switch (this._getHeadingTag()) {
       case 'h2':
-        return html`<h2 class="${classMap(classes)}">${content}</h2>`;
+        return html`<h2 class="${classMap(classes)}" title="${titleTooltip}">
+          ${content}
+        </h2>`;
       case 'h3':
-        return html`<h3 class="${classMap(classes)}">${content}</h3>`;
+        return html`<h3 class="${classMap(classes)}" title="${titleTooltip}">
+          ${content}
+        </h3>`;
       default:
-        return html`<h1 class="${classMap(classes)}">${content}</h1>`;
+        return html`<h1 class="${classMap(classes)}" title="${titleTooltip}">
+          ${content}
+        </h1>`;
     }
   }
 
@@ -261,7 +285,10 @@ export class PageTitle extends LitElement {
       [`page-subtitle-${this.type}`]: true,
     };
 
-    const displayTitle = this._getDisplayTitle();
+    const fullTitle = this._getFullTitle();
+    const displayTitle = this._getDisplayTitle(fullTitle);
+    const titleTooltip =
+      displayTitle !== fullTitle ? fullTitle : nothing;
 
     return html`
       <div class="page-title-wrapper">
@@ -276,8 +303,8 @@ export class PageTitle extends LitElement {
             : null}
           <!-- Title -->
           ${this.contextual
-            ? this._renderContextualTitle(classes, displayTitle)
-            : this._renderHeading(classes, displayTitle)}
+            ? this._renderContextualTitle(classes, displayTitle, titleTooltip)
+            : this._renderHeading(classes, displayTitle, titleTooltip)}
           <!-- Subtitle -->
           ${this.subTitle !== ''
             ? html`<div class="${classMap(subTitleClasses)}">
@@ -291,7 +318,8 @@ export class PageTitle extends LitElement {
 
   private _renderContextualTitle(
     classes: Record<string, boolean>,
-    displayTitle: string
+    displayTitle: string,
+    titleTooltip: string | typeof nothing = nothing
   ) {
     return html`
       <div class="contextual-wrapper">
@@ -309,7 +337,8 @@ export class PageTitle extends LitElement {
             <span class="chevron-icon ${this.open ? 'chevron-icon--open' : ''}">
               ${unsafeSVG(downIcon)}
             </span>
-          </button>`
+          </button>`,
+          titleTooltip
         )}
         <div
           id="contextual-listbox"
