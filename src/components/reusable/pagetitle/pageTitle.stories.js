@@ -35,6 +35,23 @@ const handleChange = (e) => {
   action(e.type)({ ...e, detail: e.detail });
 };
 
+const hiddenControl = { control: false, table: { disable: true } };
+
+const basicStoryArgTypes = {
+  contextual: hiddenControl,
+  open: hiddenControl,
+  truncationOverride: hiddenControl,
+};
+
+const contextualStoryArgTypes = {
+  truncationOverride: hiddenControl,
+};
+
+const truncationStoryArgTypes = {
+  contextual: hiddenControl,
+  open: hiddenControl,
+};
+
 /** Duotone at primary; monotone for secondary and tertiary. */
 const getPageTitleIcon = (type = 'primary') => {
   switch (type) {
@@ -77,17 +94,13 @@ const renderPageTitle = (args, slots = '') => html`
 
 export const PageTitle = {
   args,
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => renderPageTitle(args),
 };
 
 export const WithIcon = {
   args,
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => html`
     ${iconSlotStyles}
     ${renderPageTitle(args, renderIconSlot(args.type))}
@@ -96,9 +109,7 @@ export const WithIcon = {
 
 export const AIConnected = {
   args: { ...args, aiConnected: true },
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: basicStoryArgTypes,
   render: (args) => renderPageTitle(args),
 };
 
@@ -108,6 +119,7 @@ export const Contextual = {
     pageTitle: 'Application Name',
     contextual: true,
   },
+  argTypes: contextualStoryArgTypes,
   render: (args) =>
     renderPageTitle(
       args,
@@ -126,6 +138,7 @@ export const ContextualWithSubtitle = {
     subTitle: 'Application subtitle description',
     contextual: true,
   },
+  argTypes: contextualStoryArgTypes,
   render: (args) =>
     renderPageTitle(
       args,
@@ -194,8 +207,6 @@ export const TruncationExample = {
     subTitle:
       'Page titles truncate at 35 characters by default. Set truncationOverride to show the full title.',
   },
-  argTypes: {
-    contextual: { control: false, table: { disable: true } },
-  },
+  argTypes: truncationStoryArgTypes,
   render: (args) => renderPageTitle(args),
 };
