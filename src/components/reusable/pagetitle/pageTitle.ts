@@ -11,6 +11,9 @@ import PageTitleScss from './pageTitle.scss?inline';
 import './pageTitleOption';
 import type { PageTitleOption } from './pageTitleOption';
 
+/** Max characters for truncated secondary and tertiary page titles. */
+const TITLE_MAX_LENGTH = 35;
+
 /**
  * Page Title
  *
@@ -28,7 +31,7 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor headLine = '';
 
-  /** Page title text (required). Used as fallback when no contextual item is selected. Truncated to 35 characters by default. */
+  /** Page title text (required). Used as fallback when no contextual item is selected. */
   @property({ type: String })
   accessor pageTitle = '';
 
@@ -36,9 +39,9 @@ export class PageTitle extends LitElement {
   @property({ type: String })
   accessor subTitle = '';
 
-  /** When true, disables the default 35-character title truncation. */
+  /** When true, truncates the title to 35 characters on `type="secondary"` (h2) and `type="tertiary"` (h3). Ignored for `type="primary"` (h1). */
   @property({ type: Boolean })
-  accessor truncationOverride = false;
+  accessor truncationTitle = false;
 
   /** Type of page title. Controls typography, color, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
   @property({ type: String, reflect: true })
@@ -134,9 +137,6 @@ export class PageTitle extends LitElement {
     this.requestUpdate();
   }
 
-  /** Default max characters for the displayed page title. */
-  private static readonly TITLE_MAX_LENGTH = 35;
-
   private _getFullTitle(): string {
     if (this.contextual) {
       const selected = this._options?.find((o) => o.selected);
@@ -145,14 +145,18 @@ export class PageTitle extends LitElement {
     return this.pageTitle;
   }
 
+  private _shouldTruncateTitle(): boolean {
+    return (
+      this.truncationTitle &&
+      (this.type === 'secondary' || this.type === 'tertiary')
+    );
+  }
+
   private _getDisplayTitle(fullTitle: string): string {
-    if (
-      this.truncationOverride ||
-      fullTitle.length <= PageTitle.TITLE_MAX_LENGTH
-    ) {
+    if (!this._shouldTruncateTitle() || fullTitle.length <= TITLE_MAX_LENGTH) {
       return fullTitle;
     }
-    return `${fullTitle.slice(0, PageTitle.TITLE_MAX_LENGTH)}...`;
+    return `${fullTitle.slice(0, TITLE_MAX_LENGTH)}...`;
   }
 
   private _emitChange(item: { value: string; text: string }) {
@@ -287,8 +291,7 @@ export class PageTitle extends LitElement {
 
     const fullTitle = this._getFullTitle();
     const displayTitle = this._getDisplayTitle(fullTitle);
-    const titleTooltip =
-      displayTitle !== fullTitle ? fullTitle : nothing;
+    const titleTooltip = displayTitle !== fullTitle ? fullTitle : nothing;
 
     return html`
       <div class="page-title-wrapper">
