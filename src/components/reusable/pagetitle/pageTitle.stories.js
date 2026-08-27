@@ -6,6 +6,12 @@ import cloudDownloadDuotoneIcon from '@kyndryl-design-system/shidoka-icons/svg/d
 import cloudDownloadMono32Icon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cloud-download.svg';
 import cloudDownloadMono20Icon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cloud-download.svg';
 
+const hiddenControl = { control: false, table: { disable: true } };
+
+const truncationTitleControl = {
+  control: { type: 'boolean' },
+};
+
 export default {
   title: 'Components/Layout & Structure/Page Title',
   component: 'kyn-page-title',
@@ -26,7 +32,7 @@ const args = {
   pageTitle: 'Page Title',
   subTitle: '',
   aiConnected: false,
-  truncationOverride: false,
+  truncationTitle: false,
   contextual: false,
   open: false,
 };
@@ -35,16 +41,14 @@ const handleChange = (e) => {
   action(e.type)({ ...e, detail: e.detail });
 };
 
-const hiddenControl = { control: false, table: { disable: true } };
-
 const basicStoryArgTypes = {
   contextual: hiddenControl,
   open: hiddenControl,
-  truncationOverride: hiddenControl,
+  truncationTitle: hiddenControl,
 };
 
 const contextualStoryArgTypes = {
-  truncationOverride: hiddenControl,
+  truncationTitle: hiddenControl,
 };
 
 const truncationStoryArgTypes = {
@@ -83,7 +87,7 @@ const renderPageTitle = (args, slots = '') => html`
     pageTitle=${args.pageTitle}
     subTitle=${args.subTitle}
     ?aiConnected=${args.aiConnected}
-    ?truncationOverride=${args.truncationOverride}
+    ?truncationTitle=${args.truncationTitle}
     ?contextual=${args.contextual}
     ?open=${args.open}
     @on-change=${handleChange}
@@ -102,8 +106,7 @@ export const WithIcon = {
   args,
   argTypes: basicStoryArgTypes,
   render: (args) => html`
-    ${iconSlotStyles}
-    ${renderPageTitle(args, renderIconSlot(args.type))}
+    ${iconSlotStyles} ${renderPageTitle(args, renderIconSlot(args.type))}
   `,
 };
 
@@ -203,10 +206,19 @@ export const TruncationExample = {
   name: 'Truncation Example',
   args: {
     ...args,
+    type: 'secondary',
+    truncationTitle: true,
     pageTitle: 'A long page title that will be truncated',
     subTitle:
-      'Page titles truncate at 35 characters by default. Set truncationOverride to show the full title.',
+      'Optional truncation at 35 characters for secondary (h2) and tertiary (h3) titles when truncationTitle is set. Not applicable to primary (h1).',
   },
-  argTypes: truncationStoryArgTypes,
+  argTypes: {
+    ...truncationStoryArgTypes,
+    truncationTitle: truncationTitleControl,
+    type: {
+      options: ['secondary', 'tertiary'],
+      control: { type: 'select' },
+    },
+  },
   render: (args) => renderPageTitle(args),
 };
