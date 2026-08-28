@@ -41,7 +41,7 @@ export class PageTitle extends LitElement {
 
   /** When true, truncates the title to 35 characters on `type="secondary"` (h2) and `type="tertiary"` (h3). Ignored for `type="primary"` (h1). */
   @property({ type: Boolean })
-  accessor truncationTitle = false;
+  accessor truncateTitle = false;
 
   /** Type of page title. Controls typography, color, icon scale, and heading level: `'primary'` (h1), `'secondary'` (h2), or `'tertiary'` (h3). */
   @property({ type: String, reflect: true })
@@ -147,7 +147,7 @@ export class PageTitle extends LitElement {
 
   private _shouldTruncateTitle(): boolean {
     return (
-      this.truncationTitle &&
+      this.truncateTitle &&
       (this.type === 'secondary' || this.type === 'tertiary')
     );
   }
