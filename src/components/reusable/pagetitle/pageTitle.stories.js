@@ -8,7 +8,7 @@ import cloudDownloadMono20Icon from '@kyndryl-design-system/shidoka-icons/svg/mo
 
 const hiddenControl = { control: false, table: { disable: true } };
 
-const truncationTitleControl = {
+const truncateTitleControl = {
   control: { type: 'boolean' },
 };
 
@@ -32,7 +32,7 @@ const args = {
   pageTitle: 'Page Title',
   subTitle: '',
   aiConnected: false,
-  truncationTitle: false,
+  truncateTitle: false,
   contextual: false,
   open: false,
 };
@@ -44,11 +44,11 @@ const handleChange = (e) => {
 const basicStoryArgTypes = {
   contextual: hiddenControl,
   open: hiddenControl,
-  truncationTitle: hiddenControl,
+  truncateTitle: hiddenControl,
 };
 
 const contextualStoryArgTypes = {
-  truncationTitle: hiddenControl,
+  truncateTitle: hiddenControl,
 };
 
 const truncationStoryArgTypes = {
@@ -87,7 +87,7 @@ const renderPageTitle = (args, slots = '') => html`
     pageTitle=${args.pageTitle}
     subTitle=${args.subTitle}
     ?aiConnected=${args.aiConnected}
-    ?truncationTitle=${args.truncationTitle}
+    ?truncateTitle=${args.truncateTitle}
     ?contextual=${args.contextual}
     ?open=${args.open}
     @on-change=${handleChange}
@@ -207,14 +207,14 @@ export const TruncationExample = {
   args: {
     ...args,
     type: 'secondary',
-    truncationTitle: true,
+    truncateTitle: true,
     pageTitle: 'A long page title that will be truncated',
     subTitle:
-      'Optional truncation at 35 characters for secondary (h2) and tertiary (h3) titles when truncationTitle is set. Not applicable to primary (h1).',
+      'Optional truncation at 35 characters for secondary (h2) and tertiary (h3) titles when truncateTitle is set. Not applicable to primary (h1).',
   },
   argTypes: {
     ...truncationStoryArgTypes,
-    truncationTitle: truncationTitleControl,
+    truncateTitle: truncateTitleControl,
     type: {
       options: ['secondary', 'tertiary'],
       control: { type: 'select' },
