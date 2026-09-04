@@ -1,10 +1,13 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
+import { useArgs } from 'storybook/preview-api';
 import { action } from 'storybook/actions';
 import './index';
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
+import '../dropdown';
+import '../notification';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
@@ -12,6 +15,7 @@ import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.
 
 import { WIDGET_STATUS } from './defs';
 import { createOptionsArray } from '../../../common/helpers/helpers';
+import allData from './../../reusable/table/story-helpers/table-data.json';
 
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
@@ -119,28 +123,72 @@ const getExampleContent = () => html`
 
 export const Widget = {
   args,
+  argTypes: {
+    widget4Value: {
+      control: { type: 'select' },
+      options: ['1', '2', '3', '4'],
+      description: 'Selected option for Widget 4 settings dropdown.',
+    },
+  },
   render: (args) => {
+    const [{ widget4Value }, updateArgs] = useArgs();
+    const data = allData.slice(0, 5);
+    const widget4NotificationCounts = {
+      1: 1,
+      2: 4,
+      3: 9,
+      4: 2,
+    };
+    const widget4NotificationCount =
+      widget4NotificationCounts[widget4Value] ?? 3;
+
+    const handleWidget4Change = (e) => {
+      updateArgs({ widget4Value: e.detail.value });
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
     return html`
-      <div style="display: flex; max-width: 500px; min-height: 200px;">
-        <div style="flex-grow: 1;">
-          <kyn-widget
-            widgetTitle=${args.widgetTitle}
-            ?disabled=${args.disabled}
-            ?dragActive=${args.dragActive}
-            ?selectable=${args.selectable}
-            ?selected=${args.selected}
-            ?compact=${args.compact}
-            ?removeHeader=${args.removeHeader}
-            ?showStatusBadge=${args.showStatusBadge}
-            statusBadgeLabel=${args.statusBadgeLabel}
-            widgetStatus=${args.widgetStatus}
-            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          >
-            ${getExampleContent()}
-            <span slot="subtitle">Subtitle</span>
-          </kyn-widget>
+      <kyn-widget
+        style="height: 300px; max-width: 500px;"
+        widgetTitle=${args.widgetTitle}
+        ?disabled=${args.disabled}
+        ?dragActive=${args.dragActive}
+        ?selectable=${args.selectable}
+        ?selected=${args.selected}
+        ?compact=${args.compact}
+        ?removeHeader=${args.removeHeader}
+        ?showStatusBadge=${args.showStatusBadge}
+        statusBadgeLabel=${args.statusBadgeLabel}
+        widgetStatus=${args.widgetStatus}
+        @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <span slot="subtitle">Subtitle</span>
+        <kyn-dropdown
+          slot="actions"
+          size="sm"
+          description="Settings"
+          value=${widget4Value}
+          @on-change=${handleWidget4Change}
+        >
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        </kyn-dropdown>
+        <div style="display:flex;flex-direction:column;gap:8px;padding-top:8px">
+          ${Array.from(
+            { length: widget4NotificationCount },
+            () => html`
+              <kyn-notification>
+                Swap this with your own component. Swap this with your own
+                component. Swap this with your own component. Swap this with
+                your own component. Swap this with your own component. Swap this
+                with your own component.
+              </kyn-notification>
+            `
+          )}
         </div>
-      </div>
+      </kyn-widget>
     `;
   },
 };
