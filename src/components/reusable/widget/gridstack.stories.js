@@ -101,7 +101,7 @@ export const Gridstack = {
       1: 1,
       2: 4,
       3: 9,
-      4: 1,
+      4: 2,
     };
     const widget4NotificationCount =
       widget4NotificationCounts[widget4Value] ?? 3;
