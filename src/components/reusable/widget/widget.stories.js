@@ -162,7 +162,6 @@ export const Widget = {
         widgetStatus=${args.widgetStatus}
         @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
-        <span slot="subtitle">Subtitle</span>
         <kyn-dropdown
           slot="actions"
           size="sm"
