@@ -138,7 +138,7 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor resizable = false;
 
-  /** Closes the modal when the backdrop is clicked. */
+  /** Closes the drawer when the backdrop is clicked. */
   @property({ type: Boolean })
   accessor closeOnBackdropClick = false;
 
