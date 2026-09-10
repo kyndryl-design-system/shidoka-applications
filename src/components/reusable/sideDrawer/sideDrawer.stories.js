@@ -32,6 +32,7 @@ const args = {
   hideCancelButton: false,
   gradientBackground: false,
   resizable: false,
+  closeOnBackdropClick: false,
 };
 
 export const SideDrawer = {
@@ -55,6 +56,7 @@ export const SideDrawer = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         ?resizable=${args.resizable}
+        ?closeOnBackdropClick=${args.closeOnBackdropClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -109,6 +111,7 @@ export const BeforeClose = {
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
+        ?closeOnBackdropClick=${args.closeOnBackdropClick}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -226,6 +229,7 @@ export const AIConnected = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
+        ?closeOnBackdropClick=${args.closeOnBackdropClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -280,6 +284,7 @@ export const Resizable = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         ?resizable=${args.resizable}
+        ?closeOnBackdropClick=${args.closeOnBackdropClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -341,6 +346,7 @@ export const LabelSlotWithLink = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         ?resizable=${args.resizable}
+        ?closeOnBackdropClick=${args.closeOnBackdropClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
