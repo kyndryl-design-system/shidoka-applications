@@ -121,6 +121,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   accessor disableScroll = false;
 
+  /** Closes the modal when the backdrop is clicked. */
+  @property({ type: Boolean })
+  accessor closeOnBackdropClick = false;
+
   override render() {
     const classes = {
       modal: true,
@@ -141,6 +145,11 @@ export class Modal extends LitElement {
         aria-labelledby="dialogLabel"
         tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
+        @click=${(e: Event) => {
+          if (this.closeOnBackdropClick && e.target === this._dialog) {
+            this._closeModal(e, 'cancel');
+          }
+        }}
       >
         <form method="dialog">
           <kyn-button
