@@ -812,6 +812,15 @@
     max-width: none;
   }
 
+  // Icon assigned to the unnamed slot is flattened into this flex row.
+  // Without this, a bare/wrapped inline SVG keeps its default
+  // vertical-align: baseline and renders a few px higher than the
+  // tag-label--new text, even though the row is already display: flex.
+  &::slotted(*) {
+    display: flex;
+    align-items: center;
+  }
+
   @include typography.type-ui-03;
 }
 
