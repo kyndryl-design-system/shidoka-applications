@@ -112,11 +112,12 @@ const iconPlaceholder = (icon, slot = '', className = '') => {
 // suppresses the default fallback, leaving an invisible star (no glyph to reveal
 // on hover). Only add slots when overriding with your own icon markup.
 const starSelectorSource = (checked = false) =>
-  `<kyn-icon-selector${checked ? ' checked' : ''}></kyn-icon-selector>`;
+  `<kyn-icon-selector ${checked ? ' checked' : ''}></kyn-icon-selector>`;
 
 const buildLinkSource = (link) => {
   const attrs = [
     `href="${escapeSource(link.href || '#')}"`,
+    `link-title="${escapeSource(link.label || '')}"`,
     link.target ? `target="${escapeSource(link.target)}"` : '',
     link.target === '_blank' ? 'truncate' : '',
   ]

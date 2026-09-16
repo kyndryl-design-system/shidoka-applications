@@ -87,11 +87,14 @@ $two-column-width: 300px;
   &:hover {
     background: var(--kd-color-background-menu-state-hover);
     color: var(--kd-color-text-button-dark-primary);
+    // Overrides icon-selector's hardcoded checked color so hover still matches link text color.
+    --kyn-icon-selector-checked-color: var(--kd-color-text-button-dark-primary);
   }
 
   &:active {
     background: var(--kd-color-background-menu-state-pressed);
     color: var(--kd-color-text-button-dark-primary);
+    --kyn-icon-selector-checked-color: var(--kd-color-text-button-dark-primary);
   }
 
   &.active {
@@ -100,6 +103,9 @@ $two-column-width: 300px;
     &:hover {
       background: var(--kd-color-background-menu-state-hover);
       color: var(--kd-color-text-button-dark-primary);
+      --kyn-icon-selector-checked-color: var(
+        --kd-color-text-button-dark-primary
+      );
     }
   }
 
@@ -111,6 +117,9 @@ $two-column-width: 300px;
     &:hover {
       background: var(--kd-color-background-menu-state-hover);
       color: var(--kd-color-text-button-dark-primary);
+      --kyn-icon-selector-checked-color: var(
+        --kd-color-text-button-dark-primary
+      );
     }
   }
 
@@ -216,11 +225,17 @@ $two-column-width: 300px;
       &:hover {
         background-color: var(--kd-color-background-menu-state-hover);
         color: var(--kd-color-text-button-dark-primary);
+        --kyn-icon-selector-checked-color: var(
+          --kd-color-text-button-dark-primary
+        );
       }
 
       &:active {
         background: var(--kd-color-background-menu-state-pressed);
         color: var(--kd-color-text-button-dark-primary);
+        --kyn-icon-selector-checked-color: var(
+          --kd-color-text-button-dark-primary
+        );
       }
     }
   }
@@ -340,7 +355,7 @@ $two-column-width: 300px;
     overflow-x: auto;
     overflow-y: auto;
     align-self: stretch;
-    padding-bottom: 34px; // offsets masonry's negative margin-bottom
+    padding-bottom: 0; // offsets masonry's negative margin-bottom
   }
 
   // Single-column categorical: shrink-wrap

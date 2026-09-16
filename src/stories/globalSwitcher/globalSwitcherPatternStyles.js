@@ -49,6 +49,9 @@ export const GLOBAL_SWITCHER_PATTERN_STYLES = `
   width: 16px;
   height: 16px;
 }
+.global-switcher-nav kyn-icon-selector[checked] {
+  color: var(--kd-color-background-button-primary-state-default);
+}
 `;
 
 /** Tab hosts sized by --global-switcher-tab-width on .global-switcher-nav */

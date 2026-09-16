@@ -51,6 +51,7 @@ export const createStarSelector = (checked = false) => html`
 export const renderGlobalSwitcherLink = (link) => html`
   <kyn-header-link
     href=${link.href}
+    link-title=${link.label}
     ?truncate=${link.target === '_blank'}
     target=${link.target || ''}
   >
