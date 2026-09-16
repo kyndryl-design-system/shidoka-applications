@@ -35,7 +35,7 @@ const args = {
   hideCancelButton: false,
   aiConnected: false,
   disableScroll: false,
-  closeOnBackdropClick: false,
+  disableBackgroundClick: false,
 };
 
 export const Modal = {
@@ -64,7 +64,7 @@ export const Modal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -104,7 +104,7 @@ export const ActionButtons = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -144,7 +144,7 @@ export const BeforeClose = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -193,7 +193,7 @@ export const WithForm = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -250,7 +250,7 @@ export const AIConnected = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -309,7 +309,7 @@ export const HeaderInline = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        ?closeOnBackdropClick=${args.closeOnBackdropClick}
+        ?disableBackgroundClick=${args.disableBackgroundClick}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >

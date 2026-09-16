@@ -121,9 +121,9 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   accessor disableScroll = false;
 
-  /** Closes the modal when the backdrop is clicked. */
+  /** Set to `true` to disable background click modal dismissal */
   @property({ type: Boolean })
-  accessor closeOnBackdropClick = false;
+  accessor disableBackgroundClick = false;
 
   override render() {
     const classes = {
@@ -146,7 +146,7 @@ export class Modal extends LitElement {
         tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
         @click=${(e: Event) => {
-          if (this.closeOnBackdropClick && e.target === this._dialog) {
+          if (!this.disableBackgroundClick && e.target === this._dialog) {
             this._closeModal(e, 'cancel');
           }
         }}

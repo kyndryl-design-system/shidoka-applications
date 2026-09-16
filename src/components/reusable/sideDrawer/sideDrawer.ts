@@ -138,9 +138,9 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor resizable = false;
 
-  /** Closes the drawer when the backdrop is clicked. */
+  /** Set this to `true` to disable background click drawer dismissal */
   @property({ type: Boolean })
-  accessor closeOnBackdropClick = false;
+  accessor disableBackgroundClick = false;
 
   /** @internal */
   @queryAssignedElements({ slot: 'label' })
@@ -209,7 +209,7 @@ export class SideDrawer extends LitElement {
         tabindex="-1"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
         @click=${(e: Event) => {
-          if (this.closeOnBackdropClick && e.target === this._dialog) {
+          if (!this.disableBackgroundClick && e.target === this._dialog) {
             this._closeDrawer(e, 'cancel');
           }
         }}
