@@ -138,6 +138,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor resizable = false;
 
+  /** Set this to `true` to disable background click drawer dismissal */
+  @property({ type: Boolean })
+  accessor disableBackgroundClick = false;
+
   /** @internal */
   @queryAssignedElements({ slot: 'label' })
   private accessor _labelSlotItems!: Array<Element>;
@@ -204,6 +208,11 @@ export class SideDrawer extends LitElement {
         aria-labelledby="dialogLabel"
         tabindex="-1"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
+        @click=${(e: Event) => {
+          if (!this.disableBackgroundClick && e.target === this._dialog) {
+            this._closeDrawer(e, 'cancel');
+          }
+        }}
       >
         ${this.resizable
           ? html`
