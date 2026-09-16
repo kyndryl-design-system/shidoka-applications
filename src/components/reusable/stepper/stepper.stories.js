@@ -21,9 +21,6 @@ export default {
       options: ['large', 'small'],
       control: { type: 'select' },
     },
-    applyTitleCase: {
-      control: { type: 'boolean' },
-    },
   },
 };
 
