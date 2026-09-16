@@ -121,6 +121,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   accessor disableScroll = false;
 
+  /** Set to `true` to disable background click modal dismissal */
+  @property({ type: Boolean })
+  accessor disableBackgroundClick = false;
+
   override render() {
     const classes = {
       modal: true,
@@ -141,6 +145,11 @@ export class Modal extends LitElement {
         aria-labelledby="dialogLabel"
         tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
+        @click=${(e: Event) => {
+          if (!this.disableBackgroundClick && e.target === this._dialog) {
+            this._closeModal(e, 'cancel');
+          }
+        }}
       >
         <form method="dialog">
           <kyn-button
