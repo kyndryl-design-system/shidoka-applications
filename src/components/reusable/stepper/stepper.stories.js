@@ -21,6 +21,9 @@ export default {
       options: ['large', 'small'],
       control: { type: 'select' },
     },
+    applyTitleCase: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
@@ -121,6 +124,7 @@ const returnStepState = (currentIndex, index, disabled) => {
 const args = {
   stepperType: 'procedure',
   stepperSize: 'large',
+  applyTitleCase: false,
 };
 
 export const Horizontal = {
@@ -129,6 +133,7 @@ export const Horizontal = {
     return html` <kyn-stepper
       stepperType=${args.stepperType}
       stepperSize=${args.stepperSize}
+      ?applyTitleCase=${args.applyTitleCase}
       @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       ${steps.map(
@@ -154,6 +159,7 @@ export const Vertical = {
       <kyn-stepper
         stepperType=${args.stepperType}
         stepperSize=${args.stepperSize}
+        ?applyTitleCase=${args.applyTitleCase}
         ?vertical=${true}
         @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -217,6 +223,7 @@ export const NestedSteps = {
       <kyn-stepper
         stepperType="procedure"
         stepperSize=${args.stepperSize}
+        ?applyTitleCase=${args.applyTitleCase}
         ?vertical=${true}
         @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -292,12 +299,13 @@ export const NestedSteps = {
 };
 
 export const StatusStepper = {
-  args: { currentIndex: 2 },
+  args: { ...args, currentIndex: 2 },
   render: (args) => {
     return html`
       <kyn-stepper
         stepperType="status"
         stepperSize="small"
+        ?applyTitleCase=${args.applyTitleCase}
         currentIndex=${args.currentIndex}
         ?vertical=${true}
       >

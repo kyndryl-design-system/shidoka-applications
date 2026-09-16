@@ -7,6 +7,7 @@ import {
 
 import stepperStyles from './stepper.scss?inline';
 import './stepperItem';
+import { classMap } from 'lit-html/directives/class-map.js';
 
 /**
  * Stepper
@@ -41,6 +42,10 @@ export class Stepper extends LitElement {
   @property({ type: Number })
   accessor currentIndex = 0;
 
+  /** Whether step names preserve authored casing (title case) instead of uppercase. */
+  @property({ type: Boolean })
+  accessor applyTitleCase = false;
+
   /**
    * Queries any slotted step items.
    * @ignore
@@ -51,9 +56,10 @@ export class Stepper extends LitElement {
   override render() {
     return html`
       <div
-        class=${this.vertical
-          ? 'vertical-stepper-wrapper'
-          : 'horizontal-stepper-wrapper'}
+        class=${classMap({
+          vertical: this.vertical,
+          'horizontal-stepper-wrapper': !this.vertical,
+        })}
       >
         <slot @slotchange=${this._handleSlotChange}></slot>
       </div>
@@ -69,6 +75,7 @@ export class Stepper extends LitElement {
 
     this.steps?.forEach((step: any) => {
       step.stepSize = this.stepperSize;
+      step.applyTitleCase = this.applyTitleCase;
       step.vertical = this.vertical;
       step.stepperType = this.stepperType;
     });
@@ -95,7 +102,8 @@ export class Stepper extends LitElement {
     if (
       changedProperties.has('stepperType') ||
       changedProperties.has('stepperSize') ||
-      changedProperties.has('vertical')
+      changedProperties.has('vertical') ||
+      changedProperties.has('applyTitleCase')
     ) {
       this._updateChildren();
     }
