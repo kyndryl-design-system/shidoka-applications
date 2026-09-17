@@ -77,6 +77,12 @@ export class StepperItem extends LitElement {
   @state()
   accessor stepperType = 'procedure';
 
+  /** Whether step names preserve authored casing (title case) instead of uppercase. Inherited from <kyn-stepper>.
+   * @ignore
+   */
+  @state()
+  accessor applyTitleCase = false;
+
   /** Disable step. */
   @property({ type: Boolean })
   accessor disabled = false;
@@ -173,6 +179,7 @@ export class StepperItem extends LitElement {
 
     const horizontalStepTextClass = {
       'step-text': true,
+      'step-text-title-case': this.applyTitleCase,
       'step-text-disabled': this.disabled,
       'step-text-error': this.stepState === 'destructive',
     };
@@ -196,6 +203,7 @@ export class StepperItem extends LitElement {
 
     const verticalStepNameClasses = {
       'vertical-step-text': true,
+      'vertical-step-text-title-case': this.applyTitleCase,
       'vertical-step-text-error': this.stepState === 'destructive',
       'vertical-step-text-large': this.stepSize === 'large',
       'vertical-step-text-disabled': this.disabled,
