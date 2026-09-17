@@ -306,6 +306,9 @@ const PATTERN_STYLES = /* css */ `
     flex-shrink: 0;
     padding-right: 8px;
   }
+  .workspace-switcher__menu-actions kyn-icon-selector[checked] {
+    color: var(--kd-color-background-button-primary-state-default);
+  }
 
   .workspace-switcher__menu-favorite {
     color: var(--kd-color-text-level-secondary);

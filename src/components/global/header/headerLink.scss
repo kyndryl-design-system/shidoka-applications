@@ -243,7 +243,7 @@ $two-column-width: 300px;
   @media (min-width: 42rem) {
     &.level--1 .wrapper {
       padding: 16px;
-      background-color: var(--kd-color-background-opacity-1);
+      background-color: var(--kd-color-background-container-overlay-background);
       border-radius: 8px;
       flex-grow: 1;
 
@@ -276,7 +276,7 @@ $two-column-width: 300px;
     &.level--3 .wrapper {
       flex: 0 1 auto;
       padding: 16px;
-      background-color: var(--kd-color-background-opacity-1);
+      background-color: var(--kd-color-background-container-overlay-background);
       border-radius: 8px;
       box-sizing: border-box;
 
@@ -355,7 +355,7 @@ $two-column-width: 300px;
     overflow-x: auto;
     overflow-y: auto;
     align-self: stretch;
-    padding-bottom: 0; // offsets masonry's negative margin-bottom
+    padding-bottom: 34px; // offsets masonry's negative margin-bottom
   }
 
   // Single-column categorical: shrink-wrap
@@ -404,6 +404,14 @@ kyn-text-input {
 @media (max-width: calc(42rem - 0.001px)) {
   .menu {
     width: 100%;
+
+    &.level--1,
+    &.level--2,
+    &.level--3 {
+      --kyn-header-link-flyout-background: var(
+        --kd-color-background-container-overlay-background
+      );
+    }
 
     &.open {
       .menu__content {
@@ -516,7 +524,7 @@ kyn-text-input {
 @media (min-width: 42rem) {
   .menu.level--1 .wrapper {
     padding: var(--kyn-header-link-wrapper-padding);
-    background-color: var(--kyn-header-link-wrapper-background);
+    background-color: var(--kd-color-background-container-overlay-background);
     border-radius: var(--kyn-header-link-wrapper-border-radius);
   }
 
