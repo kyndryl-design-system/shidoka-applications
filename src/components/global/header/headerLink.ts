@@ -180,8 +180,9 @@ export class HeaderLink extends LitElement {
   accessor _inheritedTruncate = false;
 
   /** Reflects whether the owning nav has the `global-switcher-nav` class.
-   * @internal
+   * @ignore
    */
+  @property({ type: Boolean, reflect: true, attribute: 'global-switcher-nav' })
   accessor _inGlobalSwitcherNav = false;
 
   /** Observer for `truncate-links`/class changes on the owning nav.
