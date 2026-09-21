@@ -185,7 +185,7 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean, reflect: true, attribute: 'global-switcher-nav' })
   accessor _inGlobalSwitcherNav = false;
 
-  /** Observer for `truncate-links`/class changes on the owning nav.
+  /** Observer for `truncate-links` changes on the owning nav.
    * @internal
    */
   private _truncateObserver?: MutationObserver;
