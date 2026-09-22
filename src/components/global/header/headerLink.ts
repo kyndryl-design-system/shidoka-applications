@@ -179,6 +179,12 @@ export class HeaderLink extends LitElement {
   @state()
   accessor _inheritedTruncate = false;
 
+  /** Reflects whether the owning nav has the `global-switcher-nav` class.
+   * @ignore
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'global-switcher-nav' })
+  accessor _inGlobalSwitcherNav = false;
+
   /** Observer for `truncate-links` changes on the owning nav.
    * @internal
    */
@@ -798,6 +804,9 @@ export class HeaderLink extends LitElement {
    */
   private _syncInheritedTruncate = (): void => {
     this._inheritedTruncate = this._isInTruncatingNav();
+    this._inGlobalSwitcherNav =
+      this._resolveOwningNav()?.classList.contains('global-switcher-nav') ??
+      false;
   };
 
   /** Observe `truncate-links` changes on the owning nav.
