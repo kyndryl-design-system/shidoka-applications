@@ -102,7 +102,6 @@ const PATTERN_STYLES = /* css */ `
     width: var(--workspace-switcher-left-panel-width, 275px);
     flex-shrink: 0;
     padding: 12px;
-    background: var(--kd-color-background-opacity-1);
     border-radius: 8px 0 0 8px;
   }
 
@@ -114,6 +113,7 @@ const PATTERN_STYLES = /* css */ `
     gap: 6px;
     padding: 12px;
     overflow-y: auto;
+    background-color: var(--kd-color-background-container-overlay-background);
   }
 
   .workspace-switcher__back {
@@ -1229,7 +1229,11 @@ const renderMenuItem = (host, state, options) => {
       >
         ${isBack
           ? html`
-              <span class="workspace-switcher__menu-icon" aria-hidden="true">
+              <span
+                class="workspace-switcher__menu-icon"
+                style="display:contents"
+                aria-hidden="true"
+              >
                 ${unsafeSVG(arrowLeftIcon)}
               </span>
             `
@@ -1238,7 +1242,11 @@ const renderMenuItem = (host, state, options) => {
         ${isWorkspace && count != null
           ? html`
               <span class="workspace-switcher__menu-count">${count}</span>
-              <span class="workspace-switcher__menu-icon" aria-hidden="true">
+              <span
+                class="workspace-switcher__menu-icon"
+                style="display:contents"
+                aria-hidden="true"
+              >
                 ${unsafeSVG(chevronRightIcon)}
               </span>
             `
