@@ -59,22 +59,25 @@
     }
   }
 
-  .text-content {
+  .text {
     flex: 1;
     min-width: 0;
   }
 
-  .title {
-    @include typography.type-body-02;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .title-content {
+    @include typography.type-ui-02;
+    font-weight: var(--kd-font-weight-medium);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
     margin-bottom: 0;
-    .title-content {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+
+    slot[name='title']::slotted(*) {
       min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .tag-container {
@@ -94,6 +97,7 @@
 
   .description-container {
     @include typography.type-ui-03;
+    font-weight: var(--kd-font-weight-regular);
     line-height: 16px;
     margin-top: 4px;
     overflow: hidden;
