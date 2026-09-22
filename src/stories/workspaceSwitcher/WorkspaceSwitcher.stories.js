@@ -89,7 +89,7 @@ const PATTERN_STYLES = /* css */ `
     display: flex;
     width: 100%;
     max-height: var(--workspace-switcher-max-height, none);
-    background: var(--kd-color-background-container-default);
+    background: var(--kd-color-background-container-soft);
     border-radius: 8px;
     overflow: hidden;
   }
@@ -102,6 +102,7 @@ const PATTERN_STYLES = /* css */ `
     width: var(--workspace-switcher-left-panel-width, 275px);
     flex-shrink: 0;
     padding: 12px;
+    background: var(--kd-color-background-opacity-1);
     border-radius: 8px 0 0 8px;
   }
 
@@ -113,7 +114,7 @@ const PATTERN_STYLES = /* css */ `
     gap: 6px;
     padding: 12px;
     overflow-y: auto;
-    background-color: var(--kd-color-background-container-overlay-background);
+    
   }
 
   .workspace-switcher__back {
