@@ -25,9 +25,9 @@ export const GLOBAL_SWITCHER_PATTERN_STYLES = `
   margin-top: -2px;
 }
 /* Trailing controls, right-aligned and shrink-to-fit so the right-most icon always
-   sits flush to the row's right edge. The persistent icon anchors that edge: legacy
-   links place the launch icon last (right-most) with the star to its left; star-only
-   links right-align the star. No reserved columns, so no blank gap on either. */
+   sits flush to the row's right edge. Legacy links reserve a 24px launch slot last
+   (right-most) with the star to its left; star-only links right-align the star.
+   No reserved columns, so no blank gap on either. */
 .global-switcher-link-actions {
   flex: 0 0 auto;
   margin-left: auto;
@@ -44,6 +44,12 @@ export const GLOBAL_SWITCHER_PATTERN_STYLES = `
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  transition: opacity 150ms ease-out;
+}
+.global-switcher-link-actions:has(kyn-icon-selector[checked])
+  .global-switcher-external-icon {
+  opacity: 1;
 }
 .global-switcher-external-icon svg {
   width: 16px;
