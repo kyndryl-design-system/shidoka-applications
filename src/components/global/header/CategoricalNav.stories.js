@@ -68,7 +68,7 @@ export const WithCategorizedNav = {
           auto-open-flyout=${renderArgs.autoOpenFlyout}
         >
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application
 
             <kyn-tabs tabSize="md" slot="links">
@@ -143,7 +143,7 @@ export const WithCategorizedNav = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application 2
 
             <kyn-tabs tabSize="md" slot="links">
@@ -218,7 +218,7 @@ export const WithCategorizedNav = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 1
           </kyn-header-link>
 
@@ -226,11 +226,11 @@ export const WithCategorizedNav = {
 
           <kyn-header-category heading="Category">
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
+              <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
               Link 2
             </kyn-header-link>
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
+              <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
               Link 3
             </kyn-header-link>
           </kyn-header-category>
@@ -238,7 +238,7 @@ export const WithCategorizedNav = {
           <kyn-header-divider></kyn-header-divider>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 4
           </kyn-header-link>
         </kyn-header-nav>
@@ -282,7 +282,7 @@ export const WithCategorizedNavJsonGrid = {
           auto-open-flyout=${renderArgs.autoOpenFlyout}
         >
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application
 
             <kyn-tabs tabSize="md" slot="links">
@@ -359,7 +359,7 @@ export const WithCategorizedNavJsonGrid = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 1
           </kyn-header-link>
         </kyn-header-nav>
@@ -398,7 +398,7 @@ export const WithCategorizedNavManualHtml = {
           auto-open-flyout=${renderArgs.autoOpenFlyout}
         >
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application
 
             <kyn-tabs tabSize="md" slot="links">
@@ -640,7 +640,7 @@ export const WithCategorizedNavManualHtml = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application 2
 
             <kyn-tabs tabSize="md" slot="links">
@@ -738,7 +738,7 @@ export const WithCategorizedNavManualHtml = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 1
           </kyn-header-link>
 
@@ -746,11 +746,11 @@ export const WithCategorizedNavManualHtml = {
 
           <kyn-header-category heading="Category">
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
+              <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
               Link 2
             </kyn-header-link>
             <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
+              <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
               Link 3
             </kyn-header-link>
           </kyn-header-category>
@@ -758,7 +758,7 @@ export const WithCategorizedNavManualHtml = {
           <kyn-header-divider></kyn-header-divider>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 4
           </kyn-header-link>
         </kyn-header-nav>
@@ -797,7 +797,7 @@ export const WithCategorizedNavGrid = {
           auto-open-flyout=${renderArgs.autoOpenFlyout}
         >
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Application
 
             <kyn-tabs tabSize="md" slot="links">
@@ -904,7 +904,7 @@ export const WithCategorizedNavGrid = {
           </kyn-header-link>
 
           <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
             Link 1
           </kyn-header-link>
         </kyn-header-nav>
