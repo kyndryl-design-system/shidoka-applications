@@ -44,11 +44,25 @@ export const GLOBAL_SWITCHER_PATTERN_STYLES = `
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  transition: opacity 150ms ease-out;
+}
+.global-switcher-link-actions:has(kyn-icon-selector[checked])
+  .global-switcher-external-icon {
+  opacity: 1;
 }
 .global-switcher-external-icon svg {
   width: 16px;
   height: 16px;
 }
+.global-switcher-nav kyn-icon-selector[checked] {
+  color: var(--kd-color-background-button-primary-state-default);
+}
+
+.icon_svg {
+  display: contents;
+}
+
 `;
 
 /** Tab hosts sized by --global-switcher-tab-width on .global-switcher-nav */
