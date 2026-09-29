@@ -6,7 +6,7 @@ import '../components/reusable/link';
 import '../components/reusable/pagetitle';
 import '../components/reusable/button';
 import '../components/reusable/tabs';
-import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cloud-download.svg';
+import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
 import uploadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
 import addIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import refreshIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/refresh.svg';
@@ -26,7 +26,7 @@ export const Default = {
           gap: 32px;
         }
 
-        .page-header__title-row {
+        .page-header-row {
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -80,30 +80,19 @@ export const Default = {
           </kyn-breadcrumbs>
 
           <div class="page-header__content">
-            <kyn-page-title
-              type="secondary"
-              pageTitle="Page Title"
-              subTitle="Subtitle"
-              contextual
-            >
+            <kyn-page-title pageTitle="Page Title" subTitle="Subtitle">
               <span slot="icon">${unsafeSVG(cloudDownloadIcon)}</span>
-              <kyn-pagetitle-option value="app-1"
-                >Page Title 1</kyn-pagetitle-option
-              >
-              <kyn-pagetitle-option value="app-2"
-                >Page Title 2</kyn-pagetitle-option
-              >
             </kyn-page-title>
             <div class="page-header__content__actions-btn">
-              <kyn-button kind="primary" size="medium" iconPosition="left">
+              <kyn-button kind="primary" size="small" iconPosition="left">
                 <span slot="icon">${unsafeSVG(addIcon)}</span
                 >Primary</kyn-button
               >
-              <kyn-button kind="secondary" size="medium" iconPosition="left">
+              <kyn-button kind="secondary" size="small" iconPosition="left">
                 <span slot="icon">${unsafeSVG(uploadIcon)}</span
                 >Secondary</kyn-button
               >
-              <kyn-button kind="ghost" size="medium" iconPosition="left">
+              <kyn-button kind="ghost" size="small" iconPosition="left">
                 <span slot="icon">${unsafeSVG(refreshIcon)}</span
                 >Tertiary</kyn-button
               >
