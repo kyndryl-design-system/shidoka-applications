@@ -78,6 +78,22 @@ export class Link extends LitElement {
   @queryAssignedElements({ slot: '' })
   accessor slottedEls!: Array<HTMLElement>;
 
+  override connectedCallback() {
+    super.connectedCallback();
+    // :host-context() isn't supported in Safari, so detect ancestor via JS instead
+    if (this.closest('kyn-breadcrumbs')) {
+      this.setAttribute('breadcrumb', '');
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    // :host-context() isn't supported in Safari, so detect ancestor via JS instead
+    if (this.closest('kyn-breadcrumbs')) {
+      this.removeAttribute('breadcrumb');
+    }
+  }
+
   override render() {
     const classes = this.returnClassMap();
 
