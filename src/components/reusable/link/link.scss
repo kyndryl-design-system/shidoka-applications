@@ -139,9 +139,10 @@
   }
 }
 
-// Breadcrumb links are always underlined
-:host-context(kyn-breadcrumbs) {
-  .kyn-link-text {
+// Breadcrumb links are always underlined, except standalone links which keep their hover-only underline
+// :host-context() isn't supported in Safari; link.ts sets this attribute via JS instead
+:host([breadcrumb]) {
+  .kyn-link-text:not(.kyn-link-text-standalone) {
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-skip-ink: none;
