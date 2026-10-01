@@ -9,7 +9,6 @@ import { createOptionsArray } from '../../../common/helpers/helpers';
 export default {
   title: 'Components/Feedback & Status/State Indicator',
   component: 'kyn-state-indicator',
-  tags: ['new'],
   argTypes: {
     type: {
       options: createOptionsArray(STATE_TYPES),
@@ -64,7 +63,11 @@ const args = {
 };
 
 const getActionButtonSize = (size) =>
-  size === STATE_SIZES.LARGE ? 'medium' : 'small';
+  size === STATE_SIZES.LARGE
+    ? 'medium'
+    : size === STATE_SIZES.EXTRA_SMALL
+    ? 'extra-small'
+    : 'small';
 
 const renderStateIndicator = (args) => {
   const actionButtonSize = getActionButtonSize(args.size);
@@ -145,6 +148,19 @@ export const Small = {
     size: STATE_SIZES.SMALL,
     type: STATE_TYPES.ERROR,
   },
+  argTypes: {
+    type: { options: nonSleepTypes, control: { type: 'select' } },
+  },
+  render: renderStateIndicator,
+};
+
+export const ExtraSmall = {
+  args: {
+    ...args,
+    size: STATE_SIZES.EXTRA_SMALL,
+    type: STATE_TYPES.ERROR,
+  },
+  tags: ['new'],
   argTypes: {
     type: { options: nonSleepTypes, control: { type: 'select' } },
   },

@@ -20,6 +20,12 @@ import accessIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/no-a
 import emptyIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/box-empty.svg';
 import noResultsIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/data-search.svg';
 
+// extra-small variant uses monochrome 32px marks.
+import noAccessIconMono from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/no-access.svg';
+import boxEmptyIconMono from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box-empty.svg';
+import errorIconMono from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error.svg';
+import noResultsIconMono from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/data-search.svg';
+
 /**
  * Type -> mascot / illustration image (used by `large` and `medium` sizes).
  */
@@ -43,6 +49,20 @@ const ICON_MAP: Record<Exclude<STATE_TYPES, STATE_TYPES.SLEEP>, string> = {
 };
 
 /**
+ * Type -> monochrome icon (used by the `extra-small` size). The extra-small variant provides
+ * only four marks; `sleep` has no monochrome equivalent and falls back to `empty`.
+ */
+const EXTRA_SMALL_ICON_MAP: Record<
+  Exclude<STATE_TYPES, STATE_TYPES.SLEEP>,
+  string
+> = {
+  [STATE_TYPES.ERROR]: errorIconMono,
+  [STATE_TYPES.ACCESS]: noAccessIconMono,
+  [STATE_TYPES.EMPTY]: boxEmptyIconMono,
+  [STATE_TYPES.NO_RESULTS]: noResultsIconMono,
+};
+
+/**
  * State Indicator. Communicates a contextual
  * state (error, no access, empty, no results, sleep/idle) with an
  * illustration, header, description, and call(s) to action. Replaces the
@@ -60,7 +80,7 @@ export class StateIndicator extends LitElement {
 
   /**
    * The state type, which determines the illustration/icon shown.
-   * Note: `sleep` is only supported on `size="large"`; on `medium` / `small`
+   * Note: `sleep` is only supported on `size="large"`; on `medium` / `small` / `extra-small`
    * it falls back to `empty`.
    */
   @property({ type: String })
@@ -105,16 +125,19 @@ export class StateIndicator extends LitElement {
 
   override render() {
     const isSmall = this.size === STATE_SIZES.SMALL;
+    const isExtraSmall = this.size === STATE_SIZES.EXTRA_SMALL;
 
     // `sleep` is only supported on the `large` size; fall back to `empty`
-    // for `medium` / `small`.
+    // for `medium` / `small` / `extra-small`.
     const type =
       this.type === STATE_TYPES.SLEEP && this.size !== STATE_SIZES.LARGE
         ? STATE_TYPES.EMPTY
         : this.type;
 
     // `type` is already narrowed away from `sleep` for non-large sizes above.
-    const visual = isSmall
+    const visual = isExtraSmall
+      ? EXTRA_SMALL_ICON_MAP[type as Exclude<STATE_TYPES, STATE_TYPES.SLEEP>]
+      : isSmall
       ? ICON_MAP[type as Exclude<STATE_TYPES, STATE_TYPES.SLEEP>]
       : MASCOT_MAP[type];
 
@@ -137,48 +160,93 @@ export class StateIndicator extends LitElement {
       [`state-indicator__visual--${type}`]: true,
     };
 
-    return html`
-      <div class=${classMap(containerClasses)}>
-        <div class=${classMap(visualClasses)} part="visual" aria-hidden="true">
-          ${unsafeSVG(visual)}
-        </div>
-        <div class="state-indicator__content">
-          <div class="state-indicator__text">
-            <div class="state-indicator__header">
-              <slot name="header"></slot>
+    return isExtraSmall
+      ? html`<div class=${classMap(containerClasses)}>
+          <div class="state-indicator__content">
+            <div class="state-indicator__text">
+              <div class="state-indicator__header">
+                <div
+                  class=${classMap(visualClasses)}
+                  part="visual"
+                  aria-hidden="true"
+                >
+                  ${unsafeSVG(visual)}
+                </div>
+                <slot name="header"></slot>
+              </div>
+              ${this._renderDescription()}
             </div>
-            ${!this.hideDescription
-              ? html`<div class="state-indicator__description">
-                  <slot></slot>
-                </div>`
-              : null}
+            ${this._renderActions(
+              hasVisibleActions,
+              showSecondaryButton,
+              showLink
+            )}
           </div>
-          ${!this.hideActionsBtns
-            ? html`<div
-                class="state-indicator__actions"
-                ?hidden=${!hasVisibleActions}
-              >
-                <slot
-                  name="primary"
-                  @slotchange=${this._handleActionSlotChange}
-                ></slot>
-                ${showSecondaryButton
-                  ? html`<slot
-                      name="secondary"
-                      @slotchange=${this._handleActionSlotChange}
-                    ></slot>`
-                  : null}
-                ${showLink
-                  ? html`<slot
-                      name="link"
-                      @slotchange=${this._handleActionSlotChange}
-                    ></slot>`
-                  : null}
-              </div>`
+        </div>`
+      : html`
+          <div class=${classMap(containerClasses)}>
+            <div
+              class=${classMap(visualClasses)}
+              part="visual"
+              aria-hidden="true"
+            >
+              ${unsafeSVG(visual)}
+            </div>
+            <div class="state-indicator__content">
+              <div class="state-indicator__text">
+                <div class="state-indicator__header">
+                  <slot name="header"></slot>
+                </div>
+                ${this._renderDescription()}
+              </div>
+              ${this._renderActions(
+                hasVisibleActions,
+                showSecondaryButton,
+                showLink
+              )}
+            </div>
+          </div>
+        `;
+  }
+
+  // renders the description section
+  _renderDescription() {
+    return !this.hideDescription
+      ? html`<div class="state-indicator__description">
+          <slot></slot>
+        </div>`
+      : null;
+  }
+
+  // renders the action buttons section based on visibility and presence of secondary and link actions
+  _renderActions(
+    hasVisibleActions: boolean,
+    showSecondaryButton: boolean,
+    showLink: boolean
+  ) {
+    return !this.hideActionsBtns
+      ? html`<div
+          class="state-indicator__actions"
+          ?hidden=${!hasVisibleActions}
+        >
+          <slot
+            name="primary"
+            @slotchange=${this._handleActionSlotChange}
+          ></slot>
+          ${showSecondaryButton
+            ? html`<slot
+                name="secondary"
+                @slotchange=${this._handleActionSlotChange}
+              ></slot>`
             : null}
-        </div>
-      </div>
-    `;
+          ${showLink
+            ? html`<slot
+                name="link"
+                @slotchange=${this._handleActionSlotChange}
+              ></slot>`
+            : null}
+        </div>`
+      : null;
   }
 
   /**
