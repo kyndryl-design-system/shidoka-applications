@@ -26,7 +26,9 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div style="min-height: 300px; margin: var(--kd-negative-page-gutter);">
+        <div
+          style="min-height: 100vh; margin: var(--kd-negative-page-gutter); --kd-local-nav-offset-top: 8px;"
+        >
           ${story()}
         </div>
       `,
@@ -311,13 +313,7 @@ export const ManualToggleVariant = {
 };
 
 export const HoverIntentLock = {
-  args: {
-    ...args,
-    lastActivated: '—',
-  },
-  argTypes: {
-    lastActivated: { table: { disable: true } },
-  },
+  args,
   parameters: {
     docs: {
       description: {
@@ -327,9 +323,6 @@ export const HoverIntentLock = {
     },
   },
   render: (args) => {
-    const [, updateArgs] = useArgs();
-    const mark = (label) => () => updateArgs({ lastActivated: label });
-
     return html`
       <kyn-local-nav
         ?pinned=${args.pinned}
@@ -337,42 +330,24 @@ export const HoverIntentLock = {
         ?collapsed-by-default=${args.collapsedByDefault}
         .textStrings=${args.textStrings}
       >
-        <kyn-local-nav-link
-          href="javascript:void(0)"
-          expanded
-          @on-click=${mark('AIOps Admin')}
-        >
+        <kyn-local-nav-link href="javascript:void(0)" expanded>
           <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           AIOps Admin
-          <kyn-local-nav-link
-            slot="links"
-            href="javascript:void(0)"
-            @on-click=${mark('Overview')}
-          >
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
             Overview
           </kyn-local-nav-link>
-          <kyn-local-nav-link
-            slot="links"
-            href="javascript:void(0)"
-            @on-click=${mark('Integrations')}
-          >
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
             Integrations
           </kyn-local-nav-link>
         </kyn-local-nav-link>
 
         <kyn-local-nav-divider heading="Administration"></kyn-local-nav-divider>
 
-        <kyn-local-nav-link
-          href="javascript:void(0)"
-          @on-click=${mark('Widget Builder')}
-        >
+        <kyn-local-nav-link href="javascript:void(0)">
           <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Widget Builder
         </kyn-local-nav-link>
       </kyn-local-nav>
-      <p style="margin: 16px 16px 0 88px">
-        Last activated: <strong>${args.lastActivated}</strong>
-      </p>
     `;
   },
 };
