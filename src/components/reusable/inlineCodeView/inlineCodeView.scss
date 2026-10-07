@@ -1,33 +1,35 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-    display: inline-block;
+  display: inline-block;
 }
 
 .inline-code-view {
-    line-height: 1.5;
-    word-break: break-word;
-    vertical-align: text-bottom;
-    margin: 0 4px;
-    padding: 4px 8px;
-    font-family: var(--kd-font-family-code-view);
-    font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
-    border-radius: 2px;
-    background: var(--kd-color-code-view-background);
-    color: var(--kd-color-code-view-default);
+  line-height: 1.5;
+  word-break: break-word;
+  vertical-align: text-bottom;
+  margin: 0 4px;
+  padding: 4px 8px;
+  font-family: var(--kd-font-family-code-view);
+  font-size: max(calc(var(--inline-snippet-font-size, 14) * 1px), 14px);
+  border-radius: 2px;
+  background: var(--kd-color-code-view-background);
+  color: var(--kd-color-code-view-default);
+  // Override inherited user-select: none from consumer parents (shadow boundary inherits).
+  user-select: text;
 
-    &::selection {
-        background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
-        color: inherit;
-    }
+  &::selection {
+    background-color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3));
+    color: inherit;
+  }
 }
 
 .shidoka-syntax-theme {
-    &--dark {
-        color-scheme: dark;
-    }
+  &--dark {
+    color-scheme: dark;
+  }
 
-    &--light {
-        color-scheme: light;
-    }
+  &--light {
+    color-scheme: light;
+  }
 }
