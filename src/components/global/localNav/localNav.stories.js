@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import './localNav';
 import './localNavLink';
+import './localNavDivider';
 import '../../reusable/textInput';
 import '../../reusable/blockCodeView';
 import { filterLocalNavLinks } from '../../../common/helpers/helpers';
@@ -305,6 +306,73 @@ export const ManualToggleVariant = {
           Settings
         </kyn-local-nav-link>
       </kyn-local-nav>
+    `;
+  },
+};
+
+export const HoverIntentLock = {
+  args: {
+    ...args,
+    lastActivated: '—',
+  },
+  argTypes: {
+    lastActivated: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hover **Widget Builder** in the collapsed rail, wait for expand, then click without moving — or move onto Widget Builder where it now sits. Nested AIOps links and the Administration heading shift under the cursor; Widget Builder stays the active target until the pointer is over it or leaves the nav.',
+      },
+    },
+  },
+  render: (args) => {
+    const [, updateArgs] = useArgs();
+    const mark = (label) => () => updateArgs({ lastActivated: label });
+
+    return html`
+      <kyn-local-nav
+        ?pinned=${args.pinned}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
+        .textStrings=${args.textStrings}
+      >
+        <kyn-local-nav-link
+          href="javascript:void(0)"
+          expanded
+          @on-click=${mark('AIOps Admin')}
+        >
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          AIOps Admin
+          <kyn-local-nav-link
+            slot="links"
+            href="javascript:void(0)"
+            @on-click=${mark('Overview')}
+          >
+            Overview
+          </kyn-local-nav-link>
+          <kyn-local-nav-link
+            slot="links"
+            href="javascript:void(0)"
+            @on-click=${mark('Integrations')}
+          >
+            Integrations
+          </kyn-local-nav-link>
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider heading="Administration"></kyn-local-nav-divider>
+
+        <kyn-local-nav-link
+          href="javascript:void(0)"
+          @on-click=${mark('Widget Builder')}
+        >
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Widget Builder
+        </kyn-local-nav-link>
+      </kyn-local-nav>
+      <p style="margin: 16px 16px 0 88px">
+        Last activated: <strong>${args.lastActivated}</strong>
+      </p>
     `;
   },
 };

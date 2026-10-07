@@ -78,6 +78,18 @@ export class LocalNavLink extends LitElement {
   @state()
   accessor _manualToggleVariant = false;
 
+  /** Hover-expand intent: keep this link highlighted.
+   * @internal
+   */
+  @state()
+  accessor _intentLocked = false;
+
+  /** Hover-expand intent: ignore pointer while another link is locked.
+   * @internal
+   */
+  @state()
+  accessor _intentBlocked = false;
+
   /**
    * Queries slotted links.
    * @ignore
@@ -129,6 +141,7 @@ export class LocalNavLink extends LitElement {
       'has-links': this._navLinks.length,
       'has-icon': this._icon.length,
       'left-padding': this.leftPadding && this._level > 1,
+      'intent-locked': this._intentLocked,
     };
 
     return html`
@@ -202,6 +215,8 @@ export class LocalNavLink extends LitElement {
         })
       );
     }
+
+    this.style.pointerEvents = this._intentBlocked ? 'none' : '';
   }
 
   override firstUpdated() {
