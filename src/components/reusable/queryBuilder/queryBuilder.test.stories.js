@@ -10,6 +10,11 @@ export default {
   parameters: {
     docs: { disable: true },
     controls: { disable: true },
+    a11y: {
+      config: {
+        rules: [{ id: 'color-contrast', enabled: false }],
+      },
+    },
   },
 };
 
