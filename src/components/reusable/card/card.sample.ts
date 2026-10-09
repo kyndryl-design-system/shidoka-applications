@@ -17,7 +17,6 @@ export class SampleCardComponent extends LitElement {
             alt="product logo"
           />
         </div>
-        <slot name="actions"></slot>
       </div>
       <h1 class="card-title">
         <slot name="title"></slot>
@@ -26,7 +25,6 @@ export class SampleCardComponent extends LitElement {
       <div class="card-description">
         <slot name="description"></slot>
       </div>
-      <slot name="footer"></slot>
     `;
   }
 }
