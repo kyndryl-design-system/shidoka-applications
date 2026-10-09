@@ -1,7 +1,11 @@
 import { html } from 'lit';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import './index';
 import { action } from 'storybook/actions';
 import './card.sample';
+import '../overflowMenu';
+import '../link';
 
 export default {
   title: 'Components/Layout & Structure/Card',
@@ -28,7 +32,7 @@ export const BlankCard = {
     href: '',
     rel: '',
     target: '_self',
-    hideBorder: false,
+    hideBorder: true,
     variant: 'default',
     /* The `compact: false` property in the code snippet is a part of the arguments object used in
     defining the different card components. When `compact` is set to `false`, it means that the card
@@ -57,12 +61,13 @@ export const BlankCard = {
 };
 
 export const Simple = {
+  name: 'Static',
   args: {
     type: 'normal',
     href: '',
     rel: '',
     target: '_self',
-    hideBorder: false,
+    hideBorder: true,
     variant: 'default',
     compact: false,
     aiConnected: false,
@@ -84,12 +89,36 @@ export const Simple = {
         aria-label="Simple card"
       >
         <sample-card-component>
+          <kyn-overflow-menu
+            slot="actions"
+            anchorRight
+            assistiveText="Service actions"
+          >
+            <kyn-overflow-menu-item @on-click=${action('View details')}>
+              View details
+            </kyn-overflow-menu-item>
+            <kyn-overflow-menu-item @on-click=${action('Edit')}>
+              Edit
+            </kyn-overflow-menu-item>
+          </kyn-overflow-menu>
           <div slot="title">This is a card title</div>
           <div slot="description">
             Amazon EC2 Auto Scaling ensures that your application always has the
             right amount of compute capacity by dynamically adjusting the number
             of Amazon EC2 instances based on demand.
           </div>
+          <kyn-link
+            slot="footer"
+            standalone
+            href="https://www.kyndryl.com"
+            target="_blank"
+            @on-click=${action('on-link-click')}
+          >
+            Link
+            <span slot="icon" aria-hidden="true">
+              ${unsafeSVG(chevronRightIcon)}
+            </span>
+          </kyn-link>
         </sample-card-component>
       </kyn-card>
     `;
@@ -97,6 +126,7 @@ export const Simple = {
 };
 
 export const Clickable = {
+  name: 'Interactive',
   args: {
     type: 'clickable',
     href: 'https://www.kyndryl.com',
