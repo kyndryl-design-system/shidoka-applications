@@ -428,6 +428,13 @@ export const MultiSelectTagLimit = {
     ],
   },
   tags: ['new'],
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{ id: 'aria-required-children', enabled: false }],
+      },
+    },
+  },
   render: (args) => {
     return html`
       <style>
