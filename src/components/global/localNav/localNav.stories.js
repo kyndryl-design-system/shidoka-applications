@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import './localNav';
 import './localNavLink';
+import './localNavDivider';
 import '../../reusable/textInput';
 import '../../reusable/blockCodeView';
 import { filterLocalNavLinks } from '../../../common/helpers/helpers';
@@ -25,7 +26,9 @@ export default {
   decorators: [
     (story) =>
       html`
-        <div style="min-height: 300px; margin: var(--kd-negative-page-gutter);">
+        <div
+          style="min-height: 100vh; margin: var(--kd-negative-page-gutter); --kd-local-nav-offset-top: 8px;"
+        >
           ${story()}
         </div>
       `,
@@ -303,6 +306,46 @@ export const ManualToggleVariant = {
         <kyn-local-nav-link href="javascript:void(0)">
           <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Settings
+        </kyn-local-nav-link>
+      </kyn-local-nav>
+    `;
+  },
+};
+
+export const HoverIntentLock = {
+  args,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hover **Widget Builder** in the collapsed rail, wait for expand, then click without moving — or move onto Widget Builder where it now sits. Nested AIOps links and the Administration heading shift under the cursor; Widget Builder stays the active target until the pointer is over it or leaves the nav.',
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-local-nav
+        ?pinned=${args.pinned}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
+        .textStrings=${args.textStrings}
+      >
+        <kyn-local-nav-link href="javascript:void(0)" expanded>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          AIOps Admin
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            Overview
+          </kyn-local-nav-link>
+          <kyn-local-nav-link slot="links" href="javascript:void(0)">
+            Integrations
+          </kyn-local-nav-link>
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider heading="Administration"></kyn-local-nav-divider>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Widget Builder
         </kyn-local-nav-link>
       </kyn-local-nav>
     `;
