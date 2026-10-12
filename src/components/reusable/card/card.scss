@@ -54,7 +54,7 @@
 
   &-wrapper {
     background-color: var(--kd-color-background-container-secondary);
-    border: 1px solid var(--kd-color-border-card-default);
+    border: 1px solid var(--kd-color-border-container-default);
     cursor: default;
     @include elevation.shadow(0);
 
@@ -87,7 +87,7 @@
     @include elevation.shadow(0);
 
     &.card-border {
-      border: 1px solid var(--kd-color-border-card-default);
+      border: 1px solid var(--kd-color-border-container-default);
     }
 
     &:not(.ai-connected).hide-border {
@@ -101,6 +101,12 @@
 
     &:focus-visible {
       outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:not(.ai-connected):focus-visible {
+      border: 1px solid var(--kd-color-border-container-focused);
+      outline: none;
+      @include elevation.shadow(1);
     }
 
     &:hover:active {
