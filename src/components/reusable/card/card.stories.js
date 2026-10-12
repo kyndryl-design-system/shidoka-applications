@@ -132,7 +132,7 @@ export const Clickable = {
     href: 'https://www.kyndryl.com',
     rel: 'noopener',
     target: '_blank',
-    hideBorder: false,
+    hideBorder: true,
     variant: 'default',
     compact: false,
     aiConnected: false,

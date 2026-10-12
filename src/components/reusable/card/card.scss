@@ -84,14 +84,19 @@
     cursor: pointer;
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
       outline-color 150ms ease-out;
+    @include elevation.shadow(0);
 
     &.card-border {
+      border: 1px solid var(--kd-color-border-card-default);
+    }
+
+    &:not(.ai-connected).hide-border {
       @include elevation.shadow(1);
     }
 
     &:not(.ai-connected):hover {
-      border-color: var(--kd-color-border-ui-hover);
-      @include elevation.shadow(2);
+      border: 1px solid var(--kd-color-border-container-hover);
+      @include elevation.shadow(3);
     }
 
     &:focus-visible {
@@ -99,8 +104,11 @@
     }
 
     &:hover:active {
-      border: 1px solid var(--kd-color-border-card-clickable);
       @include elevation.shadow(4);
+    }
+
+    &:not(.hide-border):hover:active {
+      border: 1px solid var(--kd-color-border-card-clickable);
     }
 
     &.compact {
@@ -171,6 +179,10 @@
         mask-composite: exclude;
         opacity: 1;
       }
+    }
+
+    &.hide-border {
+      border: none;
     }
   }
 
