@@ -13,8 +13,7 @@ dialog {
   color: inherit;
   background: var(--kd-color-background-container-overlay-background);
   border-radius: 8px;
-  border: 1px solid var(--kd-color-border-forms-default);
-  transition: border-color 150ms ease-in-out;
+  border: 0;
   min-width: 288px;
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
@@ -26,8 +25,11 @@ dialog {
     animation: dialog-in 400ms ease-out;
   }
 
-  &:has(> *:hover) {
-    border-color: var(--kd-color-border-ui-hover);
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    border: 0;
+    outline: none;
   }
 
   &::backdrop {
