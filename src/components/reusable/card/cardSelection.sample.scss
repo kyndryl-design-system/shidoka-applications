@@ -1,0 +1,33 @@
+@use 'sass:meta';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+.card-selection-example {
+  @include meta.load-css('./cardSample.scss');
+
+  kyn-card {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-logo-container {
+    margin-bottom: var(--kd-spacing-12);
+  }
+
+  .card-logo {
+    display: flex;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .card-title {
+    @include typography.type-ui-02;
+    margin-top: 0;
+  }
+
+  .card-description {
+    margin: 0;
+  }
+}

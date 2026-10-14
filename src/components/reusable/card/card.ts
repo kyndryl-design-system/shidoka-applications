@@ -15,6 +15,7 @@ import '../inlineConfirm/inlineConfirm';
 /**
  * Card.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`
+ * @fires on-select - Emits the selected state. `detail:{ selected: boolean }`
  * @slot unnamed - Slot for card contents.
  * @slot leftIcon - Slot for left icon when `variant` is `'notification'`.
  * @slot inlineConfirm - Slot for right icon when `variant` is `'notification'`.
@@ -44,6 +45,14 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor hideBorder = false;
 
+  /** Card selectable state. */
+  @property({ type: Boolean })
+  accessor selectable = false;
+
+  /** Card selected state. */
+  @property({ type: Boolean })
+  accessor selected = false;
+
   /** AI theme toggle */
   @property({ type: Boolean })
   accessor aiConnected = false;
@@ -66,6 +75,7 @@ export class Card extends LitElement {
   accessor variant: CardVariant = 'default';
 
   override render() {
+    const isSelectable = this.selectable && this.type === 'clickable';
     const baseClasses = {
       'card-wrapper': this.type !== 'clickable',
       'card-wrapper-clickable': this.type === 'clickable',
@@ -76,8 +86,28 @@ export class Card extends LitElement {
       'ai-highlight': this.aiConnected && this.highlight,
       'variant-notification': this.variant === 'notification',
       'variant-interaction': this.variant === 'interaction',
+      selectable: isSelectable,
+      selected: isSelectable && this.selected,
       compact: this.compact,
     };
+
+    if (isSelectable) {
+      return html`
+        <div
+          part="card-wrapper"
+          class=${classMap(baseClasses)}
+          data-variant=${this.variant}
+          data-ai=${String(this.aiConnected)}
+          role="checkbox"
+          aria-checked=${this.selected ? 'true' : 'false'}
+          @click=${this._handleBodyClick}
+          @keydown=${this._handleKeyDown}
+          tabindex="0"
+        >
+          ${this._renderContent()}
+        </div>
+      `;
+    }
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
 
@@ -124,14 +154,20 @@ export class Card extends LitElement {
         data-variant=${this.variant}
         data-ai=${String(this.aiConnected)}
       >
-        <div class="info-card-container">
-          <div class="info-card-leftIcon">
-            <slot name="leftIcon"></slot>
-          </div>
-          <div class="info-card-content-wrapper"><slot></slot></div>
-          <div class="info-card-rightIcon">
-            <slot name="inlineConfirm"></slot>
-          </div>
+        ${this._renderContent()}
+      </div>
+    `;
+  }
+
+  /** @internal */
+  private _renderContent() {
+    if (this.variant === 'default') return html`<slot></slot>`;
+    return html`
+      <div class="info-card-container">
+        <div class="info-card-leftIcon"><slot name="leftIcon"></slot></div>
+        <div class="info-card-content-wrapper"><slot></slot></div>
+        <div class="info-card-rightIcon">
+          <slot name="inlineConfirm"></slot>
         </div>
       </div>
     `;
@@ -164,6 +200,27 @@ export class Card extends LitElement {
       this._onClick(e);
     }
   };
+
+  /** @internal */
+  private _handleBodyClick() {
+    if (!this.selectable || this.type !== 'clickable') return;
+    this.selected = !this.selected;
+    this.dispatchEvent(
+      new CustomEvent('on-select', {
+        detail: { selected: this.selected },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  /** @internal */
+  private _handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      if (event.key === ' ') event.preventDefault();
+      this._handleBodyClick();
+    }
+  }
 
   /** @internal */
   private _forwardConfirm = (e: Event) => {

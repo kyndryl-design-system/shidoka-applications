@@ -1,9 +1,11 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import shareIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/share.svg';
 import './index';
 import { action } from 'storybook/actions';
 import './card.sample';
+import './cardSelection.sample.scss';
 import '../overflowMenu';
 import '../link';
 import '../button';
@@ -215,6 +217,66 @@ export const Clickable = {
           </div>
         </sample-card-component>
       </kyn-card>
+    `;
+  },
+};
+
+export const SelectableCards = {
+  args: {
+    selectedServices: ['compute'],
+    hideBorder: true,
+  },
+  render: (args) => {
+    const services = [
+      {
+        id: 'compute',
+        title: 'Compute',
+        description: 'Application workloads and virtual machines.',
+      },
+      {
+        id: 'storage',
+        title: 'Storage',
+        description: 'Object storage for application data and backups.',
+      },
+      {
+        id: 'database',
+        title: 'Database',
+        description: 'Managed databases for transactional applications.',
+      },
+    ];
+    return html`
+      <section class="card-selection-example" aria-label="Services">
+        <div
+          class="kd-grid service-cards"
+          role="group"
+          aria-label="Select services"
+        >
+          ${services.map(
+            (service) => html`
+              <div
+                class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4"
+              >
+                <kyn-card
+                  type="clickable"
+                  selectable
+                  .selected=${args.selectedServices.includes(service.id)}
+                  ?hideBorder=${args.hideBorder}
+                  @on-select=${(event) =>
+                    action(event.type)({ ...event, detail: event.detail })}
+                >
+                  <div class="card-logo-container">
+                    <span class="card-logo" aria-hidden="true"
+                      >${unsafeSVG(shareIcon)}</span
+                    >
+                  </div>
+                  <h3 class="card-title">${service.title}</h3>
+                  <p class="card-description">${service.description}</p>
+                </kyn-card>
+              </div>
+            `
+          )}
+        </div>
+      </section>
     `;
   },
 };
