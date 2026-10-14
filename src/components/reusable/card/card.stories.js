@@ -178,6 +178,7 @@ export const Simple = {
 
 export const Clickable = {
   name: 'Interactive',
+  tags: ['updated'],
   args: {
     type: 'clickable',
     href: 'https://www.kyndryl.com',
