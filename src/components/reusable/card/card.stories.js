@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { useArgs } from 'storybook/preview-api';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import shareIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/share.svg';
 import './index';
@@ -14,7 +15,21 @@ import '../checkbox';
 export default {
   title: 'Components/Layout & Structure/Card',
   component: 'kyn-card',
+  args: {
+    hideBorder: false,
+    compact: false,
+    aiConnected: false,
+    highlight: false,
+    selectable: false,
+    selected: false,
+  },
   argTypes: {
+    hideBorder: { control: { type: 'boolean' } },
+    compact: { control: { type: 'boolean' } },
+    aiConnected: { control: { type: 'boolean' } },
+    highlight: { control: { type: 'boolean' } },
+    selectable: { control: { type: 'boolean' } },
+    selected: { control: { type: 'boolean' } },
     type: {
       options: ['normal', 'clickable'],
       control: { type: 'select' },
@@ -31,6 +46,10 @@ export default {
 };
 
 export const BlankCard = {
+  argTypes: {
+    selectable: { control: false },
+    selected: { control: false },
+  },
   args: {
     type: 'normal',
     href: '',
@@ -66,6 +85,10 @@ export const BlankCard = {
 
 export const Simple = {
   name: 'Static',
+  argTypes: {
+    selectable: { control: false },
+    selected: { control: false },
+  },
   args: {
     type: 'normal',
     href: '',
@@ -201,11 +224,11 @@ export const Clickable = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         .variant=${args.variant}
+        ?selectable=${args.selectable}
+        .selected=${args.selected}
         ?compact=${args.compact}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
-        role="link"
-        aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <sample-card-component>
@@ -223,11 +246,25 @@ export const Clickable = {
 
 export const SelectableCards = {
   tags: ['new'],
+  argTypes: {
+    type: { control: false },
+    href: { control: false },
+    rel: { control: false },
+    target: { control: false },
+    variant: { control: false },
+    selected: { control: false },
+    selectedServices: {
+      options: ['compute', 'storage', 'database'],
+      control: { type: 'check' },
+    },
+  },
   args: {
-    selectedServices: ['compute'],
+    selectedServices: ['compute', 'storage', 'database'],
     hideBorder: true,
+    selectable: true,
   },
   render: (args) => {
+    const [, updateArgs] = useArgs();
     const services = [
       {
         id: 'compute',
@@ -259,11 +296,21 @@ export const SelectableCards = {
               >
                 <kyn-card
                   type="clickable"
-                  selectable
+                  ?selectable=${args.selectable}
                   .selected=${args.selectedServices.includes(service.id)}
                   ?hideBorder=${args.hideBorder}
-                  @on-select=${(event) =>
-                    action(event.type)({ ...event, detail: event.detail })}
+                  ?compact=${args.compact}
+                  ?aiConnected=${args.aiConnected}
+                  ?highlight=${args.highlight}
+                  @on-select=${(event) => {
+                    action(event.type)({ ...event, detail: event.detail });
+                    const selectedServices = event.detail.selected
+                      ? [...args.selectedServices, service.id]
+                      : args.selectedServices.filter(
+                          (selectedService) => selectedService !== service.id
+                        );
+                    updateArgs({ selectedServices });
+                  }}
                 >
                   <div class="card-logo-container">
                     <span class="card-logo" aria-hidden="true"
@@ -312,6 +359,9 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             .variant=${args.variant}
+            ?compact=${args.compact}
+            ?selectable=${args.selectable}
+            .selected=${args.selected}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -334,6 +384,9 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             .variant=${args.variant}
+            ?compact=${args.compact}
+            ?selectable=${args.selectable}
+            .selected=${args.selected}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -358,6 +411,9 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             .variant=${args.variant}
+            ?compact=${args.compact}
+            ?selectable=${args.selectable}
+            .selected=${args.selected}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -379,6 +435,9 @@ export const InsideGrid = {
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
             .variant=${args.variant}
+            ?compact=${args.compact}
+            ?selectable=${args.selectable}
+            .selected=${args.selected}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -420,6 +479,9 @@ export const AIConnected = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         .variant=${args.variant}
+        ?compact=${args.compact}
+        ?selectable=${args.selectable}
+        .selected=${args.selected}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="article"
