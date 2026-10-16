@@ -12,6 +12,11 @@ import '../link';
 import '../button';
 import '../checkbox';
 
+const hiddenCardArgType = {
+  control: false,
+  table: { disable: true },
+};
+
 export default {
   title: 'Components/Layout & Structure/Card',
   component: 'kyn-card',
@@ -247,12 +252,11 @@ export const Clickable = {
 export const SelectableCards = {
   tags: ['new'],
   argTypes: {
-    type: { control: false },
-    href: { control: false },
-    rel: { control: false },
-    target: { control: false },
-    variant: { control: false },
-    selected: { control: false },
+    type: hiddenCardArgType,
+    href: hiddenCardArgType,
+    rel: hiddenCardArgType,
+    target: hiddenCardArgType,
+    selected: hiddenCardArgType,
     selectedServices: {
       options: ['compute', 'storage', 'database'],
       control: { type: 'check' },
