@@ -54,6 +54,7 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor selected = false;
 
+  /** @internal */
   @state()
   private accessor _hasSelectionControl = false;
 
