@@ -32,6 +32,7 @@ export const SelectionPersists = {
     expect(card.shadowRoot.querySelector('kyn-checkbox')).toBeNull();
     await userEvent.click(surface);
     await card.updateComplete;
+    surface.blur();
     expect(card.selected).toBe(true);
     expect(surface.getAttribute('aria-checked')).toBe('true');
     expect(getComputedStyle(surface).borderTopWidth).toBe('2px');
@@ -76,7 +77,9 @@ export const SelectionControlSync = {
   render: () => html`
     <kyn-card type="clickable" selectable>
       <h3>Selectable service</h3>
-      <kyn-checkbox slot="selection-control">Select service</kyn-checkbox>
+      <kyn-checkbox slot="selection-control" .visiblyHidden=${true}>
+        Select service
+      </kyn-checkbox>
     </kyn-card>
   `,
   play: async ({ canvasElement }) => {
