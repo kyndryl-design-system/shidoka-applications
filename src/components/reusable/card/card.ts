@@ -1,5 +1,5 @@
-import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement, html, unsafeCSS, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -19,6 +19,7 @@ import '../inlineConfirm/inlineConfirm';
  * @slot unnamed - Slot for card contents.
  * @slot leftIcon - Slot for left icon when `variant` is `'notification'`.
  * @slot inlineConfirm - Slot for right icon when `variant` is `'notification'`.
+ * @slot selection-control - Supports a direct child `kyn-checkbox`. Its `checked` state is synchronized with `Card.selected`, and its `on-checkbox-change` event (`detail.checked`) updates the Card selection state.
  * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: `kyn-card::part(card-wrapper)`
  */
 @customElement('kyn-card')
@@ -52,6 +53,9 @@ export class Card extends LitElement {
   /** Card selected state. */
   @property({ type: Boolean })
   accessor selected = false;
+
+  @state()
+  private accessor _hasSelectionControl = false;
 
   /** AI theme toggle */
   @property({ type: Boolean })
@@ -98,13 +102,24 @@ export class Card extends LitElement {
           class=${classMap(baseClasses)}
           data-variant=${this.variant}
           data-ai=${String(this.aiConnected)}
-          role="checkbox"
-          aria-checked=${this.selected ? 'true' : 'false'}
+          role=${this._hasSelectionControl ? 'group' : 'checkbox'}
+          aria-checked=${ifDefined(
+            this._hasSelectionControl
+              ? undefined
+              : this.selected
+              ? 'true'
+              : 'false'
+          )}
           @click=${this._handleBodyClick}
           @keydown=${this._handleKeyDown}
-          tabindex="0"
+          tabindex=${ifDefined(this._hasSelectionControl ? undefined : '0')}
         >
           ${this._renderContent()}
+          <slot
+            name="selection-control"
+            @slotchange=${this._handleSelectionControlSlotChange}
+            @on-checkbox-change=${this._handleSelectionControlChange}
+          ></slot>
         </div>
       `;
     }
@@ -159,6 +174,12 @@ export class Card extends LitElement {
     `;
   }
 
+  override updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('selected')) {
+      this._syncSelectionControl();
+    }
+  }
+
   /** @internal */
   private _renderContent() {
     if (this.variant === 'default') return html`<slot></slot>`;
@@ -202,9 +223,57 @@ export class Card extends LitElement {
   };
 
   /** @internal */
-  private _handleBodyClick() {
-    if (!this.selectable || this.type !== 'clickable') return;
-    this.selected = !this.selected;
+  private _handleBodyClick(event?: MouseEvent) {
+    if (event) {
+      const selectionControlSlot = this.shadowRoot?.querySelector(
+        'slot[name="selection-control"]'
+      );
+      if (
+        selectionControlSlot &&
+        event.composedPath().includes(selectionControlSlot)
+      ) {
+        event.stopPropagation();
+        return;
+      }
+    }
+    this._setSelected(!this.selected);
+  }
+
+  /** @internal */
+  private _handleKeyDown(event: KeyboardEvent) {
+    if (event.target !== event.currentTarget) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      if (event.key === ' ') event.preventDefault();
+      this._handleBodyClick();
+    }
+  }
+
+  /** @internal */
+  private _handleSelectionControlSlotChange(event: Event) {
+    const slot = event.currentTarget as HTMLSlotElement;
+    this._hasSelectionControl = slot
+      .assignedElements()
+      .some((element) => element.localName === 'kyn-checkbox');
+    this._syncSelectionControl();
+  }
+
+  /** @internal */
+  private _handleSelectionControlChange(
+    event: CustomEvent<{ checked: boolean }>
+  ) {
+    this._setSelected(event.detail.checked);
+  }
+
+  private _setSelected(selected: boolean) {
+    if (
+      !this.selectable ||
+      this.type !== 'clickable' ||
+      this.selected === selected
+    ) {
+      return;
+    }
+
+    this.selected = selected;
     this.dispatchEvent(
       new CustomEvent('on-select', {
         detail: { selected: this.selected },
@@ -214,12 +283,21 @@ export class Card extends LitElement {
     );
   }
 
-  /** @internal */
-  private _handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      if (event.key === ' ') event.preventDefault();
-      this._handleBodyClick();
-    }
+  private _getSelectionCheckbox():
+    | (HTMLElement & { checked: boolean })
+    | undefined {
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(
+      'slot[name="selection-control"]'
+    );
+    const checkbox = slot
+      ?.assignedElements()
+      .find((element) => element.localName === 'kyn-checkbox');
+    return checkbox as (HTMLElement & { checked: boolean }) | undefined;
+  }
+
+  private _syncSelectionControl() {
+    const checkbox = this._getSelectionCheckbox();
+    if (checkbox) checkbox.checked = this.selected;
   }
 
   /** @internal */

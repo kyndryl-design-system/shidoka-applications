@@ -1734,6 +1734,10 @@
             {
               "description": "Slot for right icon when `variant` is `'notification'`.",
               "name": "inlineConfirm"
+            },
+            {
+              "description": "Supports a direct child `kyn-checkbox`. Its `checked` state is synchronized with `Card.selected`, and its `on-checkbox-change` event (`detail.checked`) updates the Card selection state.",
+              "name": "selection-control"
             }
           ],
           "members": [
@@ -1809,6 +1813,15 @@
             },
             {
               "kind": "field",
+              "name": "_hasSelectionControl",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
               "name": "aiConnected",
               "type": {
                 "text": "boolean"
@@ -1860,6 +1873,34 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_setSelected",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selected",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getSelectionCheckbox",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "| (HTMLElement & { checked: boolean })\n    | undefined"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_syncSelectionControl",
+              "privacy": "private"
             }
           ],
           "events": [

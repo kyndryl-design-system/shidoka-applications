@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import './index';
+import '../checkbox';
 
 export default {
   title: 'Tests/Components/Card',
@@ -68,6 +69,50 @@ export const SelectionKeyboardInteraction = {
     await userEvent.keyboard(' ');
     await card.updateComplete;
     expect(card.selected).toBe(false);
+  },
+};
+
+export const SelectionControlSync = {
+  render: () => html`
+    <kyn-card type="clickable" selectable>
+      <h3>Selectable service</h3>
+      <kyn-checkbox slot="selection-control">Select service</kyn-checkbox>
+    </kyn-card>
+  `,
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector('kyn-card');
+    await card.updateComplete;
+    const surface = card.shadowRoot.querySelector('[part="card-wrapper"]');
+    const checkbox = card.querySelector('kyn-checkbox');
+    await checkbox.updateComplete;
+    const input = checkbox.shadowRoot.querySelector('input');
+    const select = fn();
+    card.addEventListener('on-select', select);
+
+    await waitFor(() => expect(surface.getAttribute('role')).toBe('group'));
+    expect(surface.hasAttribute('aria-checked')).toBe(false);
+    expect(surface.hasAttribute('tabindex')).toBe(false);
+    expect(checkbox.checked).toBe(false);
+
+    await userEvent.click(surface);
+    await card.updateComplete;
+    await checkbox.updateComplete;
+    expect(card.selected).toBe(true);
+    expect(checkbox.checked).toBe(true);
+    expect(select).toHaveBeenCalledTimes(1);
+
+    await userEvent.click(input);
+    await card.updateComplete;
+    await checkbox.updateComplete;
+    expect(card.selected).toBe(false);
+    expect(checkbox.checked).toBe(false);
+    expect(select).toHaveBeenCalledTimes(2);
+
+    card.selected = true;
+    await card.updateComplete;
+    await checkbox.updateComplete;
+    expect(checkbox.checked).toBe(true);
+    card.removeEventListener('on-select', select);
   },
 };
 

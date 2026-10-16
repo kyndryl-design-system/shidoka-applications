@@ -223,10 +223,22 @@
       outline-color: var(--kd-color-border-variants-focus);
     }
 
-    slot::slotted(*) {
+    slot[name='selection-control']::slotted(kyn-checkbox) {
+      position: absolute;
+      inset-block-start: var(--kd-spacing-16);
+      inset-inline-end: var(--kd-spacing-16);
+    }
+
+    slot:not([name='selection-control'])::slotted(*) {
       opacity: 0.9;
       pointer-events: none;
     }
+  }
+
+  &-wrapper-clickable.selectable.compact
+    slot[name='selection-control']::slotted(kyn-checkbox) {
+    inset-block-start: var(--kd-spacing-4);
+    inset-inline-end: var(--kd-spacing-4);
   }
 
   .card-wrapper.selected:not(.ai-connected),

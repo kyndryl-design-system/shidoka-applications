@@ -222,6 +222,7 @@ export const Clickable = {
 };
 
 export const SelectableCards = {
+  tags: ['new'],
   args: {
     selectedServices: ['compute'],
     hideBorder: true,
@@ -271,6 +272,13 @@ export const SelectableCards = {
                   </div>
                   <h3 class="card-title">${service.title}</h3>
                   <p class="card-description">${service.description}</p>
+                  <kyn-checkbox
+                    slot="selection-control"
+                    .checked=${args.selectedServices.includes(service.id)}
+                    .visiblyHidden=${true}
+                  >
+                    Select ${service.title}
+                  </kyn-checkbox>
                 </kyn-card>
               </div>
             `
