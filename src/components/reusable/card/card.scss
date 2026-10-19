@@ -53,9 +53,10 @@
   }
 
   &-wrapper {
-    background-color: var(--kd-color-background-container-default);
-    border: 1px solid var(--kd-color-border-card-default);
+    background-color: var(--kd-color-background-container-secondary);
+    border: 1px solid var(--kd-color-border-container-default);
     cursor: default;
+    @include elevation.shadow(0);
 
     &.compact {
       padding: 8px;
@@ -69,38 +70,46 @@
 
     &.hide-border {
       border: none;
-      @include elevation.shadow(0);
+      @include elevation.shadow(1);
     }
   }
 
   &-wrapper-clickable {
-    background-color: var(--kd-color-background-container-default);
+    background-color: var(--kd-color-background-container-secondary);
     color: unset;
     text-decoration: none;
     border: 1px solid transparent;
     outline: 2px solid transparent;
     outline-offset: 2px;
     cursor: pointer;
-    transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
-      outline-color 150ms ease-out;
+    transition: box-shadow 200ms ease-out, outline-color 150ms ease-out;
+    @include elevation.shadow(0);
 
     &.card-border {
-      border: 1px solid var(--kd-color-border-card-clickable);
+      border: 1px solid var(--kd-color-border-container-default);
+    }
+
+    &:not(.ai-connected).hide-border {
       @include elevation.shadow(1);
     }
 
     &:not(.ai-connected):hover {
-      border-color: var(--kd-color-border-ui-hover);
-      @include elevation.shadow(2);
+      border: 1px solid var(--kd-color-border-container-hover);
+      @include elevation.shadow(3);
     }
 
-    &:focus-visible {
+    &.ai-connected:focus-visible {
       outline-color: var(--kd-color-border-variants-focus);
     }
 
-    &:hover:active {
-      border: 1px solid var(--kd-color-border-card-clickable);
-      @include elevation.shadow(4);
+    &:not(.ai-connected):focus-visible {
+      border: 1px solid var(--kd-color-border-container-focused);
+      @include elevation.shadow(1);
+    }
+
+    &:not(.ai-connected):active {
+      border: 1px solid var(--kd-color-border-container-pressed);
+      @include elevation.shadow(1);
     }
 
     &.compact {
@@ -172,6 +181,10 @@
         opacity: 1;
       }
     }
+
+    &.hide-border {
+      border-color: transparent;
+    }
   }
 
   .card-wrapper.card-border,
@@ -190,8 +203,57 @@
     border-color: transparent;
   }
 
+  &-wrapper-clickable.selectable {
+    &:hover:not(.ai-connected) {
+      @include elevation.shadow(3);
+
+      &:not(.selected) {
+        border: 1px solid var(--kd-color-border-container-hover);
+      }
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    slot[name='selection-control']::slotted(kyn-checkbox) {
+      position: absolute;
+      inset-block-start: var(--kd-spacing-16);
+      inset-inline-end: var(--kd-spacing-16);
+    }
+
+    slot:not([name='selection-control'])::slotted(*) {
+      opacity: 0.9;
+      pointer-events: none;
+    }
+  }
+
+  &-wrapper-clickable.selectable.compact
+    slot[name='selection-control']::slotted(kyn-checkbox) {
+    inset-block-start: var(--kd-spacing-4);
+    inset-inline-end: var(--kd-spacing-4);
+  }
+
+  &-wrapper-clickable.selected:not(.ai-connected) {
+    border: 2px solid var(--kd-color-border-container-selected);
+    @include elevation.shadow(1);
+
+    &:hover {
+      border-color: var(--kd-color-border-container-hover);
+    }
+
+    &:active {
+      border-color: var(--kd-color-border-container-pressed);
+    }
+  }
+
   &-highlight {
     background: var(--kd-color-background-highlight-fill);
     color: var(--kd-color-text-level-primary);
+
+    &:not(.ai-connected) {
+      border: 1px solid var(--kd-color-background-highlight-border);
+      @include elevation.shadow(1);
+    }
   }
 }

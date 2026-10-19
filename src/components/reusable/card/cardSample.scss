@@ -18,13 +18,13 @@
   }
   &-title {
     @include typography.type-ui-01;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: var(--kd-spacing-8);
+    margin-bottom: var(--kd-spacing-8);
     font-weight: var(--kd-font-weight-medium);
   }
   &-subtitle {
     @include typography.type-ui-03;
-    margin-bottom: 16px;
+    margin-bottom: var(--kd-spacing-8);
   }
   &-description {
     @include typography.type-ui-02;
@@ -48,6 +48,11 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
+}
+
+::slotted([slot='footer']) {
+  display: inline-block;
+  margin-top: var(--kd-spacing-8);
 }
 
 .tags {
