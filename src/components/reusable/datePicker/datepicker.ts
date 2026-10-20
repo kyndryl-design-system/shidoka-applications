@@ -241,6 +241,15 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private accessor _hasInteracted = false;
 
+  /**
+   * Component-generated validation message (parse/range/format errors).
+   * Kept separate from consumer `invalidText` so controlled value updates
+   * do not clear host-provided external validation.
+   * @internal
+   */
+  @state()
+  private accessor _internalErrorMessage = '';
+
   /** Flatpickr instantiation.
    * @internal
    */
@@ -590,9 +599,7 @@ export class DatePicker extends FormMixin(LitElement) {
       const { parseFailed, outOfRange } =
         this.validateAndNormalizeHostValue(initialRaw);
       if (parseFailed || outOfRange) {
-        this._hasInteracted = true;
-        this.invalidText = this._textStrings.pleaseSelectValidDate;
-        this._validate(true, false);
+        this.setInternalError(this._textStrings.pleaseSelectValidDate);
       }
     }
 
@@ -635,7 +642,7 @@ export class DatePicker extends FormMixin(LitElement) {
         parsed,
         valid,
       });
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.setInternalError(this._textStrings.pleaseSelectValidDate);
       this.defaultDate = null;
     }
 
@@ -675,15 +682,14 @@ export class DatePicker extends FormMixin(LitElement) {
           this._isClearing = false;
         }
 
-        if (this.invalidText) this.invalidText = '';
+        this.clearInternalError();
+        this._validate(false, false);
       } else if (this.flatpickrInstance) {
         const { dates, hostProvidedSomething, parseFailed, outOfRange } =
           this.validateAndNormalizeHostValue(raw);
 
         if (parseFailed || outOfRange) {
-          this._hasInteracted = true;
-          this.invalidText = this._textStrings.pleaseSelectValidDate;
-          this._validate(true, false);
+          this.setInternalError(this._textStrings.pleaseSelectValidDate);
         } else if (hostProvidedSomething) {
           if (dates.length > 0) {
             this.flatpickrInstance.setDate(dates, false);
@@ -692,7 +698,10 @@ export class DatePicker extends FormMixin(LitElement) {
             if (this._inputEl) this._inputEl.value = '';
           }
 
-          if (this.invalidText) this.invalidText = '';
+          // Clear only component-generated errors. Consumer `invalidText` is
+          // host-owned (e.g. "Must be in the future") and must survive value sync.
+          this.clearInternalError();
+          this._validate(false, false);
         }
       }
 
@@ -1205,8 +1214,7 @@ export class DatePicker extends FormMixin(LitElement) {
         validDates.length !== selectedDates.length &&
         selectedDates.length > 0
       ) {
-        this.invalidText = this._textStrings.invalidDateFormat;
-        this._validate(true, false);
+        this.setInternalError(this._textStrings.invalidDateFormat);
         return;
       }
 
@@ -1242,6 +1250,8 @@ export class DatePicker extends FormMixin(LitElement) {
         ? validDates[0]
         : null;
 
+      // Emit before clearing internal errors so a synchronous on-change handler
+      // can set consumer `invalidText` without it being wiped here.
       emitValue(this, 'on-change', {
         dates: formattedDates,
         dateObjects,
@@ -1249,16 +1259,12 @@ export class DatePicker extends FormMixin(LitElement) {
         source: validDates.length === 0 ? 'clear' : undefined,
       });
 
-      if (this.invalidText) {
-        this.invalidText = '';
-      }
-
+      this.clearInternalError();
       this._validate(true, false);
       await this.updateComplete;
     } catch (error) {
       console.error('Error handling date change:', error);
-      this.invalidText = this._textStrings.errorProcessing;
-      this._validate(true, false);
+      this.setInternalError(this._textStrings.errorProcessing);
     } finally {
       this._isFromFlatpickr = false;
     }
@@ -1288,7 +1294,7 @@ export class DatePicker extends FormMixin(LitElement) {
     const raw = this._inputEl.value.trim();
 
     if (!raw) {
-      if (this.invalidText) this.invalidText = '';
+      this.clearInternalError();
 
       if (this.flatpickrInstance) {
         this.flatpickrInstance.clear();
@@ -1316,9 +1322,7 @@ export class DatePicker extends FormMixin(LitElement) {
     const outOfRange = validDates.some((date) => !this.isDateInRange(date));
 
     if (validDates.length !== segments.length || outOfRange) {
-      this._hasInteracted = true;
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
-      this._validate(true, false);
+      this.setInternalError(this._textStrings.pleaseSelectValidDate);
       this.updateFormValue();
       this.requestUpdate();
       return;
@@ -1329,14 +1333,14 @@ export class DatePicker extends FormMixin(LitElement) {
     );
 
     if (this.datesMatch(validDates, currentDates)) {
-      if (this.invalidText) this.invalidText = '';
+      this.clearInternalError();
       this._validate(true, false);
       this.updateFormValue();
       this.requestUpdate();
       return;
     }
 
-    if (this.invalidText) this.invalidText = '';
+    this.clearInternalError();
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.setDate(
@@ -1377,6 +1381,23 @@ export class DatePicker extends FormMixin(LitElement) {
     );
   }
 
+  /**
+   * Sets a component-generated validation error without touching consumer
+   * `invalidText` (host-owned external validation).
+   */
+  private setInternalError(message: string) {
+    this._hasInteracted = true;
+    this._internalErrorMessage = message;
+    this._validate(true, false);
+  }
+
+  /** Clears component-generated errors only; leaves consumer `invalidText` intact. */
+  private clearInternalError() {
+    if (this._internalErrorMessage) {
+      this._internalErrorMessage = '';
+    }
+  }
+
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
 
@@ -1395,14 +1416,16 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const isEmpty = !this._inputEl.value.trim() && !hasValidDefaultValue;
     const isRequired = this.required;
+    const externalOrInternalError =
+      this.invalidText || this._internalErrorMessage;
 
-    let validity = this._inputEl.validity;
-    let validationMessage = this._inputEl.validationMessage;
-
+    // Datetime pickers defer native required UX until interaction, but must
+    // still apply host `invalidText` / internal errors immediately.
     if (
       !this._hasInteracted &&
       !interacted &&
       this._enableTime &&
+      !externalOrInternalError &&
       !(isRequired && isEmpty)
     ) {
       this._internals.setValidity({}, '', this._inputEl);
@@ -1411,12 +1434,20 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
+    let valueMissing = false;
+    let customError = false;
+    let validationMessage = '';
+
     if (isRequired && isEmpty) {
-      validity = { ...validity, valueMissing: true };
+      valueMissing = true;
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
 
-      this._internals.setValidity(validity, validationMessage, this._inputEl);
+      this._internals.setValidity(
+        { valueMissing: true },
+        validationMessage,
+        this._inputEl
+      );
 
       this._isInvalid = this._hasInteracted || interacted;
       this._internalValidationMsg = validationMessage;
@@ -1428,28 +1459,34 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
-    if (this.mode === 'multiple' && this._inputEl.value.trim() !== '') {
-      if (this.invalidText) {
-        this.invalidText = '';
-      }
+    if (externalOrInternalError) {
+      customError = true;
+      // Prefer consumer invalidText over component-generated internal errors.
+      validationMessage = this.invalidText || this._internalErrorMessage;
     }
 
-    if (this.invalidText) {
-      validity = { ...validity, customError: true };
-      validationMessage = this.invalidText;
-    }
-
-    const isValid = !validity.valueMissing && !validity.customError;
+    const isValid = !valueMissing && !customError;
 
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
 
-    this._internals.setValidity(validity, validationMessage, this._inputEl);
+    if (isValid) {
+      this._internals.setValidity({}, '', this._inputEl);
+    } else {
+      this._internals.setValidity(
+        { valueMissing, customError },
+        validationMessage,
+        this._inputEl
+      );
+    }
 
     this._isInvalid =
       !isValid &&
-      (this._hasInteracted || this.invalidText !== '' || interacted);
+      (this._hasInteracted ||
+        this.invalidText !== '' ||
+        this._internalErrorMessage !== '' ||
+        interacted);
     this._internalValidationMsg = validationMessage;
 
     if (report) {
