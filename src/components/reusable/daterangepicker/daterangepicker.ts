@@ -253,6 +253,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   private accessor _hasInteracted = false;
 
+  /**
+   * Component-generated validation message (parse/range/format errors).
+   * Kept separate from consumer `invalidText` so controlled value updates
+   * do not clear host-provided external validation.
+   * @internal
+   */
+  @state()
+  private accessor _internalErrorMessage = '';
+
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -950,13 +959,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
             (rawEnd != null && !parsedEnd));
 
         if (parseFailed) {
-          this._hasInteracted = true;
-          this.invalidText = this._textStrings.pleaseSelectValidDate;
+          this.setInternalError(this._textStrings.pleaseSelectValidDate);
           this.value = [parsedStart, parsedEnd];
           this.flatpickrInstance?.clear();
           if (parsedStart) this.syncFlatpickrFromValue([parsedStart]);
           this.updateFormValue();
-          this._validate(true, false);
           return;
         }
 
@@ -1178,7 +1185,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       console.error(
         'Invalid date range: End date cannot be earlier than start date'
       );
-      this.invalidText = this._textStrings.invalidDateRange;
+      this.setInternalError(this._textStrings.invalidDateRange);
       return [validDates[0]];
     }
 
@@ -1191,7 +1198,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (inRange.length !== validDates.length) {
       console.error('Invalid date(s) provided in defaultDate', inRange);
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.setInternalError(this._textStrings.pleaseSelectValidDate);
       this.defaultDate = null;
     }
 
@@ -1307,7 +1314,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const raw = this._inputEl.value.trim();
 
     if (!raw) {
-      if (this.invalidText) this.invalidText = '';
+      this.clearInternalError();
 
       if (this.flatpickrInstance) {
         this.flatpickrInstance.clear();
@@ -1330,9 +1337,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const validDates = filterValidDates(parsedDates);
 
     if (validDates.length !== segments.length || validDates.length > 2) {
-      this._hasInteracted = true;
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
-      this._validate(true, false);
+      this.setInternalError(this._textStrings.pleaseSelectValidDate);
       this.requestUpdate();
       return;
     }
@@ -1342,13 +1347,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     );
 
     if (this.datesMatch(validDates, currentDates)) {
-      if (this.invalidText) this.invalidText = '';
+      this.clearInternalError();
       this._validate(true, false);
       this.requestUpdate();
       return;
     }
 
-    if (this.invalidText) this.invalidText = '';
+    this.clearInternalError();
 
     if (this.flatpickrInstance) {
       this.flatpickrInstance.setDate(validDates, true);
@@ -1605,12 +1610,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
           hostProvidedSomething &&
           ((rawStart != null && !start) || (rawEnd != null && !end))
         ) {
-          this._hasInteracted = true;
-          this.invalidText = this._textStrings.pleaseSelectValidDate;
+          this.setInternalError(this._textStrings.pleaseSelectValidDate);
           this.value = [start, end];
           this.flatpickrInstance.clear();
           if (start) this.syncFlatpickrFromValue([start]);
-          this._validate(true, false);
           return;
         }
       }
@@ -1665,25 +1668,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
         const hostProvidedSomething = rawStart != null || rawEnd != null;
 
         if (hostProvidedSomething && (!startInRange || !endInRange)) {
-          this._hasInteracted = true;
-          this.invalidText = this._textStrings.pleaseSelectValidDate;
+          this.setInternalError(this._textStrings.pleaseSelectValidDate);
           this.value = [startInRange, endInRange];
           this.flatpickrInstance.clear();
           if (startInRange) this.syncFlatpickrFromValue([startInRange]);
-          this._validate(true, false);
           return;
         }
 
         if (startInRange && endInRange && endInRange < startInRange) {
-          this._hasInteracted = true;
-          this.invalidText = this._textStrings.invalidDateRange;
+          this.setInternalError(this._textStrings.invalidDateRange);
           this.value = [startInRange, null];
           this.syncFlatpickrFromValue([startInRange]);
-          this._validate(true, false);
           return;
         }
 
-        this.invalidText = '';
+        // Clear only component-generated errors. Consumer `invalidText` is
+        // host-owned and must survive controlled value sync.
+        this.clearInternalError();
         this.value = [startInRange, endInRange];
 
         const datesToSync: Date[] = [];
@@ -1693,6 +1694,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
         if (datesToSync.length > 0) {
           this.syncFlatpickrFromValue(datesToSync);
         }
+
+        this._validate(false, false);
       }
     } catch (e) {
       console.error('Error in setInitialDates:', (e as Error).message);
@@ -1799,6 +1802,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
 
       this.updateSelectedDateRangeAria(validDates);
+      // Do not clear consumer `invalidText` after emit — a synchronous
+      // on-change handler may have just set host validation.
+      this.clearInternalError();
       this._validate(true, false);
     } finally {
       // Reset flag to ensure updated()
@@ -1896,6 +1902,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
+  /**
+   * Sets a component-generated validation error without touching consumer
+   * `invalidText` (host-owned external validation).
+   */
+  private setInternalError(message: string) {
+    this._hasInteracted = true;
+    this._internalErrorMessage = message;
+    this._validate(true, false);
+  }
+
+  /** Clears component-generated errors only; leaves consumer `invalidText` intact. */
+  private clearInternalError() {
+    if (this._internalErrorMessage) {
+      this._internalErrorMessage = '';
+    }
+  }
+
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
 
@@ -1910,8 +1933,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
+    const externalOrInternalError =
+      this.invalidText || this._internalErrorMessage;
+
     const shouldShowValidationErrors =
-      this._hasInteracted || report || !!this.invalidText;
+      this._hasInteracted ||
+      report ||
+      !!this.invalidText ||
+      !!this._internalErrorMessage;
 
     const currentValueArray = Array.isArray(this.value)
       ? this.value
@@ -1921,35 +1950,41 @@ export class DateRangePicker extends FormMixin(LitElement) {
       (d) => d !== null
     ).length;
 
-    let validity = this._inputEl.validity;
-    let validationMessage = this._inputEl.validationMessage;
+    let valueMissing = false;
+    let customError = false;
+    let validationMessage = '';
 
     if (this.flatpickrInstance?.isOpen) {
-      validity = { ...validity, valueMissing: false, customError: false };
-      validationMessage = '';
+      // While open, defer incomplete-range UX; still honor host/internal errors.
     } else if (selectedCount === 1) {
-      validity = { ...validity, customError: true };
+      customError = true;
       validationMessage = this._textStrings.pleaseSelectBothDates;
     } else if (this.required && selectedCount === 0) {
-      validity = { ...validity, valueMissing: true };
+      valueMissing = true;
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-    } else {
-      validity = { ...validity, valueMissing: false, customError: false };
-      validationMessage = '';
     }
 
-    if (this.invalidText) {
-      validity = { ...validity, customError: true };
-      validationMessage = this.invalidText;
+    if (externalOrInternalError) {
+      customError = true;
+      // Prefer consumer invalidText over component-generated internal errors.
+      validationMessage = this.invalidText || this._internalErrorMessage;
     }
 
-    const isValid = !validity.valueMissing && !validity.customError;
+    const isValid = !valueMissing && !customError;
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
 
-    this._internals.setValidity(validity, validationMessage, this._inputEl);
+    if (isValid) {
+      this._internals.setValidity({}, '', this._inputEl);
+    } else {
+      this._internals.setValidity(
+        { valueMissing, customError },
+        validationMessage,
+        this._inputEl
+      );
+    }
 
     this._isInvalid = !isValid && shouldShowValidationErrors;
     this._internalValidationMsg = validationMessage;
