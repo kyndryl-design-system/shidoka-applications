@@ -67,9 +67,10 @@ const _defaultTextStrings = {
  *   .fields=${[
  *     { name: 'firstName', label: 'First Name', dataType: 'text' },
  *     { name: 'age', label: 'Age', dataType: 'number' },
+ *     { name: 'legacyId', label: 'Legacy ID', dataType: 'text', disabled: true },
  *     { name: 'status', label: 'Status', dataType: 'select', values: [
  *       { value: 'active', label: 'Active' },
- *       { value: 'inactive', label: 'Inactive' },
+ *       { value: 'inactive', label: 'Inactive', disabled: true },
  *     ]},
  *   ]}
  *   @on-query-change=${(e) => console.log(e.detail.query)}

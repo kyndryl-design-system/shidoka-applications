@@ -236,7 +236,10 @@ export class QueryBuilderRule extends LitElement {
       >
         ${this.fields.map(
           (field) => html`
-            <kyn-dropdown-option value=${field.name}>
+            <kyn-dropdown-option
+              value=${field.name}
+              ?disabled=${!!field.disabled}
+            >
               ${field.label}
             </kyn-dropdown-option>
           `
@@ -261,7 +264,7 @@ export class QueryBuilderRule extends LitElement {
       >
         ${this.operators.map(
           (op) => html`
-            <kyn-dropdown-option value=${op.name}>
+            <kyn-dropdown-option value=${op.name} ?disabled=${!!op.disabled}>
               ${op.label}
             </kyn-dropdown-option>
           `
@@ -450,7 +453,7 @@ export class QueryBuilderRule extends LitElement {
         >
           ${(field.values || []).map(
             (opt) => html`
-              <kyn-radio-button value=${opt.value}
+              <kyn-radio-button value=${opt.value} ?disabled=${!!opt.disabled}
                 >${opt.label}</kyn-radio-button
               >
             `
@@ -505,7 +508,7 @@ export class QueryBuilderRule extends LitElement {
       >
         ${(field.values || []).map(
           (opt) => html`
-            <kyn-dropdown-option value=${opt.value}>
+            <kyn-dropdown-option value=${opt.value} ?disabled=${!!opt.disabled}>
               ${opt.label}
             </kyn-dropdown-option>
           `
@@ -539,7 +542,7 @@ export class QueryBuilderRule extends LitElement {
       >
         ${(field.values || []).map(
           (opt) => html`
-            <kyn-dropdown-option value=${opt.value}>
+            <kyn-dropdown-option value=${opt.value} ?disabled=${!!opt.disabled}>
               ${opt.label}
             </kyn-dropdown-option>
           `
