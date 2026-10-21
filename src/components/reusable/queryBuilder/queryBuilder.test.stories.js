@@ -98,3 +98,99 @@ export const DateRuleEmitsCalendarDateString = {
     expect(String(dateRule?.value)).not.toMatch(/T/);
   },
 };
+
+/**
+ * Optional per-option `disabled` on QueryField / QueryOption is forwarded to
+ * kyn-dropdown-option. Disabled options stay in the list but cannot be selected.
+ */
+export const DisabledOptionsIllustrated = {
+  render: () => html`
+    <kyn-query-builder
+      .fields=${[
+        { name: 'firstName', label: 'First Name', dataType: 'text' },
+        {
+          name: 'legacyId',
+          label: 'Legacy ID',
+          dataType: 'text',
+          disabled: true,
+        },
+        {
+          name: 'status',
+          label: 'Status',
+          dataType: 'select',
+          values: [
+            { value: 'active', label: 'Active' },
+            { value: 'archived', label: 'Archived', disabled: true },
+            { value: 'pending', label: 'Pending' },
+          ],
+        },
+      ]}
+      .query=${{
+        id: 'root',
+        combinator: 'and',
+        rules: [
+          {
+            id: 'rule-1',
+            field: 'status',
+            operator: 'equal',
+            value: 'active',
+          },
+        ],
+      }}
+    ></kyn-query-builder>
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-query-builder');
+    const group = await getRootGroup(el);
+    const rule = group.shadowRoot.querySelector('kyn-qb-rule');
+    await rule.updateComplete;
+
+    const fieldDropdown = rule.shadowRoot.querySelector('.qb-rule__field');
+    expect(fieldDropdown).toBeTruthy();
+    await fieldDropdown.updateComplete;
+
+    const fieldOptions = Array.from(
+      fieldDropdown.querySelectorAll('kyn-dropdown-option')
+    );
+    const legacyOption = fieldOptions.find((opt) => opt.value === 'legacyId');
+    const firstNameOption = fieldOptions.find(
+      (opt) => opt.value === 'firstName'
+    );
+
+    expect(legacyOption).toBeTruthy();
+    expect(legacyOption.disabled).toBe(true);
+    const legacyInner =
+      legacyOption.shadowRoot?.querySelector('[role="option"]');
+    expect(legacyInner?.getAttribute('aria-disabled')).toBe('true');
+    expect(firstNameOption.disabled).toBe(false);
+
+    const valueDropdown = rule.shadowRoot.querySelector('.qb-rule__value');
+    expect(valueDropdown).toBeTruthy();
+    await valueDropdown.updateComplete;
+
+    const valueOptions = Array.from(
+      valueDropdown.querySelectorAll('kyn-dropdown-option')
+    );
+    const archivedOption = valueOptions.find((opt) => opt.value === 'archived');
+    expect(archivedOption).toBeTruthy();
+    expect(archivedOption.disabled).toBe(true);
+
+    const queryPromise = new Promise((resolve) => {
+      el.addEventListener('on-query-change', (e) => resolve(e.detail.query), {
+        once: true,
+      });
+    });
+
+    fieldDropdown.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { value: 'firstName' },
+        bubbles: true,
+        composed: true,
+      })
+    );
+
+    const query = await queryPromise;
+    const updatedRule = query.rules.find((r) => r.id === 'rule-1');
+    expect(updatedRule?.field).toBe('firstName');
+  },
+};

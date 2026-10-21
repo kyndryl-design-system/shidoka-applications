@@ -58,6 +58,8 @@ export interface QueryField {
   defaultValue?: any;
   placeholder?: string;
   validator?: (rule: RuleType) => boolean | string;
+  /** When true, field appears disabled in the field dropdown */
+  disabled?: boolean;
 
   // Validation props - passed through to input components
   /** Makes the field required */
@@ -113,6 +115,8 @@ export interface QueryOperator {
   name: string;
   label: string;
   valueCount?: 'none' | 'single';
+  /** When true, operator appears disabled in the operator dropdown */
+  disabled?: boolean;
 }
 
 /**
@@ -121,6 +125,8 @@ export interface QueryOperator {
 export interface QueryOption {
   value: string;
   label: string;
+  /** When true, option is disabled in value select/multi-select/radio */
+  disabled?: boolean;
 }
 
 /**

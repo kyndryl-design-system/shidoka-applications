@@ -483,6 +483,105 @@ export const Disabled = {
   },
 };
 
+/**
+ * Optional per-option `disabled` on fields, operators, and values — same
+ * behavior as standalone `kyn-dropdown-option`. Additive and backward compatible;
+ * omit `disabled` for previous behavior.
+ */
+const disabledOptionsFields = [
+  { name: 'firstName', label: 'First Name', dataType: 'text' },
+  {
+    name: 'legacyId',
+    label: 'Legacy ID (disabled)',
+    dataType: 'text',
+    disabled: true,
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    dataType: 'select',
+    operators: [
+      { name: 'equal', label: 'equals' },
+      { name: 'notEqual', label: 'does not equal', disabled: true },
+      { name: 'in', label: 'in' },
+      { name: 'notIn', label: 'not in' },
+    ],
+    values: [
+      { value: 'active', label: 'Active' },
+      { value: 'inactive', label: 'Inactive' },
+      { value: 'archived', label: 'Archived (disabled)', disabled: true },
+      { value: 'pending', label: 'Pending' },
+    ],
+  },
+  {
+    name: 'priority',
+    label: 'Priority',
+    dataType: 'radio',
+    values: [
+      { value: 'low', label: 'Low' },
+      { value: 'medium', label: 'Medium' },
+      { value: 'critical', label: 'Critical (disabled)', disabled: true },
+    ],
+  },
+];
+
+export const DisabledOptions = {
+  args: {
+    ...args,
+    fields: disabledOptionsFields,
+    query: {
+      id: 'root',
+      combinator: 'and',
+      rules: [
+        {
+          id: 'rule-1',
+          field: 'status',
+          operator: 'equal',
+          value: 'active',
+        },
+      ],
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Demonstrates optional `disabled` on field, operator, and value options. Mirrors standalone dropdown option disable; configs that omit `disabled` behave as before.',
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <div>
+        <p style="margin-bottom: 16px; max-width: 640px;">
+          Open the field, operator, and value dropdowns to see disabled options.
+          They remain visible but cannot be newly selected. Existing selections
+          are not cleared when an option is disabled.
+        </p>
+        <kyn-query-builder
+          .fields=${args.fields}
+          .query=${args.query}
+          .size=${args.size}
+          .searchThreshold=${args.searchThreshold}
+          ?showCloneButtons=${args.showCloneButtons}
+          ?showLockButtons=${args.showLockButtons}
+          ?hideGroupBtn=${args.hideGroupBtn}
+          .maxDepth=${args.maxDepth}
+          ?disableDragAndDrop=${args.disableDragAndDrop}
+          ?disabled=${args.disabled}
+          @on-query-change=${(e) => {
+            action('on-query-change')(e.detail);
+            console.log(
+              'Query changed:',
+              JSON.stringify(e.detail.query, null, 2)
+            );
+          }}
+        ></kyn-query-builder>
+      </div>
+    `;
+  },
+};
+
 export const WithQueryOutput = {
   args: {
     ...args,
