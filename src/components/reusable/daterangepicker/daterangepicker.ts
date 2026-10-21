@@ -929,6 +929,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }, 0);
     }
 
+    // Skip host value-sync for the Lit flush caused by handleDateChange.
+    // Re-entering here paints valid before a next-tick host invalidText write.
     if (
       changedProperties.has('value') &&
       !this.dateRangePickerDisabled &&
@@ -1806,9 +1808,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       // on-change handler may have just set host validation.
       this.clearInternalError();
       this._validate(true, false);
+      // Keep _isDatePickerChange true through this Lit flush so updated()
+      // does not re-enter host value-sync before a next-tick host write.
+      await this.updateComplete;
     } finally {
-      // Reset flag to ensure updated()
-      await Promise.resolve();
       this._isDatePickerChange = false;
     }
   }

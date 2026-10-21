@@ -668,7 +668,15 @@ export class DatePicker extends FormMixin(LitElement) {
       this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
     }
 
-    if (changedProperties.has('value') && !this._isClearing) {
+    // Skip host value-sync for the Lit flush caused by our own
+    // handleDateChange `this.value = …`. Flatpickr already has the dates;
+    // re-running setDate/_validate here paints valid before a next-tick
+    // host `:value` / `invalidText` write (Vue/React) can land.
+    if (
+      changedProperties.has('value') &&
+      !this._isClearing &&
+      !this._isFromFlatpickr
+    ) {
       const raw = this.value as unknown as DatePickerValueInput;
       const isClear =
         raw === null || (Array.isArray(raw) && (raw as unknown[]).length === 0);
