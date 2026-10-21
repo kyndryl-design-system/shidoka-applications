@@ -15,6 +15,7 @@ class DatepickerInvalidTextHost extends LitElement {
   static properties = {
     value: { attribute: false },
     invalidText: { type: String },
+    deferHostWrite: { type: Boolean },
     _lastSource: { state: true },
   };
 
@@ -34,6 +35,7 @@ class DatepickerInvalidTextHost extends LitElement {
     super();
     this.value = null;
     this.invalidText = '';
+    this.deferHostWrite = false;
     this._lastSource = 'initial';
   }
 
@@ -54,9 +56,7 @@ class DatepickerInvalidTextHost extends LitElement {
     );
   }
 
-  onChange(e) {
-    const dateObjects = e.detail?.dateObjects ?? null;
-
+  applyChange(dateObjects) {
     if (
       dateObjects === null ||
       (Array.isArray(dateObjects) && dateObjects.length === 0)
@@ -68,9 +68,21 @@ class DatepickerInvalidTextHost extends LitElement {
     }
 
     const next = Array.isArray(dateObjects) ? dateObjects[0] : dateObjects;
-    this.value = next instanceof Date ? next : new Date(next);
+    const date = next instanceof Date ? next : new Date(next);
+    // New Date instance, matching Vue/React storing a copy rather than
+    // the same reference handleDateChange already assigned.
+    this.value = Number.isNaN(date.getTime()) ? date : new Date(date.getTime());
     this.invalidText = this.isFuture(this.value) ? '' : FUTURE_ERROR;
     this._lastSource = 'on-change';
+  }
+
+  onChange(e) {
+    const dateObjects = e.detail?.dateObjects ?? null;
+    if (this.deferHostWrite) {
+      setTimeout(() => this.applyChange(dateObjects), 0);
+      return;
+    }
+    this.applyChange(dateObjects);
   }
 
   render() {
@@ -248,5 +260,40 @@ export const OnChangePastFuturePastKeepsInvalidText = {
     await expectErrorVisible(picker, FUTURE_ERROR);
 
     expect(host.invalidText).toBe(FUTURE_ERROR);
+  },
+};
+
+/**
+ * Vue/React apply `:value` + `invalidText` on the next macrotask, after
+ * handleDateChange's Lit flush. Regression: that flush used to re-sync value
+ * and paint valid before the host write landed.
+ */
+export const NextTickHostWriteKeepsInvalidText = {
+  name: 'Next-Tick Host Write Keeps InvalidText',
+  render: () => html`
+    <datepicker-invalid-text-host
+      .value=${null}
+      ?deferHostWrite=${true}
+    ></datepicker-invalid-text-host>
+  `,
+  play: async ({ canvasElement }) => {
+    const { host, picker } = await getHostAndPicker(canvasElement);
+
+    host.deferHostWrite = true;
+    host.value = null;
+    host.invalidText = '';
+    host._lastSource = 'cleared-for-test';
+    await host.updateComplete;
+    await picker.updateComplete;
+
+    const past = new Date(2021, 2, 10, 12, 0, 0);
+    await picker.handleDateChange([past], '2021-03-10 12:00:00');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await host.updateComplete;
+    await picker.updateComplete;
+    await picker.updateComplete;
+
+    expect(host.invalidText).toBe(FUTURE_ERROR);
+    await expectErrorVisible(picker, FUTURE_ERROR);
   },
 };

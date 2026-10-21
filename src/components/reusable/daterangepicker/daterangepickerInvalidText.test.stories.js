@@ -14,6 +14,7 @@ class DaterangepickerInvalidTextHost extends LitElement {
   static properties = {
     value: { attribute: false },
     invalidText: { type: String },
+    deferHostWrite: { type: Boolean },
     _lastSource: { state: true },
   };
 
@@ -33,6 +34,7 @@ class DaterangepickerInvalidTextHost extends LitElement {
     super();
     this.value = [null, null];
     this.invalidText = '';
+    this.deferHostWrite = false;
     this._lastSource = 'initial';
   }
 
@@ -61,9 +63,7 @@ class DaterangepickerInvalidTextHost extends LitElement {
     );
   }
 
-  onChange(e) {
-    const dateObjects = e.detail?.dateObjects;
-
+  applyChange(dateObjects) {
     if (
       !Array.isArray(dateObjects) ||
       (dateObjects[0] == null && dateObjects[1] == null)
@@ -76,13 +76,13 @@ class DaterangepickerInvalidTextHost extends LitElement {
 
     const start =
       dateObjects[0] instanceof Date
-        ? dateObjects[0]
+        ? new Date(dateObjects[0].getTime())
         : dateObjects[0]
         ? new Date(dateObjects[0])
         : null;
     const end =
       dateObjects[1] instanceof Date
-        ? dateObjects[1]
+        ? new Date(dateObjects[1].getTime())
         : dateObjects[1]
         ? new Date(dateObjects[1])
         : null;
@@ -90,6 +90,15 @@ class DaterangepickerInvalidTextHost extends LitElement {
     this.value = [start, end];
     this.invalidText = start && !this.isFutureStart(start) ? FUTURE_ERROR : '';
     this._lastSource = 'on-change';
+  }
+
+  onChange(e) {
+    const dateObjects = e.detail?.dateObjects;
+    if (this.deferHostWrite) {
+      setTimeout(() => this.applyChange(dateObjects), 0);
+      return;
+    }
+    this.applyChange(dateObjects);
   }
 
   render() {
@@ -266,5 +275,39 @@ export const OnChangePastFuturePastKeepsInvalidText = {
     await expectErrorVisible(picker, FUTURE_ERROR);
 
     expect(host.invalidText).toBe(FUTURE_ERROR);
+  },
+};
+
+export const NextTickHostWriteKeepsInvalidText = {
+  name: 'Next-Tick Host Write Keeps InvalidText',
+  render: () => html`
+    <daterangepicker-invalid-text-host
+      .value=${[null, null]}
+      ?deferHostWrite=${true}
+    ></daterangepicker-invalid-text-host>
+  `,
+  play: async ({ canvasElement }) => {
+    const { host, picker } = await getHostAndPicker(canvasElement);
+
+    host.deferHostWrite = true;
+    host.value = [null, null];
+    host.invalidText = '';
+    host._lastSource = 'cleared-for-test';
+    await host.updateComplete;
+    await picker.updateComplete;
+
+    const pastStart = new Date(2021, 2, 10, 12, 0, 0);
+    const pastEnd = new Date(2021, 2, 12, 12, 0, 0);
+    await picker.handleDateChange(
+      [pastStart, pastEnd],
+      '2021-03-10 12:00:00 to 2021-03-12 12:00:00'
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await host.updateComplete;
+    await picker.updateComplete;
+    await picker.updateComplete;
+
+    expect(host.invalidText).toBe(FUTURE_ERROR);
+    await expectErrorVisible(picker, FUTURE_ERROR);
   },
 };
