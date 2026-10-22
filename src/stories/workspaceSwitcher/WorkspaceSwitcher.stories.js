@@ -443,7 +443,7 @@ const PATTERN_STYLES = /* css */ `
 
     .workspace-switcher__left.workspace-switcher__panel--active,
     .workspace-switcher__right.workspace-switcher__panel--active {
-      visibility: visible;
+      visibility: inherit;
       pointer-events: auto;
     }
 
