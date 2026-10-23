@@ -1,10 +1,13 @@
 @use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 
 // Layout configuration
 $column-gap: 32px;
 $row-gap: 16px;
 $min-column-width: 150px;
 $max-column-width: 400px;
+// Matches masonry desktop padding-right (border-box host)
+$masonry-desktop-padding-inline-end: 16px;
 
 // Fixed column widths per column count (defaults for CSS custom properties)
 $column-width-1: 350px;
@@ -104,28 +107,25 @@ slot.header-categories__projected::slotted(*) {
   max-width: 100%;
 }
 
-@media (min-width: 672px) {
-  :host([layout='masonry']) {
-    padding-right: 16px;
-  }
-}
-
 :host([layout='masonry']) .header-categories__inner {
   column-width: auto;
   column-gap: var(--kyn-header-category-column-gap);
 
   // Tighter heading spacing for dense categorical layouts
   --kyn-header-category-heading-pb: 0;
-  // Flush dividers for column layouts
-  --kyn-header-divider-margin: 0;
-  // Position dividers absolutely so they don't affect column balancing
-  --kyn-header-divider-position: absolute;
-  --kyn-header-divider-bottom: -9px;
-  --kyn-header-divider-left: 0;
-  --kyn-header-divider-right: 0;
+  // In-flow dividers (not absolute). Absolute ::after in CSS multicol can
+  // paint across sibling columns, which looked like lines above column-top
+  // categories (e.g. Category 3 / 5). Last-in-column still clears showDivider.
+  --kyn-header-divider-margin: 8px 0;
+  --kyn-header-divider-position: static;
+  --kyn-header-divider-top: auto;
+  --kyn-header-divider-bottom: auto;
+  --kyn-header-divider-left: auto;
+  --kyn-header-divider-right: auto;
 }
 
-// Column count driven by data-columns attribute
+// Column count driven by data-columns attribute (effective count may be
+// width-capped in TS so columns stay ≥ $min-column-width).
 :host([layout='masonry'][data-columns='1']) {
   max-width: var(
     --kyn-header-category-single-column-width,
@@ -157,6 +157,12 @@ slot.header-categories__projected::slotted(*) {
         (#{$i} - 1) *
         var(--kyn-header-category-column-gap)
     );
+  }
+}
+
+@media (min-width: breakpoints.$bp-md) {
+  :host([layout='masonry']) {
+    padding-right: $masonry-desktop-padding-inline-end;
   }
 }
 

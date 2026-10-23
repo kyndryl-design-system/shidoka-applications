@@ -75,6 +75,12 @@ const VOID_HREF = '#';
  */
 const COLUMN_GROUPING_TOLERANCE_PX = 10;
 
+/** Matches `$min-column-width` in headerCategories.scss. */
+const MASONRY_MIN_COLUMN_WIDTH_PX = 150;
+
+/** Fallback when `--kyn-header-category-column-gap` is unavailable. */
+const MASONRY_DEFAULT_COLUMN_GAP_PX = 32;
+
 interface SlottedCategoryData {
   id: string;
   slotKey: string;
@@ -144,7 +150,8 @@ export class HeaderCategories extends LitElement {
   /**
    * Layout mode for categories.
    * - "" (default): Legacy responsive column-width layout for standard mega-nav
-   * - "masonry": CSS multi-column with fixed column-count based on category count
+   * - "masonry": CSS multi-column with column-count based on category count,
+   *   capped so each column stays ≥150px wide when not using fixed-column-widths
    * - "grid": CSS Grid with fixed columns and row-based wrapping
    */
   @property({ type: String, reflect: true })
@@ -248,9 +255,19 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _handleResize = (): void => {
+    // Masonry (non-fixed): available width may change the effective column count.
+    if (this.layout === 'masonry' && !this.fixedColumnWidths) {
+      const nextCount = this._getColumnCount();
+      const currentCount = Number(this.getAttribute('data-columns') || 0);
+      if (nextCount !== currentCount) {
+        this.setAttribute('data-columns', String(nextCount));
+        this._updateAndEmitColumnCount();
+        this.requestUpdate();
+      }
+    }
+
     // Create a synthetic event for the debounced function
     this._debouncedUpdateDividers(new Event('resize'));
-    // Category count doesn't change on resize, so no need to re-emit
   };
 
   /**
@@ -430,17 +447,18 @@ export class HeaderCategories extends LitElement {
           ? this._getDetailSlotName(category)
           : 'manual-hidden';
 
-      if (this.view === ROOT_VIEW && !this.hideCategoryDividers) {
-        categoryEl.setAttribute('showdivider', '');
-
-        if (noAutoDivider) {
-          categoryEl.setAttribute('noautodivider', '');
-        } else {
-          categoryEl.removeAttribute('noautodivider');
-        }
+      // Parent owns divider visibility for masonry/grid via _updateDividers.
+      // Do not force showDivider=true here — willUpdate runs often and would
+      // undo last-in-column clears, thrashing in-flow multicol balance.
+      if (
+        this.view === ROOT_VIEW &&
+        !this.hideCategoryDividers &&
+        !noAutoDivider
+      ) {
+        categoryEl.noAutoDivider = true;
       } else {
-        categoryEl.removeAttribute('showdivider');
-        categoryEl.setAttribute('noautodivider', '');
+        categoryEl.showDivider = false;
+        categoryEl.noAutoDivider = true;
       }
     });
   }
@@ -577,8 +595,6 @@ export class HeaderCategories extends LitElement {
   override updated(_changed: PropertyValueMap<this>): void {
     if (this.layout === 'grid' || this.layout === 'masonry') {
       // Update dividers after render when in root view (grid and masonry modes).
-      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
-      // so post-render correction won't cause reflow.
       if (this.view === ROOT_VIEW) {
         // Use double requestAnimationFrame to ensure layout is fully computed
         // The first rAF runs after the browser paints, the second ensures layout reflow is complete
@@ -613,7 +629,9 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    return html`${link.label}`;
+    // Wrap in <span> so truncate-links / .nav-link.truncate can ellipsis
+    // (bare text nodes in a flex link clip without "...").
+    return html`<span>${link.label}</span>`;
   }
 
   private renderCategoryColumn(
@@ -628,7 +646,6 @@ export class HeaderCategories extends LitElement {
     return html`
       <kyn-header-category
         heading=${category.heading}
-        ?showDivider=${!this.hideCategoryDividers}
         ?data-auto-divider=${!this.hideCategoryDividers}
       >
         ${this.showCategoryIcons
@@ -832,9 +849,20 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * After render, detect which categories are in the last visual row
-   * and disable their dividers. CSS Grid determines row breaks dynamically,
-   * so we must inspect rendered positions.
+   * Set divider visibility via Lit properties (not raw attributes) so parent
+   * re-renders cannot leave a stale `.divider` class.
+   * @internal
+   */
+  private _setCategoryDivider(categoryEl: HeaderCategory, show: boolean): void {
+    categoryEl.showDivider = show;
+    // Parent-controlled: never fall back to sibling auto-detect.
+    categoryEl.noAutoDivider = true;
+  }
+
+  /**
+   * After render, detect which categories are last in their visual column/row
+   * and disable their dividers. CSS Grid/masonry breaks are dynamic, so we
+   * inspect rendered positions.
    * @internal
    */
   private _updateDividers(): void {
@@ -849,23 +877,21 @@ export class HeaderCategories extends LitElement {
 
     const categories = this._isJsonMode
       ? Array.from(
-          inner.querySelectorAll<HTMLElement>(
+          inner.querySelectorAll<HeaderCategory>(
             'kyn-header-category[data-auto-divider]'
           )
         )
-      : this._slottedCategories.map(({ categoryEl, noAutoDivider }) => {
-          categoryEl.setAttribute('showdivider', '');
-
-          if (noAutoDivider) {
-            categoryEl.setAttribute('noautodivider', '');
-          } else {
-            categoryEl.removeAttribute('noautodivider');
-          }
-
-          return categoryEl;
-        });
+      : this._slottedCategories
+          .filter(({ noAutoDivider }) => !noAutoDivider)
+          .map(({ categoryEl }) => categoryEl);
 
     if (!categories.length) return;
+
+    // Enable dividers, then clear last-in-column/row so tops never get a line
+    // above them and column bottoms don't keep a dangling rule.
+    for (const categoryEl of categories) {
+      this._setCategoryDivider(categoryEl, true);
+    }
 
     // Get bounding rects
     const categoryData = categories.map((cat) => ({
@@ -904,14 +930,13 @@ export class HeaderCategories extends LitElement {
       const lastRowCategories = rowMap.get(lastRowY);
       if (lastRowCategories) {
         for (const item of lastRowCategories) {
-          item.el.removeAttribute('showdivider');
-          item.el.setAttribute('noautodivider', '');
+          this._setCategoryDivider(item.el, false);
         }
       }
     } else {
-      // Masonry: group by column (X-position), hide dividers on the last item in each column.
-      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
-      // so this correction won't cause reflow.
+      // Masonry: group by column (X-position), hide dividers on the last item
+      // in each column so tops never get a line above them and bottoms don't
+      // keep a dangling rule.
       const colMap = new Map<number, typeof categoryData>();
 
       for (const item of categoryData) {
@@ -938,15 +963,16 @@ export class HeaderCategories extends LitElement {
             lastItem = item;
           }
         }
-        lastItem.el.removeAttribute('showdivider');
-        lastItem.el.setAttribute('noautodivider', '');
+        this._setCategoryDivider(lastItem.el, false);
       }
     }
   }
 
   /**
    * Get the number of columns to display (grid and masonry modes).
-   * Returns the minimum of category count and maxColumns.
+   * Returns the minimum of category count and maxColumns, and for masonry
+   * without fixed-column-widths also caps by available width so each column
+   * stays at least {@link MASONRY_MIN_COLUMN_WIDTH_PX} wide.
    * @internal
    */
   private _getColumnCount(): number {
@@ -961,8 +987,44 @@ export class HeaderCategories extends LitElement {
       : this._slottedCategories.length ||
         this.querySelectorAll(':scope > kyn-header-category').length;
 
-    // Return the minimum of actual category count and maxColumns
-    return Math.min(Math.max(1, categoryCount), this.maxColumns);
+    const maxByContent = Math.min(Math.max(1, categoryCount), this.maxColumns);
+
+    if (this.layout === 'masonry' && !this.fixedColumnWidths) {
+      return this._capMasonryColumnsByWidth(maxByContent);
+    }
+
+    return maxByContent;
+  }
+
+  /**
+   * Cap masonry column count so columns remain ≥ min width for the host.
+   * @internal
+   */
+  private _capMasonryColumnsByWidth(maxColumns: number): number {
+    if (maxColumns <= 1) return maxColumns;
+
+    const inner = this.shadowRoot?.querySelector(
+      '.header-categories__inner'
+    ) as HTMLElement | null;
+    const available = inner?.clientWidth || this.clientWidth;
+    if (available <= 0) {
+      // Avoid uncapped flash while hidden/unmeasured (e.g. display:none flyout).
+      // Keep the previous effective count when present; otherwise stay conservative.
+      const previous = Number(this.getAttribute('data-columns') || 0);
+      if (previous > 0) return Math.min(maxColumns, previous);
+      return 1;
+    }
+
+    const gapValue = getComputedStyle(this)
+      .getPropertyValue('--kyn-header-category-column-gap')
+      .trim();
+    const gap = Number.parseFloat(gapValue) || MASONRY_DEFAULT_COLUMN_GAP_PX;
+    const maxByWidth = Math.max(
+      1,
+      Math.floor((available + gap) / (MASONRY_MIN_COLUMN_WIDTH_PX + gap))
+    );
+
+    return Math.min(maxColumns, maxByWidth);
   }
 
   override render() {
