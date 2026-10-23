@@ -4,6 +4,15 @@
 
 :host {
   display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.menu {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex: 1 1 auto;
 }
 
 .btn {
@@ -28,11 +37,32 @@
   }
 
   ::slotted([slot='button']) {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (min-width: 42rem) {
+      flex: 0 1 auto;
+    }
+  }
+
+  ::slotted([slot='button']:has(> svg)) {
     display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-width: min-content;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   @media (min-width: 42rem) {
     justify-content: center;
+    width: 100%;
+    min-width: 36px;
     padding: 8px;
     height: auto;
   }
@@ -41,6 +71,8 @@
 .button-slot {
   display: flex;
   align-items: center;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .mobile-button-icon,
@@ -160,7 +192,6 @@
 
   .menu--has-mobile-summary {
     .mobile-summary {
-      // display: flex;
       align-items: flex-start;
       gap: 12px;
       width: 100%;
