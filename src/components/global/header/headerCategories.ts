@@ -997,22 +997,36 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
+   * Available width for masonry column-count capping.
+   * Prefer the parent (flyout/panel) width — the host itself may already be
+   * constrained by [data-columns='1'|'2'] max-width rules, which would
+   * feedback-lock the cap at 1–2 columns and collapse masonry.
+   * @internal
+   */
+  private _getMasonryAvailableWidth(): number {
+    const parentWidth = this.parentElement?.clientWidth ?? 0;
+    if (parentWidth > 0) return parentWidth;
+
+    const inner = this.shadowRoot?.querySelector(
+      '.header-categories__inner'
+    ) as HTMLElement | null;
+    return inner?.clientWidth || this.clientWidth || 0;
+  }
+
+  /**
    * Cap masonry column count so columns remain ≥ min width for the host.
    * @internal
    */
   private _capMasonryColumnsByWidth(maxColumns: number): number {
     if (maxColumns <= 1) return maxColumns;
 
-    const inner = this.shadowRoot?.querySelector(
-      '.header-categories__inner'
-    ) as HTMLElement | null;
-    const available = inner?.clientWidth || this.clientWidth;
+    const available = this._getMasonryAvailableWidth();
     if (available <= 0) {
-      // Avoid uncapped flash while hidden/unmeasured (e.g. display:none flyout).
-      // Keep the previous effective count when present; otherwise stay conservative.
+      // Hidden/unmeasured (e.g. display:none flyout): keep prior effective
+      // count when present; otherwise allow content-based max until measured.
       const previous = Number(this.getAttribute('data-columns') || 0);
       if (previous > 0) return Math.min(maxColumns, previous);
-      return 1;
+      return maxColumns;
     }
 
     const gapValue = getComputedStyle(this)
