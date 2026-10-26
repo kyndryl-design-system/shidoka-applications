@@ -152,7 +152,7 @@ export class HeaderCategories extends LitElement {
    * - "" (default): Legacy responsive column-width layout for standard mega-nav
    * - "masonry": CSS multi-column with column-count based on category count,
    *   capped so each column stays ≥150px wide when not using fixed-column-widths
-   * - "grid": CSS Grid with fixed columns and row-based wrapping
+   * - "grid": CSS Grid with the same width-based column cap (unless fixed-column-widths)
    */
   @property({ type: String, reflect: true })
   accessor layout: 'masonry' | 'grid' | '' = '';
@@ -255,8 +255,11 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _handleResize = (): void => {
-    // Masonry (non-fixed): available width may change the effective column count.
-    if (this.layout === 'masonry' && !this.fixedColumnWidths) {
+    // Grid/masonry (non-fixed): available width may change the effective column count.
+    if (
+      (this.layout === 'masonry' || this.layout === 'grid') &&
+      !this.fixedColumnWidths
+    ) {
       const nextCount = this._getColumnCount();
       const currentCount = Number(this.getAttribute('data-columns') || 0);
       if (nextCount !== currentCount) {
@@ -971,9 +974,9 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Get the number of columns to display (grid and masonry modes).
-   * Returns the minimum of category count and maxColumns, and for masonry
-   * without fixed-column-widths also caps by available width so each column
-   * stays at least {@link MASONRY_MIN_COLUMN_WIDTH_PX} wide.
+   * Returns the minimum of category count and maxColumns, and without
+   * fixed-column-widths also caps by available width so each column stays
+   * at least {@link MASONRY_MIN_COLUMN_WIDTH_PX} wide.
    * @internal
    */
   private _getColumnCount(): number {
@@ -990,38 +993,65 @@ export class HeaderCategories extends LitElement {
 
     const maxByContent = Math.min(Math.max(1, categoryCount), this.maxColumns);
 
-    if (this.layout === 'masonry' && !this.fixedColumnWidths) {
-      return this._capMasonryColumnsByWidth(maxByContent);
+    if (!this.fixedColumnWidths) {
+      return this._capColumnsByWidth(maxByContent);
     }
 
     return maxByContent;
   }
 
   /**
-   * Available width for masonry column-count capping.
-   * Prefer the parent (flyout/panel) width — the host itself may already be
-   * constrained by [data-columns='1'|'2'] max-width rules, which would
-   * feedback-lock the cap at 1–2 columns and collapse masonry.
+   * Available width for column-count capping.
+   * Prefer the parent (flyout/panel) width when the host may already be
+   * constrained by [data-columns='1'|'2'] max-width rules (feedback lock).
+   * At 3+ columns the host is width:100%, so host clientWidth is the true
+   * content box (excludes switcher left-rail padding on ancestors).
    * @internal
    */
-  private _getMasonryAvailableWidth(): number {
+  private _getAvailableWidthForColumnCap(): number {
+    const currentCols = Number(this.getAttribute('data-columns') || 0);
+    const hostWidth = this.clientWidth;
     const parentWidth = this.parentElement?.clientWidth ?? 0;
-    if (parentWidth > 0) return parentWidth;
+
+    // 3+: host fills the content box — prefer it over a wider ancestor.
+    if (currentCols >= 3 && hostWidth > 0) {
+      return this._widthMinusHostPadding(hostWidth);
+    }
+
+    if (parentWidth > 0) {
+      return this._widthMinusHostPadding(parentWidth);
+    }
+
+    if (hostWidth > 0) {
+      return this._widthMinusHostPadding(hostWidth);
+    }
 
     const inner = this.shadowRoot?.querySelector(
       '.header-categories__inner'
     ) as HTMLElement | null;
-    return inner?.clientWidth || this.clientWidth || 0;
+    return inner?.clientWidth || 0;
   }
 
   /**
-   * Cap masonry column count so columns remain ≥ min width for the host.
+   * Subtract horizontal padding so the min-column math uses the content box.
    * @internal
    */
-  private _capMasonryColumnsByWidth(maxColumns: number): number {
+  private _widthMinusHostPadding(width: number): number {
+    const styles = getComputedStyle(this);
+    const padding =
+      (Number.parseFloat(styles.paddingLeft) || 0) +
+      (Number.parseFloat(styles.paddingRight) || 0);
+    return Math.max(0, width - padding);
+  }
+
+  /**
+   * Cap column count so columns remain ≥ min width for the host.
+   * @internal
+   */
+  private _capColumnsByWidth(maxColumns: number): number {
     if (maxColumns <= 1) return maxColumns;
 
-    const available = this._getMasonryAvailableWidth();
+    const available = this._getAvailableWidthForColumnCap();
     if (available <= 0) {
       // Hidden/unmeasured (e.g. display:none flyout): keep prior effective
       // count when present; otherwise allow content-based max until measured.
@@ -1121,10 +1151,13 @@ export class HeaderCategories extends LitElement {
     this._buildSlottedCategories();
     this._syncSlottedCategoryPresentation();
 
-    // Set up ResizeObserver to update dividers when columns reflow (grid mode only, debounced)
+    // Observe host + parent so flyout/panel width changes re-cap columns.
     if (typeof ResizeObserver !== 'undefined') {
       this._resizeObserver = new ResizeObserver(this._handleResize);
       this._resizeObserver.observe(this);
+      if (this.parentElement) {
+        this._resizeObserver.observe(this.parentElement);
+      }
     }
   }
 

@@ -108,7 +108,9 @@ slot.header-categories__projected::slotted(*) {
 }
 
 :host([layout='masonry']) .header-categories__inner {
-  column-width: auto;
+  // Min width + column-count (below) → count is a max; browser drops columns
+  // when the content box cannot fit $min-column-width tracks (CSS multicol).
+  column-width: $min-column-width;
   column-gap: var(--kyn-header-category-column-gap);
 
   // Tighter heading spacing for dense categorical layouts
@@ -125,7 +127,8 @@ slot.header-categories__projected::slotted(*) {
 }
 
 // Column count driven by data-columns attribute (effective count may be
-// width-capped in TS so columns stay ≥ $min-column-width).
+// width-capped in TS so columns stay ≥ $min-column-width). column-width
+// above is a CSS safety net if data-columns is briefly stale.
 :host([layout='masonry'][data-columns='1']) {
   max-width: var(
     --kyn-header-category-single-column-width,

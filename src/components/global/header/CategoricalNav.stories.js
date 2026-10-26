@@ -371,6 +371,126 @@ WithCategorizedNavJsonGrid.storyName =
   'JSON Configured Example (grid layout, full-width)';
 
 // -----------------------------------------------------------------------------
+// JSON-driven grid layout with category dividers visible (default)
+// -----------------------------------------------------------------------------
+export const WithCategorizedNavJsonGridDividers = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+    activeMegaCategoryId: null,
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    const handleMegaChange = (e) => {
+      const { activeMegaTabId, activeMegaCategoryId } = e.detail;
+      updateArgs({ activeMegaTabId, activeMegaCategoryId });
+    };
+
+    const renderMegaLinkPlainString = (link /*, ctx */) => {
+      return link.label;
+    };
+
+    return html`
+      <style>
+        ${GLOBAL_SWITCHER_PATTERN_STYLES}
+      </style>
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
+        <kyn-header-nav
+          class="global-switcher-nav"
+          auto-open-flyout=${renderArgs.autoOpenFlyout}
+        >
+          <kyn-header-link href="javascript:void(0)">
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
+            Application
+
+            <kyn-tabs tabSize="md" slot="links">
+              <kyn-tab
+                slot="tabs"
+                id="tab1"
+                ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                @click=${() =>
+                  updateArgs({
+                    activeMegaTabId: 'tab1',
+                    activeMegaCategoryId: null,
+                  })}
+              >
+                Tab 1
+              </kyn-tab>
+
+              <kyn-tab
+                slot="tabs"
+                id="tab2"
+                ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                @click=${() =>
+                  updateArgs({
+                    activeMegaTabId: 'tab2',
+                    activeMegaCategoryId: null,
+                  })}
+              >
+                Tab 2
+              </kyn-tab>
+
+              <kyn-tab-panel
+                tabId="tab1"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  .tabsConfig=${megaNavConfig}
+                  .activeMegaTabId=${renderArgs.activeMegaTabId}
+                  .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                  .linkRenderer=${renderMegaLinkPlainString}
+                  @on-nav-change=${handleMegaChange}
+                ></kyn-header-categories>
+              </kyn-tab-panel>
+
+              <kyn-tab-panel
+                tabId="tab2"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  .tabsConfig=${megaNavConfig}
+                  .activeMegaTabId=${renderArgs.activeMegaTabId}
+                  .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                  .linkRenderer=${renderMegaLinkPlainString}
+                  @on-nav-change=${handleMegaChange}
+                ></kyn-header-categories>
+              </kyn-tab-panel>
+            </kyn-tabs>
+          </kyn-header-link>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span class="icon_svg">${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNavJsonGridDividers.storyName =
+  'JSON Configured Example (grid layout, with dividers)';
+
+// -----------------------------------------------------------------------------
 // Fully manual HTML variant (no JSON) - slot driven, masonry layout
 // -----------------------------------------------------------------------------
 
