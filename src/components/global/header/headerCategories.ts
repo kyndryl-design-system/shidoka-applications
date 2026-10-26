@@ -646,6 +646,7 @@ export class HeaderCategories extends LitElement {
     return html`
       <kyn-header-category
         heading=${category.heading}
+        ?showDivider=${!this.hideCategoryDividers}
         ?data-auto-divider=${!this.hideCategoryDividers}
       >
         ${this.showCategoryIcons
