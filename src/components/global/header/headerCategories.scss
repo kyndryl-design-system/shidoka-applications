@@ -129,30 +129,39 @@ slot.header-categories__projected::slotted(*) {
 // Column count driven by data-columns attribute (effective count may be
 // width-capped in TS so columns stay ≥ $min-column-width). column-width
 // above is a CSS safety net if data-columns is briefly stale.
-:host([layout='masonry'][data-columns='1']) {
+// :not([view='detail']) — root max-width locks must not apply in detail, or
+// multi-column "More" link layout stays stuck at ~350px / 1 column.
+:host([layout='masonry'][data-columns='1']:not([view='detail'])) {
   max-width: var(
     --kyn-header-category-single-column-width,
     var(--kyn-header-category-column-width)
   );
 }
-:host([layout='masonry'][data-columns='1']) .header-categories__inner {
+:host([layout='masonry'][data-columns='1']:not([view='detail']))
+  .header-categories__inner {
   column-count: 1;
 }
-:host([layout='masonry'][data-columns='2']) {
+:host([layout='masonry'][data-columns='2']:not([view='detail'])) {
   width: auto;
   max-width: calc(
     2 * var(--kyn-header-category-column-width) +
       var(--kyn-header-category-column-gap)
   );
 }
-:host([layout='masonry'][data-columns='2']) .header-categories__inner {
+:host([layout='masonry'][data-columns='2']:not([view='detail']))
+  .header-categories__inner {
   column-count: 2;
 }
 @for $i from 3 through 10 {
-  :host([layout='masonry'][data-columns='#{$i}']) .header-categories__inner {
+  :host([layout='masonry'][data-columns='#{$i}']:not([view='detail']))
+    .header-categories__inner {
     column-count: $i;
   }
-  :host([layout='masonry'][data-columns='#{$i}'][fixed-column-widths]) {
+  :host(
+      [layout='masonry'][data-columns='#{$i}'][fixed-column-widths]:not(
+          [view='detail']
+        )
+    ) {
     width: auto;
     max-width: calc(
       #{$i} *
@@ -169,8 +178,8 @@ slot.header-categories__projected::slotted(*) {
   }
 }
 
-/* --- GRID LAYOUT --- */
-:host([layout='grid']) {
+/* --- GRID LAYOUT (root only for data-columns sizing; detail uses rules below) --- */
+:host([layout='grid']:not([view='detail'])) {
   width: max-content;
   min-width: $min-column-width;
   max-width: 100%;
@@ -236,9 +245,12 @@ slot.header-categories__projected::slotted(*) {
    DETAIL VIEW
    ------------------------------------------------------------------ */
 
+// Must beat :host([layout=…][data-columns='1'|'2']) max-width rules — those
+// use two attribute selectors; a lone [view=detail] loses and locks ~350px,
+// so detail never gets side-by-side link columns.
+:host([view='detail'][layout='masonry']),
+:host([view='detail'][layout='grid']),
 :host([view='detail']) {
-  // Root view sets data-columns=1 while detail is open (_getColumnCount),
-  // which would lock max-width to ~350px and crush multi-column detail links.
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
@@ -251,6 +263,9 @@ slot.header-categories__projected::slotted(*) {
   .header-categories {
     &__inner {
       overflow: visible;
+      // Detail lays out links inside the category, not as masonry categories.
+      column-count: auto;
+      column-width: auto;
     }
   }
 }

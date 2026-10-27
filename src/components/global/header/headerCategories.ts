@@ -585,9 +585,12 @@ export class HeaderCategories extends LitElement {
     }
 
     // Keep data-columns in sync before render so layout CSS has the
-    // correct column count on first paint.
+    // correct column count on first paint. Skip in detail — _getColumnCount
+    // returns 1 there, which would re-apply root single-column max-width.
     if (this.layout === 'grid' || this.layout === 'masonry') {
-      this.setAttribute('data-columns', String(this._getColumnCount()));
+      if (this.view === ROOT_VIEW) {
+        this.setAttribute('data-columns', String(this._getColumnCount()));
+      }
     }
 
     if (!this._isJsonMode) {
