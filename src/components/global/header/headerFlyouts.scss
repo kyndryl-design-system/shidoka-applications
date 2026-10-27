@@ -3,11 +3,15 @@
 
 :host {
   display: flex;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .header-flyouts {
   display: flex;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 ::slotted(kyn-header-flyout) {
@@ -53,5 +57,15 @@
     transform: none;
     z-index: initial;
     padding: 0;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  ::slotted(kyn-header-flyout) {
+    width: max-content;
+    flex: 0 1 auto;
+    // 8px padding + 20px icon + 8px padding. Smaller than this clips the icon.
+    min-width: 36px;
+    max-width: 100%;
   }
 }
