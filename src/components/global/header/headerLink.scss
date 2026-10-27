@@ -560,9 +560,13 @@ kyn-text-input {
   --kyn-header-span-only-text-overflow: ellipsis;
   --kyn-header-span-only-white-space: nowrap;
 
-  // Label spans need block layout for ellipsis (flex clips without "...").
+  // Label spans need a bounded flex child for ellipsis (bare text / width:auto
+  // flex items won't show "...").
   ::slotted(span:first-child:not([slot])) {
     display: block;
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -570,7 +574,9 @@ kyn-text-input {
 
   ::slotted(span:first-child:not([slot]):has(> svg)) {
     display: flex;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    min-width: auto;
+    max-width: none;
     overflow: visible;
     text-overflow: clip;
     white-space: normal;

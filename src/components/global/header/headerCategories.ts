@@ -637,7 +637,12 @@ export class HeaderCategories extends LitElement {
       const rendered = this.linkRenderer(link, ctx);
 
       if (typeof rendered === 'string' && rendered.trim().length > 0) {
-        return html`${unsafeHTML(rendered)}`;
+        const trimmed = rendered.trim();
+        // Plain text (no markup) still needs a <span> for flex ellipsis.
+        if (!trimmed.startsWith('<')) {
+          return html`<span>${trimmed}</span>`;
+        }
+        return html`${unsafeHTML(trimmed)}`;
       }
 
       if (rendered != null && typeof rendered !== 'string') {
