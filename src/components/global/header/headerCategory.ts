@@ -140,6 +140,7 @@ export class HeaderCategory extends LitElement {
    * Cap by the flyout/panel width — not the category's own clientWidth.
    * Measuring self feedback-locks at 1 column (host shrinks to one 200px track).
    * @internal
+   * @ignore
    */
   private _capDetailColumnsByWidth(maxColumns: number): number {
     if (maxColumns <= 1) return maxColumns;
@@ -167,6 +168,9 @@ export class HeaderCategory extends LitElement {
     return Math.min(maxColumns, maxByWidth);
   }
 
+  /**
+   * @internal
+   */
   private _handleDetailResize = (): void => {
     if (!this.detailView) return;
     const next = this._computeDetailColumnCount(this._getRegularLinks().length);
