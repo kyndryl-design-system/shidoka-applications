@@ -1,10 +1,13 @@
 @use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 
 // Layout configuration
 $column-gap: 32px;
 $row-gap: 16px;
 $min-column-width: 150px;
 $max-column-width: 400px;
+// Matches masonry desktop padding-right (border-box host)
+$masonry-desktop-padding-inline-end: 16px;
 
 // Fixed column widths per column count (defaults for CSS custom properties)
 $column-width-1: 350px;
@@ -104,52 +107,61 @@ slot.header-categories__projected::slotted(*) {
   max-width: 100%;
 }
 
-@media (min-width: 672px) {
-  :host([layout='masonry']) {
-    padding-right: 16px;
-  }
-}
-
 :host([layout='masonry']) .header-categories__inner {
-  column-width: auto;
+  // Min width + column-count (below) → count is a max; browser drops columns
+  // when the content box cannot fit $min-column-width tracks (CSS multicol).
+  column-width: $min-column-width;
   column-gap: var(--kyn-header-category-column-gap);
 
   // Tighter heading spacing for dense categorical layouts
   --kyn-header-category-heading-pb: 0;
-  // Flush dividers for column layouts
-  --kyn-header-divider-margin: 0;
-  // Position dividers absolutely so they don't affect column balancing
-  --kyn-header-divider-position: absolute;
-  --kyn-header-divider-bottom: -9px;
-  --kyn-header-divider-left: 0;
-  --kyn-header-divider-right: 0;
+  // In-flow dividers (not absolute). Absolute ::after in CSS multicol can
+  // paint across sibling columns, which looked like lines above column-top
+  // categories (e.g. Category 3 / 5). Last-in-column still clears showDivider.
+  --kyn-header-divider-margin: 8px 0;
+  --kyn-header-divider-position: static;
+  --kyn-header-divider-top: auto;
+  --kyn-header-divider-bottom: auto;
+  --kyn-header-divider-left: auto;
+  --kyn-header-divider-right: auto;
 }
 
-// Column count driven by data-columns attribute
-:host([layout='masonry'][data-columns='1']) {
+// Column count driven by data-columns attribute (effective count may be
+// width-capped in TS so columns stay ≥ $min-column-width). column-width
+// above is a CSS safety net if data-columns is briefly stale.
+// :not([view='detail']) — root max-width locks must not apply in detail, or
+// multi-column "More" link layout stays stuck at ~350px / 1 column.
+:host([layout='masonry'][data-columns='1']:not([view='detail'])) {
   max-width: var(
     --kyn-header-category-single-column-width,
     var(--kyn-header-category-column-width)
   );
 }
-:host([layout='masonry'][data-columns='1']) .header-categories__inner {
+:host([layout='masonry'][data-columns='1']:not([view='detail']))
+  .header-categories__inner {
   column-count: 1;
 }
-:host([layout='masonry'][data-columns='2']) {
+:host([layout='masonry'][data-columns='2']:not([view='detail'])) {
   width: auto;
   max-width: calc(
     2 * var(--kyn-header-category-column-width) +
       var(--kyn-header-category-column-gap)
   );
 }
-:host([layout='masonry'][data-columns='2']) .header-categories__inner {
+:host([layout='masonry'][data-columns='2']:not([view='detail']))
+  .header-categories__inner {
   column-count: 2;
 }
 @for $i from 3 through 10 {
-  :host([layout='masonry'][data-columns='#{$i}']) .header-categories__inner {
+  :host([layout='masonry'][data-columns='#{$i}']:not([view='detail']))
+    .header-categories__inner {
     column-count: $i;
   }
-  :host([layout='masonry'][data-columns='#{$i}'][fixed-column-widths]) {
+  :host(
+      [layout='masonry'][data-columns='#{$i}'][fixed-column-widths]:not(
+          [view='detail']
+        )
+    ) {
     width: auto;
     max-width: calc(
       #{$i} *
@@ -160,10 +172,16 @@ slot.header-categories__projected::slotted(*) {
   }
 }
 
-/* --- GRID LAYOUT --- */
-:host([layout='grid']) {
+@media (min-width: breakpoints.$bp-md) {
+  :host([layout='masonry']) {
+    padding-right: $masonry-desktop-padding-inline-end;
+  }
+}
+
+/* --- GRID LAYOUT (root only for data-columns sizing; detail uses rules below) --- */
+:host([layout='grid']:not([view='detail'])) {
   width: max-content;
-  min-width: $min-column-width;
+  min-width: 0; // allow shrink below token width when width-capped to 1 col
   max-width: 100%;
 }
 
@@ -184,12 +202,20 @@ slot.header-categories__projected::slotted(*) {
   --kyn-header-divider-margin: 0;
 }
 
-// 1-2 columns use fixed widths; 3+ use 1fr to fill available space
+// 1-2 columns use design-token widths (minmax so a 1-col narrow flyout can
+// shrink instead of overflowing); 3+ use 1fr to fill available space.
+:host([layout='grid'][data-columns='1']:not([view='detail'])) {
+  width: 100%;
+  max-width: var(--kyn-header-category-column-width);
+}
 :host([layout='grid'][data-columns='1']) .header-categories__inner {
-  grid-template-columns: var(--kyn-header-category-column-width);
+  grid-template-columns: minmax(0, var(--kyn-header-category-column-width));
 }
 :host([layout='grid'][data-columns='2']) .header-categories__inner {
-  grid-template-columns: repeat(2, var(--kyn-header-category-column-width));
+  grid-template-columns: repeat(
+    2,
+    minmax(0, var(--kyn-header-category-column-width))
+  );
 }
 @for $i from 3 through 10 {
   :host([layout='grid'][data-columns='#{$i}']:not([fixed-column-widths])) {
@@ -227,7 +253,14 @@ slot.header-categories__projected::slotted(*) {
    DETAIL VIEW
    ------------------------------------------------------------------ */
 
+// Must beat :host([layout=…][data-columns='1'|'2']) max-width rules — those
+// use two attribute selectors; a lone [view=detail] loses and locks ~350px,
+// so detail never gets side-by-side link columns.
+:host([view='detail'][layout='masonry']),
+:host([view='detail'][layout='grid']),
 :host([view='detail']) {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -238,6 +271,9 @@ slot.header-categories__projected::slotted(*) {
   .header-categories {
     &__inner {
       overflow: visible;
+      // Detail lays out links inside the category, not as masonry categories.
+      column-count: auto;
+      column-width: auto;
     }
   }
 }

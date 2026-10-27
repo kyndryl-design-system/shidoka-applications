@@ -130,20 +130,23 @@ Use this if you prefer full manual markup instead of JSON configuration.
 ```html
 <kyn-header-categories>
   <kyn-header-category heading="Category 1">
-    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
-    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
-    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+    <kyn-header-link href="#"><span>Sub Link 1</span></kyn-header-link>
+    <kyn-header-link href="#"><span>Sub Link 2</span></kyn-header-link>
+    <kyn-header-link href="#"><span>Sub Link 3</span></kyn-header-link>
   </kyn-header-category>
 
   <kyn-header-category heading="Category 2">
-    <kyn-header-link href="#">Sub Link A</kyn-header-link>
+    <kyn-header-link href="#"><span>Sub Link A</span></kyn-header-link>
   </kyn-header-category>
 </kyn-header-categories>
 ```
 
+Put labels in a `<span>` and enable `truncate-links` on `kyn-header-nav` (or `truncate` on the link) so long text ellipsizes inside the flex flyout link. Bare text nodes will not show `...`.
+
 ### Width behavior for 3+ columns
 
 - Default behavior: 3+ columns stretch to fill the flyout width with equal-width columns.
+- Masonry / grid (`layout="masonry"` | `layout="grid"`): column count is `min(categoryCount, maxColumns)`, further capped to the width that actually fits (masonry ≥150px; grid 1–2 / `fixed-column-widths` uses the ~300px column token). Narrower flyouts use fewer columns instead of clipping or scrolling horizontally.
 - Opt-in fixed widths: add `fixed-column-widths` on `kyn-header-categories`.
 
 ```html

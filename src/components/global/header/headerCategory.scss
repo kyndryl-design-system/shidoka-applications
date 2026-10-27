@@ -36,6 +36,7 @@
     // Masonry/grid override via CSS custom properties: absolute positioning
     // removes divider from layout flow so it doesn't affect column balancing.
     position: var(--kyn-header-divider-position, static);
+    top: var(--kyn-header-divider-top, auto);
     bottom: var(--kyn-header-divider-bottom, auto);
     left: var(--kyn-header-divider-left, auto);
     right: var(--kyn-header-divider-right, auto);
@@ -59,6 +60,9 @@
 .category.detail-view .category__links {
   display: block;
   column-gap: var(--kyn-header-category-column-gap, 32px);
+  // With column-count (inline style), this is a min width / count is a max —
+  // narrow flyouts drop columns instead of crushing "Sub Link" labels.
+  column-width: 200px;
 }
 
 .category.detail-view .category__links slot::slotted(kyn-header-link),

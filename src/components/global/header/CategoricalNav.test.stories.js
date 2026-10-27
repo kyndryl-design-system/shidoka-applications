@@ -228,3 +228,360 @@ export const FullWidthFlyoutSingleCategoryRegression = {
     });
   },
 };
+
+/**
+ * Issue #997: masonry caps effective column count so each column stays ≥150px.
+ * At the foundation MD switcher viewport, data-columns drops below maxColumns,
+ * the flyout does not scroll horizontally, and short labels stay single-line.
+ */
+export const MasonryMinColumnWidthDesktopRegression = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+    viewport: {
+      // Foundation MD viewport helper; desktop categorical layout uses $bp-md.
+      defaultViewport: 'md',
+    },
+  },
+  render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
+    <kyn-header rootUrl="/" appTitle="Application">
+      <kyn-header-nav
+        class="global-switcher-nav"
+        auto-open-flyout="services"
+        truncate-links
+      >
+        <kyn-header-link
+          id="services"
+          href="javascript:void(0)"
+          full-width-flyout
+        >
+          Services
+
+          <kyn-tabs
+            tabSize="md"
+            slot="links"
+            style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
+          >
+            <kyn-tab
+              slot="tabs"
+              id="kyndryl"
+              fill-width
+              selected
+              style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+            >
+              Kyndryl Services
+            </kyn-tab>
+            <kyn-tab
+              slot="tabs"
+              id="platform"
+              fill-width
+              style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+            >
+              Platform Services
+            </kyn-tab>
+
+            <kyn-tab-panel tabId="kyndryl" noPadding visible>
+              <kyn-header-categories
+                layout="masonry"
+                maxColumns="5"
+                .limitRootLinks=${false}
+              >
+                <kyn-header-category
+                  heading="Category 1 With A Much Longer Heading"
+                >
+                  <kyn-header-link href="#sub-1">
+                    <span>Sub Link 1 With Extra Long Label Text</span>
+                  </kyn-header-link>
+                  <kyn-header-link href="#sub-2"
+                    ><span>Sub Link 2</span></kyn-header-link
+                  >
+                </kyn-header-category>
+                <kyn-header-category heading="Category 2">
+                  <kyn-header-link href="#sub-3"
+                    ><span>Sub Link 1</span></kyn-header-link
+                  >
+                  <kyn-header-link href="#sub-4"
+                    ><span>Sub Link 2</span></kyn-header-link
+                  >
+                </kyn-header-category>
+                <kyn-header-category heading="Category 3">
+                  <kyn-header-link href="#sub-5"
+                    ><span>Sub Link 1</span></kyn-header-link
+                  >
+                  <kyn-header-link href="#sub-6"
+                    ><span>Sub Link 2</span></kyn-header-link
+                  >
+                </kyn-header-category>
+                <kyn-header-category heading="Category 4">
+                  <kyn-header-link href="#sub-7"
+                    ><span>Sub Link 1</span></kyn-header-link
+                  >
+                  <kyn-header-link href="#sub-8"
+                    ><span>Sub Link 2</span></kyn-header-link
+                  >
+                </kyn-header-category>
+                <kyn-header-category heading="Category 5">
+                  <kyn-header-link href="#sub-9"
+                    ><span>Sub Link 1</span></kyn-header-link
+                  >
+                  <kyn-header-link href="#sub-10"
+                    ><span>Sub Link 2</span></kyn-header-link
+                  >
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+            <kyn-tab-panel tabId="platform" noPadding>
+              <div style="min-height: 220px;"></div>
+            </kyn-tab-panel>
+          </kyn-tabs>
+        </kyn-header-link>
+      </kyn-header-nav>
+    </kyn-header>
+  `,
+  play: async ({ canvasElement }) => {
+    const servicesLink = canvasElement.querySelector(
+      'kyn-header-link#services'
+    );
+    expect(servicesLink).not.toBeNull();
+
+    await waitFor(() => {
+      expect(servicesLink.open).toBe(true);
+    });
+
+    const wrapper = servicesLink.shadowRoot?.querySelector(
+      '.menu.level--1 .wrapper'
+    );
+    const categories = canvasElement.querySelector(
+      'kyn-tab-panel[visible] kyn-header-categories'
+    );
+
+    expect(wrapper).not.toBeNull();
+    expect(categories).not.toBeNull();
+
+    await categories.updateComplete;
+
+    const assertLastInColumnDividersOff = () => {
+      const categoryEls = Array.from(
+        categories.querySelectorAll('kyn-header-category')
+      );
+      const lastInColumns = categoryEls.filter((category) => {
+        const bottom = category.getBoundingClientRect().bottom;
+        const left = category.getBoundingClientRect().left;
+        return !categoryEls.some((other) => {
+          if (other === category) return false;
+          const otherRect = other.getBoundingClientRect();
+          return (
+            Math.abs(otherRect.left - left) <= 10 &&
+            otherRect.bottom > bottom + 1
+          );
+        });
+      });
+      expect(lastInColumns.length).toBeGreaterThan(0);
+      for (const lastCategory of lastInColumns) {
+        expect(lastCategory.showDivider).toBe(false);
+        expect(
+          lastCategory.shadowRoot
+            ?.querySelector('.category')
+            ?.classList.contains('divider')
+        ).toBe(false);
+      }
+      return lastInColumns;
+    };
+
+    await waitFor(() => {
+      const columnCount = Number(categories.getAttribute('data-columns'));
+      // MD flyout content cannot fit five 150px columns; count must drop.
+      expect(columnCount).toBeGreaterThanOrEqual(1);
+      expect(columnCount).toBeLessThan(5);
+
+      // No internal horizontal scroll in the switcher flyout.
+      expect(wrapper.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth + 1);
+
+      const firstCategory = categories.querySelector('kyn-header-category');
+      expect(firstCategory).not.toBeNull();
+      // Effective columns stay at/above the 150px design minimum.
+      expect(
+        firstCategory.getBoundingClientRect().width
+      ).toBeGreaterThanOrEqual(150);
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const lastCategory = categories.querySelector(
+        'kyn-header-category:last-of-type'
+      );
+      expect(lastCategory).not.toBeNull();
+      const lastRect = lastCategory.getBoundingClientRect();
+      expect(lastRect.right).toBeLessThanOrEqual(wrapperRect.right + 1);
+      expect(lastRect.left).toBeGreaterThanOrEqual(wrapperRect.left - 1);
+
+      assertLastInColumnDividersOff();
+
+      const link = categories.querySelector('kyn-header-link[href="#sub-1"]');
+      expect(link).not.toBeNull();
+      const anchor = link.shadowRoot?.querySelector('a.nav-link');
+      expect(anchor).not.toBeNull();
+      expect(anchor.classList.contains('truncate')).toBe(true);
+
+      const label = link.querySelector('span');
+      expect(label).not.toBeNull();
+      // Ellipsis path: single-line label, clipped with overflow (not bare clip).
+      const labelStyles = getComputedStyle(label);
+      expect(labelStyles.textOverflow).toBe('ellipsis');
+      expect(labelStyles.whiteSpace).toBe('nowrap');
+      expect(label.scrollWidth).toBeGreaterThan(label.clientWidth);
+    });
+
+    // Parent re-render must not re-force last-in-column dividers on.
+    categories.requestUpdate();
+    await categories.updateComplete;
+    await waitFor(() => {
+      assertLastInColumnDividersOff();
+    });
+  },
+};
+
+/**
+ * Tab 2 → More (detail): many links must not force 4 crushed columns under the
+ * MD switcher content width. data-columns=1 during detail must not lock the
+ * host to ~350px in a way that wraps short labels.
+ */
+export const DetailViewManyLinksWidthRegression = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+    viewport: {
+      defaultViewport: 'md',
+    },
+  },
+  render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
+    <kyn-header rootUrl="/" appTitle="Application">
+      <kyn-header-nav class="global-switcher-nav" auto-open-flyout="services">
+        <kyn-header-link
+          id="services"
+          href="javascript:void(0)"
+          full-width-flyout
+        >
+          Services
+
+          <kyn-tabs tabSize="md" slot="links">
+            <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+            <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+
+            <kyn-tab-panel tabId="tab1" noPadding visible>
+              <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-category heading="Category 1">
+                  <kyn-header-link href="#t1-1">Sub Link 1</kyn-header-link>
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+
+            <kyn-tab-panel tabId="tab2" noPadding>
+              <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-category heading="T2 - Category 1">
+                  ${Array.from({ length: 40 }).map(
+                    (_, idx) => html`
+                      <kyn-header-link href="#t2-${idx + 1}"
+                        >Sub Link ${idx + 1}</kyn-header-link
+                      >
+                    `
+                  )}
+                </kyn-header-category>
+                <kyn-header-category heading="T2 - Category 2">
+                  <kyn-header-link href="#t2-c2">Sub Link 1</kyn-header-link>
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+          </kyn-tabs>
+        </kyn-header-link>
+      </kyn-header-nav>
+    </kyn-header>
+  `,
+  play: async ({ canvasElement }) => {
+    const servicesLink = canvasElement.querySelector(
+      'kyn-header-link#services'
+    );
+    expect(servicesLink).not.toBeNull();
+
+    await waitFor(() => {
+      expect(servicesLink.open).toBe(true);
+    });
+
+    const tab2 = canvasElement.querySelector('kyn-tab#tab2');
+    expect(tab2).not.toBeNull();
+    await userEvent.click(tab2);
+
+    const panel2 = canvasElement.querySelector('kyn-tab-panel[tabId="tab2"]');
+    await waitFor(() => {
+      expect(panel2.hasAttribute('visible')).toBe(true);
+    });
+
+    const categories = panel2.querySelector('kyn-header-categories');
+    const category = panel2.querySelector('kyn-header-category');
+    expect(categories).not.toBeNull();
+    expect(category).not.toBeNull();
+
+    await categories.updateComplete;
+    await category.updateComplete;
+
+    const moreLink = Array.from(
+      category.shadowRoot.querySelectorAll('kyn-header-link')
+    ).find((link) => link.textContent?.includes('More'));
+    expect(moreLink).toBeTruthy();
+
+    const moreAnchor = moreLink.shadowRoot?.querySelector('a');
+    expect(moreAnchor).not.toBeNull();
+    await userEvent.click(moreAnchor);
+
+    await waitFor(() => {
+      expect(categories.view).toBe('detail');
+      expect(category.detailView).toBe(true);
+    });
+
+    await waitFor(() => {
+      // Host must not stay locked to the single-column ~350px max while detail
+      // is showing dozens of links.
+      const hostWidth = categories.getBoundingClientRect().width;
+      expect(hostWidth).toBeGreaterThan(350);
+
+      const columnCount = category._detailColumnCount;
+      expect(columnCount).toBeGreaterThanOrEqual(1);
+      // With room for ~200px tracks, detail should multi-column — not a single
+      // long list filling only the left edge of a wide flyout.
+      const maxFit = Math.max(1, Math.floor((hostWidth + 32) / (200 + 32)));
+      expect(columnCount).toBeLessThanOrEqual(Math.min(4, maxFit));
+      if (maxFit >= 2) {
+        expect(columnCount).toBeGreaterThanOrEqual(2);
+      }
+
+      const firstLink = category.querySelector('kyn-header-link');
+      expect(firstLink).not.toBeNull();
+      const linkWidth = firstLink.getBoundingClientRect().width;
+      expect(linkWidth).toBeGreaterThanOrEqual(150);
+
+      const label = firstLink.textContent?.trim() ?? '';
+      expect(label.startsWith('Sub Link')).toBe(true);
+      // Short labels stay single-line (no mid-word "Sub"/"Link" wrap).
+      const anchor = firstLink.shadowRoot?.querySelector('a.nav-link');
+      expect(anchor).not.toBeNull();
+      expect(anchor.getBoundingClientRect().height).toBeLessThan(40);
+    });
+
+    const backBtn = categories.shadowRoot?.querySelector(
+      '.header-categories__back-slot kyn-button'
+    );
+    expect(backBtn).not.toBeNull();
+    await userEvent.click(backBtn);
+
+    await waitFor(() => {
+      expect(categories.view).toBe('root');
+      expect(category.detailView).toBe(false);
+    });
+  },
+};
