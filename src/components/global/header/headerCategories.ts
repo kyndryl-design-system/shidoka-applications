@@ -255,8 +255,10 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _handleResize = (): void => {
-    // Grid/masonry (non-fixed): available width may change the effective column count.
+    // Root only: in detail, _getColumnCount() is always 1 and must not rewrite
+    // data-columns (root sizing attribute) while nested link columns layout.
     if (
+      this.view === ROOT_VIEW &&
       (this.layout === 'masonry' || this.layout === 'grid') &&
       !this.fixedColumnWidths
     ) {
