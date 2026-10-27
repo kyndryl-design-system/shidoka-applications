@@ -868,13 +868,17 @@ export const WithCategorizedNavManualHtml = {
                 <kyn-header-categories layout="masonry" maxColumns="5">
                   <kyn-header-category heading="T2 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    ${Array.from({ length: 40 }).map(
-                      (_, idx) => html`
+                    ${Array.from({ length: 40 }).map((_, idx) => {
+                      const label =
+                        idx === 2
+                          ? 'Sub Link 3 — Enterprise configuration and access management with an extra long label to illustrate truncation'
+                          : `Sub Link ${idx + 1}`;
+                      return html`
                         <kyn-header-link href="#"
-                          ><span>Sub Link ${idx + 1}</span></kyn-header-link
+                          ><span>${label}</span></kyn-header-link
                         >
-                      `
-                    )}
+                      `;
+                    })}
                   </kyn-header-category>
 
                   <kyn-header-category heading="T2 - Category 2">
@@ -988,13 +992,17 @@ export const WithCategorizedNavManualHtml = {
                 <kyn-header-categories layout="masonry" maxColumns="5">
                   <kyn-header-category heading="T4 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    ${Array.from({ length: 40 }).map(
-                      (_, idx) => html`
+                    ${Array.from({ length: 40 }).map((_, idx) => {
+                      const label =
+                        idx === 2
+                          ? 'Sub Link 3 — Enterprise configuration and access management with an extra long label to illustrate truncation'
+                          : `Sub Link ${idx + 1}`;
+                      return html`
                         <kyn-header-link href="#"
-                          ><span>Sub Link ${idx + 1}</span></kyn-header-link
+                          ><span>${label}</span></kyn-header-link
                         >
-                      `
-                    )}
+                      `;
+                    })}
                   </kyn-header-category>
 
                   <kyn-header-category heading="T4 - Category 2">
