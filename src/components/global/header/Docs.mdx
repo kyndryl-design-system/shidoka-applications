@@ -146,7 +146,7 @@ Put labels in a `<span>` and enable `truncate-links` on `kyn-header-nav` (or `tr
 ### Width behavior for 3+ columns
 
 - Default behavior: 3+ columns stretch to fill the flyout width with equal-width columns.
-- Masonry / grid (`layout="masonry"` | `layout="grid"`): column count is `min(categoryCount, maxColumns)`, further capped so each column stays at least 150px wide (unless `fixed-column-widths` is set). Narrower flyouts use fewer columns instead of wrapping labels or scrolling horizontally.
+- Masonry / grid (`layout="masonry"` | `layout="grid"`): column count is `min(categoryCount, maxColumns)`, further capped to the width that actually fits (masonry ≥150px; grid 1–2 / `fixed-column-widths` uses the ~300px column token). Narrower flyouts use fewer columns instead of clipping or scrolling horizontally.
 - Opt-in fixed widths: add `fixed-column-widths` on `kyn-header-categories`.
 
 ```html

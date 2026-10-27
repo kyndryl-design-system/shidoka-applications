@@ -1021,9 +1021,9 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Get the number of columns to display (grid and masonry modes).
-   * Returns the minimum of category count and maxColumns, and without
-   * fixed-column-widths also caps by available width so each column stays
-   * at least {@link MASONRY_MIN_COLUMN_WIDTH_PX} wide.
+   * Returns the minimum of category count and maxColumns, further capped by
+   * available width so tracks fit (masonry ≥150px; grid 1–2 / fixed-width
+   * uses the ~300px column token — using 150 here allowed 2×300px overflow).
    * @internal
    */
   private _getColumnCount(): number {
@@ -1040,11 +1040,9 @@ export class HeaderCategories extends LitElement {
 
     const maxByContent = Math.min(Math.max(1, categoryCount), this.maxColumns);
 
-    if (!this.fixedColumnWidths) {
-      return this._capColumnsByWidth(maxByContent);
-    }
-
-    return maxByContent;
+    // Always width-cap — including fixed-column-widths — so narrow flyouts
+    // drop columns instead of clipping the trailing track.
+    return this._capColumnsByWidth(maxByContent);
   }
 
   /**
@@ -1092,7 +1090,29 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * Cap column count so columns remain ≥ min width for the host.
+   * Track width used when asking whether N columns fit.
+   * Grid 1–2 (and fixed-column-widths) use the design token (~300px);
+   * masonry / fluid 3+ grid share space down to the 150px floor.
+   * @internal
+   */
+  private _trackWidthForColumnCount(columnCount: number): number {
+    const styles = getComputedStyle(this);
+    const token = Number.parseFloat(
+      styles.getPropertyValue('--kyn-header-category-column-width').trim()
+    );
+    const gridTokenWidth = token > 0 ? token : 300;
+
+    if (this.layout === 'grid') {
+      if (this.fixedColumnWidths || columnCount <= 2) {
+        return gridTokenWidth;
+      }
+    }
+
+    return MASONRY_MIN_COLUMN_WIDTH_PX;
+  }
+
+  /**
+   * Cap column count so columns remain ≥ the track width they will actually use.
    * @internal
    */
   private _capColumnsByWidth(maxColumns: number): number {
@@ -1111,12 +1131,16 @@ export class HeaderCategories extends LitElement {
       .getPropertyValue('--kyn-header-category-column-gap')
       .trim();
     const gap = Number.parseFloat(gapValue) || MASONRY_DEFAULT_COLUMN_GAP_PX;
-    const maxByWidth = Math.max(
-      1,
-      Math.floor((available + gap) / (MASONRY_MIN_COLUMN_WIDTH_PX + gap))
-    );
 
-    return Math.min(maxColumns, maxByWidth);
+    // Walk down from max so grid 2-col uses 300px tracks in the fit check,
+    // not the 150px masonry floor (which incorrectly allowed overflow).
+    for (let n = maxColumns; n >= 1; n--) {
+      const track = this._trackWidthForColumnCount(n);
+      const needed = n * track + (n - 1) * gap;
+      if (available >= needed) return n;
+    }
+
+    return 1;
   }
 
   override render() {
