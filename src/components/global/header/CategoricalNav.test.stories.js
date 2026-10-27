@@ -442,3 +442,146 @@ export const MasonryMinColumnWidthDesktopRegression = {
     });
   },
 };
+
+/**
+ * Tab 2 → More (detail): many links must not force 4 crushed columns under the
+ * MD switcher content width. data-columns=1 during detail must not lock the
+ * host to ~350px in a way that wraps short labels.
+ */
+export const DetailViewManyLinksWidthRegression = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+    viewport: {
+      defaultViewport: 'md',
+    },
+  },
+  render: () => html`
+    <style>
+      ${GLOBAL_SWITCHER_PATTERN_STYLES}
+    </style>
+    <kyn-header rootUrl="/" appTitle="Application">
+      <kyn-header-nav class="global-switcher-nav" auto-open-flyout="services">
+        <kyn-header-link
+          id="services"
+          href="javascript:void(0)"
+          full-width-flyout
+        >
+          Services
+
+          <kyn-tabs tabSize="md" slot="links">
+            <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+            <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+
+            <kyn-tab-panel tabId="tab1" noPadding visible>
+              <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-category heading="Category 1">
+                  <kyn-header-link href="#t1-1">Sub Link 1</kyn-header-link>
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+
+            <kyn-tab-panel tabId="tab2" noPadding>
+              <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-category heading="T2 - Category 1">
+                  ${Array.from({ length: 40 }).map(
+                    (_, idx) => html`
+                      <kyn-header-link href="#t2-${idx + 1}"
+                        >Sub Link ${idx + 1}</kyn-header-link
+                      >
+                    `
+                  )}
+                </kyn-header-category>
+                <kyn-header-category heading="T2 - Category 2">
+                  <kyn-header-link href="#t2-c2">Sub Link 1</kyn-header-link>
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+          </kyn-tabs>
+        </kyn-header-link>
+      </kyn-header-nav>
+    </kyn-header>
+  `,
+  play: async ({ canvasElement }) => {
+    const servicesLink = canvasElement.querySelector(
+      'kyn-header-link#services'
+    );
+    expect(servicesLink).not.toBeNull();
+
+    await waitFor(() => {
+      expect(servicesLink.open).toBe(true);
+    });
+
+    const tab2 = canvasElement.querySelector('kyn-tab#tab2');
+    expect(tab2).not.toBeNull();
+    await userEvent.click(tab2);
+
+    const panel2 = canvasElement.querySelector('kyn-tab-panel[tabId="tab2"]');
+    await waitFor(() => {
+      expect(panel2.hasAttribute('visible')).toBe(true);
+    });
+
+    const categories = panel2.querySelector('kyn-header-categories');
+    const category = panel2.querySelector('kyn-header-category');
+    expect(categories).not.toBeNull();
+    expect(category).not.toBeNull();
+
+    await categories.updateComplete;
+    await category.updateComplete;
+
+    const moreLink = Array.from(
+      category.shadowRoot.querySelectorAll('kyn-header-link')
+    ).find((link) => link.textContent?.includes('More'));
+    expect(moreLink).toBeTruthy();
+
+    const moreAnchor = moreLink.shadowRoot?.querySelector('a');
+    expect(moreAnchor).not.toBeNull();
+    await userEvent.click(moreAnchor);
+
+    await waitFor(() => {
+      expect(categories.view).toBe('detail');
+      expect(category.detailView).toBe(true);
+    });
+
+    await waitFor(() => {
+      // Host must not stay locked to the single-column ~350px max while detail
+      // is showing dozens of links.
+      const hostWidth = categories.getBoundingClientRect().width;
+      expect(hostWidth).toBeGreaterThan(350);
+
+      const columnCount = category._detailColumnCount;
+      expect(columnCount).toBeGreaterThanOrEqual(1);
+      // With room for ~200px tracks, detail should multi-column — not a single
+      // long list filling only the left edge of a wide flyout.
+      const maxFit = Math.max(1, Math.floor((hostWidth + 32) / (200 + 32)));
+      expect(columnCount).toBeLessThanOrEqual(Math.min(4, maxFit));
+      if (maxFit >= 2) {
+        expect(columnCount).toBeGreaterThanOrEqual(2);
+      }
+
+      const firstLink = category.querySelector('kyn-header-link');
+      expect(firstLink).not.toBeNull();
+      const linkWidth = firstLink.getBoundingClientRect().width;
+      expect(linkWidth).toBeGreaterThanOrEqual(150);
+
+      const label = firstLink.textContent?.trim() ?? '';
+      expect(label.startsWith('Sub Link')).toBe(true);
+      // Short labels stay single-line (no mid-word "Sub"/"Link" wrap).
+      const anchor = firstLink.shadowRoot?.querySelector('a.nav-link');
+      expect(anchor).not.toBeNull();
+      expect(anchor.getBoundingClientRect().height).toBeLessThan(40);
+    });
+
+    const backBtn = categories.shadowRoot?.querySelector(
+      '.header-categories__back-slot kyn-button'
+    );
+    expect(backBtn).not.toBeNull();
+    await userEvent.click(backBtn);
+
+    await waitFor(() => {
+      expect(categories.view).toBe('root');
+      expect(category.detailView).toBe(false);
+    });
+  },
+};

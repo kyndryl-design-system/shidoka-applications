@@ -595,7 +595,7 @@ export class HeaderCategories extends LitElement {
     }
   }
 
-  override updated(_changed: PropertyValueMap<this>): void {
+  override updated(changed: PropertyValueMap<this>): void {
     if (this.layout === 'grid' || this.layout === 'masonry') {
       // Update dividers after render when in root view (grid and masonry modes).
       if (this.view === ROOT_VIEW) {
@@ -610,6 +610,17 @@ export class HeaderCategories extends LitElement {
     // Always emit column count after render (for flyout width adjustment)
     if (this.view === ROOT_VIEW) {
       this._updateAndEmitColumnCount();
+    }
+
+    // JSON detail columns depend on measured width; first paint may be 0-width.
+    if (
+      this._isJsonMode &&
+      this.view === DETAIL_VIEW &&
+      (changed.has('view') || changed.has('activeMegaCategoryId'))
+    ) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => this.requestUpdate());
+      });
     }
   }
 
@@ -810,10 +821,36 @@ export class HeaderCategories extends LitElement {
     const maxColumns = 4;
 
     const idealColumns = Math.ceil(list.length / minPerColumn);
-    const columnCount = Math.min(maxColumns, Math.max(1, idealColumns));
+    const byContent = Math.min(maxColumns, Math.max(1, idealColumns));
+    // Detail flex columns are 200px; reuse the root width-cap so mid-width
+    // flyouts get fewer columns instead of horizontal crush/scroll.
+    const columnCount = this._capDetailColumnsByWidth(byContent);
 
     const size = Math.ceil(list.length / columnCount);
     return this.chunkBy(list, size);
+  }
+
+  /**
+   * Cap detail-view column count to ~200px tracks (matches detail CSS).
+   * @internal
+   */
+  private _capDetailColumnsByWidth(maxColumns: number): number {
+    if (maxColumns <= 1) return maxColumns;
+
+    const available = this._getAvailableWidthForColumnCap();
+    if (available <= 0) return maxColumns;
+
+    const gapValue = getComputedStyle(this)
+      .getPropertyValue('--kyn-header-category-column-gap')
+      .trim();
+    const gap = Number.parseFloat(gapValue) || MASONRY_DEFAULT_COLUMN_GAP_PX;
+    const minColumnWidth = 200;
+    const maxByWidth = Math.max(
+      1,
+      Math.floor((available + gap) / (minColumnWidth + gap))
+    );
+
+    return Math.min(maxColumns, maxByWidth);
   }
 
   private renderSlottedDetail() {

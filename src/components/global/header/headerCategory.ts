@@ -89,6 +89,12 @@ export class HeaderCategory extends LitElement {
   @state()
   private accessor _detailColumnCount = 1;
 
+  /** @internal */
+  private _resizeObserver?: ResizeObserver;
+
+  /** @internal */
+  private _observedCategoriesHost: Element | null = null;
+
   private _handleIconSlotChange(e: Event) {
     const slot = e.target as HTMLSlotElement;
     const assignedNodes = slot.assignedNodes({ flatten: true });
@@ -114,15 +120,60 @@ export class HeaderCategory extends LitElement {
     );
   }
 
+  /**
+   * Detail columns are designed at ~200px (`inline-size` on links). Cap the
+   * count so narrow flyouts drop columns instead of crushing labels.
+   * @internal
+   */
   private _computeDetailColumnCount(linkCount: number): number {
     if (linkCount <= 0) return 1;
 
     const minPerColumn = Math.max(this.detailLinksPerColumn, 1);
     const maxColumns = 4;
     const idealColumns = Math.ceil(linkCount / minPerColumn);
+    const byContent = Math.min(maxColumns, Math.max(1, idealColumns));
 
-    return Math.min(maxColumns, Math.max(1, idealColumns));
+    return this._capDetailColumnsByWidth(byContent);
   }
+
+  /**
+   * Cap by the flyout/panel width — not the category's own clientWidth.
+   * Measuring self feedback-locks at 1 column (host shrinks to one 200px track).
+   * @internal
+   */
+  private _capDetailColumnsByWidth(maxColumns: number): number {
+    if (maxColumns <= 1) return maxColumns;
+
+    // Prefer the categories host / tab panel, which fills the flyout content box.
+    const categoriesHost = this.closest('kyn-header-categories');
+    const available =
+      categoriesHost?.clientWidth ||
+      this.parentElement?.clientWidth ||
+      this.clientWidth ||
+      0;
+    if (available <= 0) return maxColumns;
+
+    const gapValue = getComputedStyle(this)
+      .getPropertyValue('--kyn-header-category-column-gap')
+      .trim();
+    const gap = Number.parseFloat(gapValue) || 32;
+    // Detail links are designed at 200px inline-size.
+    const minColumnWidth = 200;
+    const maxByWidth = Math.max(
+      1,
+      Math.floor((available + gap) / (minColumnWidth + gap))
+    );
+
+    return Math.min(maxColumns, maxByWidth);
+  }
+
+  private _handleDetailResize = (): void => {
+    if (!this.detailView) return;
+    const next = this._computeDetailColumnCount(this._getRegularLinks().length);
+    if (next !== this._detailColumnCount) {
+      this._detailColumnCount = next;
+    }
+  };
 
   private _syncLinks(): void {
     const regularLinks = this._getRegularLinks();
@@ -189,6 +240,24 @@ export class HeaderCategory extends LitElement {
     super.connectedCallback();
     this._checkForNextCategorySibling();
     this._syncLinks();
+
+    if (typeof ResizeObserver !== 'undefined') {
+      this._resizeObserver = new ResizeObserver(this._handleDetailResize);
+      this._resizeObserver.observe(this);
+      const categoriesHost = this.closest('kyn-header-categories');
+      if (categoriesHost) {
+        this._resizeObserver.observe(categoriesHost);
+      }
+    }
+  }
+
+  override disconnectedCallback() {
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = undefined;
+    }
+    this._observedCategoriesHost = null;
+    super.disconnectedCallback();
   }
 
   override updated(changed: PropertyValueMap<this>) {
@@ -198,6 +267,22 @@ export class HeaderCategory extends LitElement {
       changed.has('detailLinksPerColumn')
     ) {
       this._syncLinks();
+    }
+
+    // Detail opens while often still display:none / zero-width; remeasure after paint.
+    if (changed.has('detailView') && this.detailView) {
+      const categoriesHost = this.closest('kyn-header-categories');
+      if (
+        this._resizeObserver &&
+        categoriesHost &&
+        !this._observedCategoriesHost
+      ) {
+        this._resizeObserver.observe(categoriesHost);
+        this._observedCategoriesHost = categoriesHost;
+      }
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => this._handleDetailResize());
+      });
     }
   }
 

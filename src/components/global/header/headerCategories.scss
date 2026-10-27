@@ -237,6 +237,10 @@ slot.header-categories__projected::slotted(*) {
    ------------------------------------------------------------------ */
 
 :host([view='detail']) {
+  // Root view sets data-columns=1 while detail is open (_getColumnCount),
+  // which would lock max-width to ~350px and crush multi-column detail links.
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
