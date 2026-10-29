@@ -1,0 +1,124 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: flex;
+  flex: 1 1 var(--kyn-segment-width, max-content);
+  width: var(--kyn-segment-width, max-content);
+  min-width: 64px;
+  max-width: var(--kyn-segment-width, max-content);
+}
+
+:host([suppressed]) {
+  display: none;
+}
+
+:host([icon-only]) {
+  min-width: 64px;
+}
+
+:host([icon-only]) .label {
+  display: none;
+}
+
+.segment {
+  @include typography.type-ui-02;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 64px;
+  max-width: 100%;
+  overflow: hidden;
+  height: 42px;
+  margin: 0;
+  padding: 0px 12px;
+  border: none;
+  border-radius: 24px;
+  background: transparent;
+  color: var(--kd-color-text-level-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+
+  &:hover:not(:disabled) {
+    background: var(--kd-color-background-button-secondary-ai-default);
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-button-primary-state-focused);
+    background: var(--kd-color-background-container-default);
+    z-index: 1;
+  }
+
+  &:active:not(:disabled) {
+    background: var(--kd-color-background-button-primary-state-pressed);
+    color: var(--kd-color-text-button-dark-primary);
+  }
+
+  &:disabled {
+    background: var(--kd-color-background-ui-default-disabled);
+    color: var(--kd-color-text-level-disabled);
+    cursor: not-allowed;
+  }
+}
+
+:host([selected]) .segment {
+  background: var(--kd-color-background-button-primary-state-default);
+  color: var(--kd-color-text-button-dark-primary);
+
+  &:hover:not(:disabled) {
+    background: var(--kd-color-background-button-primary-state-hover);
+    color: var(--kd-color-text-button-dark-primary);
+  }
+
+  &:focus-visible {
+    background: var(--kd-color-background-button-primary-state-default);
+    outline-color: var(--kd-color-border-button-primary-state-focused);
+  }
+
+  &:disabled {
+    background: var(--kd-color-background-ui-default-disabled);
+    color: var(--kd-color-text-level-disabled);
+  }
+}
+
+:host([size='small']) .segment {
+  height: 26px;
+  min-height: 26px;
+  border-radius: 16px;
+}
+
+:host([icon-position='right']) .segment {
+  flex-direction: row-reverse;
+}
+
+.icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+
+  ::slotted(*) {
+    display: flex;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.has-icon .icon {
+  display: inline-flex;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
