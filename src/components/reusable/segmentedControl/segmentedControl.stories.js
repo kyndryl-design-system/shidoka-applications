@@ -23,18 +23,16 @@ export default {
   },
 };
 
-const onChange = (event) => action(event.type)(event);
-
 export const Default = {
   args: {
     size: 'medium',
-    multiple: true,
+    multiple: false,
     description: 'Segmented control',
   },
   render: (args) => html`
     <kyn-segmented-control
       size=${args.size}
-      description=${args.label}
+      description=${args.description}
       ?multiple=${args.multiple}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
@@ -56,7 +54,7 @@ export const Default = {
       >
       <kyn-segmented-control-item value="four">
         <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label jsdhgjsh
+          >Control Label
         </span></kyn-segmented-control-item
       >
       <kyn-segmented-control-item value="five">
@@ -72,12 +70,12 @@ export const UnevenLabels = {
   args: {
     size: 'medium',
     multiple: false,
-    description: 'Views',
+    description: 'Segmented control',
   },
   render: (args) => html`
     <kyn-segmented-control
       size=${args.size}
-      description=${args.label}
+      description=${args.description}
       ?multiple=${args.multiple}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
@@ -96,39 +94,19 @@ export const UnevenLabels = {
   `,
 };
 
-export const Multiple = {
+export const Disabled = {
   args: {
     size: 'medium',
-    multiple: true,
-    description: 'Filters',
+    multiple: false,
+    description: 'Disabled segment',
   },
   render: (args) => html`
     <kyn-segmented-control
+      description=${args.description}
       size=${args.size}
-      description=${args.label}
       ?multiple=${args.multiple}
-      .value=${['alerts', 'reports']}
-      @on-change=${onChange}
+      @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
-      <kyn-segmented-control-item value="alerts"
-        >Alerts</kyn-segmented-control-item
-      >
-      <kyn-segmented-control-item value="reports"
-        >Reports</kyn-segmented-control-item
-      >
-      <kyn-segmented-control-item value="tasks"
-        >Tasks</kyn-segmented-control-item
-      >
-      <kyn-segmented-control-item value="notes"
-        >Notes</kyn-segmented-control-item
-      >
-    </kyn-segmented-control>
-  `,
-};
-
-export const Disabled = {
-  render: () => html`
-    <kyn-segmented-control description="Disabled segment">
       <kyn-segmented-control-item value="one" selected>
         Control Label
       </kyn-segmented-control-item>
@@ -142,36 +120,24 @@ export const Disabled = {
   `,
 };
 
-export const Narrow = {
-  render: () => html`
-    <div style="width: 240px;">
-      <kyn-segmented-control description="Views">
-        <kyn-segmented-control-item value="day" selected
-          >Day</kyn-segmented-control-item
-        >
-        <kyn-segmented-control-item value="week"
-          >Week</kyn-segmented-control-item
-        >
-        <kyn-segmented-control-item value="month">
-          <span
-            style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >
-            Longer month label
-          </span>
-        </kyn-segmented-control-item>
-      </kyn-segmented-control>
-    </div>
-  `,
-};
-
 export const IconPosition = {
-  render: () => html`
-    <kyn-segmented-control description="Theme" size="small">
+  args: {
+    size: 'medium',
+    multiple: false,
+    description: 'Segmented control',
+  },
+  render: (args) => html`
+    <kyn-segmented-control
+      description=${args.description}
+      size=${args.size}
+      ?multiple=${args.multiple}
+      @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+    >
       <kyn-segmented-control-item value="dark" selected>
         <span slot="icon">${unsafeSVG(circleIcon)}</span>
         Dark
       </kyn-segmented-control-item>
-      <kyn-segmented-control-item value="light" icon-position="right">
+      <kyn-segmented-control-item value="light" iconPosition="right">
         <span slot="icon">${unsafeSVG(lightbulbIcon)}</span>
         Light
       </kyn-segmented-control-item>
@@ -183,11 +149,11 @@ export const IconOnly = {
   args: {
     size: 'medium',
     multiple: false,
-    description: 'Filters',
+    description: 'Segmented control',
   },
   render: (args) => html`
     <kyn-segmented-control
-      description=${args.label}
+      description=${args.description}
       size=${args.size}
       ?multiple=${args.multiple}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
