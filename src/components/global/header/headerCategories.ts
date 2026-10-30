@@ -1056,7 +1056,7 @@ export class HeaderCategories extends LitElement {
   private _getAvailableWidthForColumnCap(): number {
     const currentCols = Number(this.getAttribute('data-columns') || 0);
     const hostWidth = this.clientWidth;
-    const parentWidth = this.parentElement?.clientWidth ?? 0;
+    const parentWidth = this.assignedSlot?.parentElement?.clientWidth ?? 0;
 
     // 3+: host fills the content box — prefer it over a wider ancestor.
     if (currentCols >= 3 && hostWidth > 0) {
