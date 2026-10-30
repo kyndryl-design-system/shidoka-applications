@@ -1058,19 +1058,6 @@ export class HeaderCategories extends LitElement {
     const hostWidth = this.clientWidth;
     const parentWidth = this.assignedSlot?.parentElement?.clientWidth ?? 0;
 
-    /** For Testing purpose only , remove this after testing
-     * Prefer the flyout layout box over light-DOM parent. When categories use
-     * slot="links" on kyn-header-link, parentElement is the narrow sidebar
-     * trigger and incorrectly locks column count at 1 (e.g. Administration).
-     */
-    //const slotParentWidth = this.assignedSlot?.parentElement?.clientWidth ?? 0;
-    // const lightParent = this.parentElement;
-    // const lightParentWidth =
-    //   lightParent && lightParent.tagName.toLowerCase() !== 'kyn-header-link'
-    //     ? lightParent.clientWidth
-    //     : 0;
-    // const parentWidth = slotParentWidth || lightParentWidth;
-
     // 3+: host fills the content box — prefer it over a wider ancestor.
     if (currentCols >= 3 && hostWidth > 0) {
       return this._widthMinusHostPadding(hostWidth);
