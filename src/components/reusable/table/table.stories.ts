@@ -2155,13 +2155,6 @@ export const Empty: Story = {
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
-      <kyn-table-footer>
-        <kyn-pagination
-          .count=${allData.length}
-          pageSize=${5}
-          pageNumber=${1}
-        ></kyn-pagination>
-      </kyn-table-footer>
     `;
   },
 };

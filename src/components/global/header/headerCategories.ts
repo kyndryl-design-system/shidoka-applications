@@ -75,6 +75,12 @@ const VOID_HREF = '#';
  */
 const COLUMN_GROUPING_TOLERANCE_PX = 10;
 
+/** Matches `$min-column-width` in headerCategories.scss. */
+const MASONRY_MIN_COLUMN_WIDTH_PX = 150;
+
+/** Fallback when `--kyn-header-category-column-gap` is unavailable. */
+const MASONRY_DEFAULT_COLUMN_GAP_PX = 32;
+
 interface SlottedCategoryData {
   id: string;
   slotKey: string;
@@ -144,8 +150,9 @@ export class HeaderCategories extends LitElement {
   /**
    * Layout mode for categories.
    * - "" (default): Legacy responsive column-width layout for standard mega-nav
-   * - "masonry": CSS multi-column with fixed column-count based on category count
-   * - "grid": CSS Grid with fixed columns and row-based wrapping
+   * - "masonry": CSS multi-column with column-count based on category count,
+   *   capped so each column stays ≥150px wide when not using fixed-column-widths
+   * - "grid": CSS Grid with the same width-based column cap (unless fixed-column-widths)
    */
   @property({ type: String, reflect: true })
   accessor layout: 'masonry' | 'grid' | '' = '';
@@ -248,9 +255,24 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _handleResize = (): void => {
+    // Root only: in detail, _getColumnCount() is always 1 and must not rewrite
+    // data-columns (root sizing attribute) while nested link columns layout.
+    if (
+      this.view === ROOT_VIEW &&
+      (this.layout === 'masonry' || this.layout === 'grid') &&
+      !this.fixedColumnWidths
+    ) {
+      const nextCount = this._getColumnCount();
+      const currentCount = Number(this.getAttribute('data-columns') || 0);
+      if (nextCount !== currentCount) {
+        this.setAttribute('data-columns', String(nextCount));
+        this._updateAndEmitColumnCount();
+        this.requestUpdate();
+      }
+    }
+
     // Create a synthetic event for the debounced function
     this._debouncedUpdateDividers(new Event('resize'));
-    // Category count doesn't change on resize, so no need to re-emit
   };
 
   /**
@@ -430,17 +452,18 @@ export class HeaderCategories extends LitElement {
           ? this._getDetailSlotName(category)
           : 'manual-hidden';
 
-      if (this.view === ROOT_VIEW && !this.hideCategoryDividers) {
-        categoryEl.setAttribute('showdivider', '');
-
-        if (noAutoDivider) {
-          categoryEl.setAttribute('noautodivider', '');
-        } else {
-          categoryEl.removeAttribute('noautodivider');
-        }
+      // Parent owns divider visibility for masonry/grid via _updateDividers.
+      // Do not force showDivider=true here — willUpdate runs often and would
+      // undo last-in-column clears, thrashing in-flow multicol balance.
+      if (
+        this.view === ROOT_VIEW &&
+        !this.hideCategoryDividers &&
+        !noAutoDivider
+      ) {
+        categoryEl.noAutoDivider = true;
       } else {
-        categoryEl.removeAttribute('showdivider');
-        categoryEl.setAttribute('noautodivider', '');
+        categoryEl.showDivider = false;
+        categoryEl.noAutoDivider = true;
       }
     });
   }
@@ -564,9 +587,12 @@ export class HeaderCategories extends LitElement {
     }
 
     // Keep data-columns in sync before render so layout CSS has the
-    // correct column count on first paint.
+    // correct column count on first paint. Skip in detail — _getColumnCount
+    // returns 1 there, which would re-apply root single-column max-width.
     if (this.layout === 'grid' || this.layout === 'masonry') {
-      this.setAttribute('data-columns', String(this._getColumnCount()));
+      if (this.view === ROOT_VIEW) {
+        this.setAttribute('data-columns', String(this._getColumnCount()));
+      }
     }
 
     if (!this._isJsonMode) {
@@ -574,11 +600,9 @@ export class HeaderCategories extends LitElement {
     }
   }
 
-  override updated(_changed: PropertyValueMap<this>): void {
+  override updated(changed: PropertyValueMap<this>): void {
     if (this.layout === 'grid' || this.layout === 'masonry') {
       // Update dividers after render when in root view (grid and masonry modes).
-      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
-      // so post-render correction won't cause reflow.
       if (this.view === ROOT_VIEW) {
         // Use double requestAnimationFrame to ensure layout is fully computed
         // The first rAF runs after the browser paints, the second ensures layout reflow is complete
@@ -592,6 +616,17 @@ export class HeaderCategories extends LitElement {
     if (this.view === ROOT_VIEW) {
       this._updateAndEmitColumnCount();
     }
+
+    // JSON detail columns depend on measured width; first paint may be 0-width.
+    if (
+      this._isJsonMode &&
+      this.view === DETAIL_VIEW &&
+      (changed.has('view') || changed.has('activeMegaCategoryId'))
+    ) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => this.requestUpdate());
+      });
+    }
   }
 
   private renderLinkContent(
@@ -602,7 +637,12 @@ export class HeaderCategories extends LitElement {
       const rendered = this.linkRenderer(link, ctx);
 
       if (typeof rendered === 'string' && rendered.trim().length > 0) {
-        return html`${unsafeHTML(rendered)}`;
+        const trimmed = rendered.trim();
+        // Plain text (no markup) still needs a <span> for flex ellipsis.
+        if (!trimmed.startsWith('<')) {
+          return html`<span>${trimmed}</span>`;
+        }
+        return html`${unsafeHTML(trimmed)}`;
       }
 
       if (rendered != null && typeof rendered !== 'string') {
@@ -613,7 +653,9 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    return html`${link.label}`;
+    // Wrap in <span> so truncate-links / .nav-link.truncate can ellipsis
+    // (bare text nodes in a flex link clip without "...").
+    return html`<span>${link.label}</span>`;
   }
 
   private renderCategoryColumn(
@@ -789,10 +831,36 @@ export class HeaderCategories extends LitElement {
     const maxColumns = 4;
 
     const idealColumns = Math.ceil(list.length / minPerColumn);
-    const columnCount = Math.min(maxColumns, Math.max(1, idealColumns));
+    const byContent = Math.min(maxColumns, Math.max(1, idealColumns));
+    // Detail flex columns are 200px; reuse the root width-cap so mid-width
+    // flyouts get fewer columns instead of horizontal crush/scroll.
+    const columnCount = this._capDetailColumnsByWidth(byContent);
 
     const size = Math.ceil(list.length / columnCount);
     return this.chunkBy(list, size);
+  }
+
+  /**
+   * Cap detail-view column count to ~200px tracks (matches detail CSS).
+   * @internal
+   */
+  private _capDetailColumnsByWidth(maxColumns: number): number {
+    if (maxColumns <= 1) return maxColumns;
+
+    const available = this._getAvailableWidthForColumnCap();
+    if (available <= 0) return maxColumns;
+
+    const gapValue = getComputedStyle(this)
+      .getPropertyValue('--kyn-header-category-column-gap')
+      .trim();
+    const gap = Number.parseFloat(gapValue) || MASONRY_DEFAULT_COLUMN_GAP_PX;
+    const minColumnWidth = 200;
+    const maxByWidth = Math.max(
+      1,
+      Math.floor((available + gap) / (minColumnWidth + gap))
+    );
+
+    return Math.min(maxColumns, maxByWidth);
   }
 
   private renderSlottedDetail() {
@@ -832,9 +900,20 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * After render, detect which categories are in the last visual row
-   * and disable their dividers. CSS Grid determines row breaks dynamically,
-   * so we must inspect rendered positions.
+   * Set divider visibility via Lit properties (not raw attributes) so parent
+   * re-renders cannot leave a stale `.divider` class.
+   * @internal
+   */
+  private _setCategoryDivider(categoryEl: HeaderCategory, show: boolean): void {
+    categoryEl.showDivider = show;
+    // Parent-controlled: never fall back to sibling auto-detect.
+    categoryEl.noAutoDivider = true;
+  }
+
+  /**
+   * After render, detect which categories are last in their visual column/row
+   * and disable their dividers. CSS Grid/masonry breaks are dynamic, so we
+   * inspect rendered positions.
    * @internal
    */
   private _updateDividers(): void {
@@ -849,23 +928,21 @@ export class HeaderCategories extends LitElement {
 
     const categories = this._isJsonMode
       ? Array.from(
-          inner.querySelectorAll<HTMLElement>(
+          inner.querySelectorAll<HeaderCategory>(
             'kyn-header-category[data-auto-divider]'
           )
         )
-      : this._slottedCategories.map(({ categoryEl, noAutoDivider }) => {
-          categoryEl.setAttribute('showdivider', '');
-
-          if (noAutoDivider) {
-            categoryEl.setAttribute('noautodivider', '');
-          } else {
-            categoryEl.removeAttribute('noautodivider');
-          }
-
-          return categoryEl;
-        });
+      : this._slottedCategories
+          .filter(({ noAutoDivider }) => !noAutoDivider)
+          .map(({ categoryEl }) => categoryEl);
 
     if (!categories.length) return;
+
+    // Enable dividers, then clear last-in-column/row so tops never get a line
+    // above them and column bottoms don't keep a dangling rule.
+    for (const categoryEl of categories) {
+      this._setCategoryDivider(categoryEl, true);
+    }
 
     // Get bounding rects
     const categoryData = categories.map((cat) => ({
@@ -904,14 +981,13 @@ export class HeaderCategories extends LitElement {
       const lastRowCategories = rowMap.get(lastRowY);
       if (lastRowCategories) {
         for (const item of lastRowCategories) {
-          item.el.removeAttribute('showdivider');
-          item.el.setAttribute('noautodivider', '');
+          this._setCategoryDivider(item.el, false);
         }
       }
     } else {
-      // Masonry: group by column (X-position), hide dividers on the last item in each column.
-      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
-      // so this correction won't cause reflow.
+      // Masonry: group by column (X-position), hide dividers on the last item
+      // in each column so tops never get a line above them and bottoms don't
+      // keep a dangling rule.
       const colMap = new Map<number, typeof categoryData>();
 
       for (const item of categoryData) {
@@ -938,15 +1014,16 @@ export class HeaderCategories extends LitElement {
             lastItem = item;
           }
         }
-        lastItem.el.removeAttribute('showdivider');
-        lastItem.el.setAttribute('noautodivider', '');
+        this._setCategoryDivider(lastItem.el, false);
       }
     }
   }
 
   /**
    * Get the number of columns to display (grid and masonry modes).
-   * Returns the minimum of category count and maxColumns.
+   * Returns the minimum of category count and maxColumns, further capped by
+   * available width so tracks fit (masonry ≥150px; grid 1–2 / fixed-width
+   * uses the ~300px column token — using 150 here allowed 2×300px overflow).
    * @internal
    */
   private _getColumnCount(): number {
@@ -961,8 +1038,109 @@ export class HeaderCategories extends LitElement {
       : this._slottedCategories.length ||
         this.querySelectorAll(':scope > kyn-header-category').length;
 
-    // Return the minimum of actual category count and maxColumns
-    return Math.min(Math.max(1, categoryCount), this.maxColumns);
+    const maxByContent = Math.min(Math.max(1, categoryCount), this.maxColumns);
+
+    // Always width-cap — including fixed-column-widths — so narrow flyouts
+    // drop columns instead of clipping the trailing track.
+    return this._capColumnsByWidth(maxByContent);
+  }
+
+  /**
+   * Available width for column-count capping.
+   * Prefer the parent (flyout/panel) width when the host may already be
+   * constrained by [data-columns='1'|'2'] max-width rules (feedback lock).
+   * At 3+ columns the host is width:100%, so host clientWidth is the true
+   * content box (excludes switcher left-rail padding on ancestors).
+   * @internal
+   */
+  private _getAvailableWidthForColumnCap(): number {
+    const currentCols = Number(this.getAttribute('data-columns') || 0);
+    const hostWidth = this.clientWidth;
+    const parentWidth = this.assignedSlot?.parentElement?.clientWidth ?? 0;
+
+    // 3+: host fills the content box — prefer it over a wider ancestor.
+    if (currentCols >= 3 && hostWidth > 0) {
+      return this._widthMinusHostPadding(hostWidth);
+    }
+
+    if (parentWidth > 0) {
+      return this._widthMinusHostPadding(parentWidth);
+    }
+
+    if (hostWidth > 0) {
+      return this._widthMinusHostPadding(hostWidth);
+    }
+
+    const inner = this.shadowRoot?.querySelector(
+      '.header-categories__inner'
+    ) as HTMLElement | null;
+    return inner?.clientWidth || 0;
+  }
+
+  /**
+   * Subtract horizontal padding so the min-column math uses the content box.
+   * @internal
+   */
+  private _widthMinusHostPadding(width: number): number {
+    const styles = getComputedStyle(this);
+    const padding =
+      (Number.parseFloat(styles.paddingLeft) || 0) +
+      (Number.parseFloat(styles.paddingRight) || 0);
+    return Math.max(0, width - padding);
+  }
+
+  /**
+   * Track width used when asking whether N columns fit.
+   * Grid 1–2 (and fixed-column-widths) use the design token (~300px);
+   * masonry / fluid 3+ grid share space down to the 150px floor.
+   * @internal
+   */
+  private _trackWidthForColumnCount(columnCount: number): number {
+    const styles = getComputedStyle(this);
+    const token = Number.parseFloat(
+      styles.getPropertyValue('--kyn-header-category-column-width').trim()
+    );
+    const gridTokenWidth = token > 0 ? token : 300;
+
+    if (this.layout === 'grid') {
+      if (this.fixedColumnWidths || columnCount <= 2) {
+        return gridTokenWidth;
+      }
+    }
+
+    return MASONRY_MIN_COLUMN_WIDTH_PX;
+  }
+
+  /**
+   * Cap column count so columns remain ≥ the track width they will actually use.
+   * @internal
+   */
+  private _capColumnsByWidth(maxColumns: number): number {
+    if (maxColumns <= 1) return maxColumns;
+
+    const available = this._getAvailableWidthForColumnCap();
+    if (available <= 0) {
+      // Hidden/unmeasured (e.g. display:none flyout): keep prior effective
+      // count when present; otherwise allow content-based max until measured.
+      const previous = Number(this.getAttribute('data-columns') || 0);
+      if (previous > 0) return Math.min(maxColumns, previous);
+      return maxColumns;
+    }
+
+    const gapValue = getComputedStyle(this)
+      .getPropertyValue('--kyn-header-category-column-gap')
+      .trim();
+    const gap = Number.parseFloat(gapValue) || MASONRY_DEFAULT_COLUMN_GAP_PX;
+
+    // Walk down from max so grid 2-col uses 300px tracks in the fit check,
+    // not the 150px masonry floor (which incorrectly allowed overflow).
+    for (let n = maxColumns; n >= 1; n--) {
+      const track = this._trackWidthForColumnCount(n);
+      const needed = n * track + (n - 1) * gap;
+      if (available >= needed) return n;
+    }
+
+    return 1;
   }
 
   override render() {
@@ -1044,10 +1222,13 @@ export class HeaderCategories extends LitElement {
     this._buildSlottedCategories();
     this._syncSlottedCategoryPresentation();
 
-    // Set up ResizeObserver to update dividers when columns reflow (grid mode only, debounced)
+    // Observe host + parent so flyout/panel width changes re-cap columns.
     if (typeof ResizeObserver !== 'undefined') {
       this._resizeObserver = new ResizeObserver(this._handleResize);
       this._resizeObserver.observe(this);
+      if (this.parentElement) {
+        this._resizeObserver.observe(this.parentElement);
+      }
     }
   }
 
