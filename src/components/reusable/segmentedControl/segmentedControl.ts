@@ -203,16 +203,7 @@ export class SegmentedControl extends LitElement {
   /** @internal */
   private _handleKeydown = (event: KeyboardEvent) => {
     const key = event.key;
-    if (
-      ![
-        'ArrowRight',
-        'ArrowLeft',
-        'ArrowUp',
-        'ArrowDown',
-        'Home',
-        'End',
-      ].includes(key)
-    ) {
+    if (!['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(key)) {
       return;
     }
 
@@ -229,10 +220,6 @@ export class SegmentedControl extends LitElement {
       next = (index + 1) % items.length;
     } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
       next = (index - 1 + items.length) % items.length;
-    } else if (key === 'Home') {
-      next = 0;
-    } else if (key === 'End') {
-      next = items.length - 1;
     }
 
     const nextItem = items[next];

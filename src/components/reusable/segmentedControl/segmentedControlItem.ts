@@ -45,7 +45,7 @@ export class SegmentedControlItem extends LitElement {
    * Size copied from the parent control.
    * @internal
    */
-  @property({ type: String, reflect: true })
+  @property({ type: String })
   accessor size: SEGMENTED_CONTROL_SIZES = SEGMENTED_CONTROL_SIZES.MEDIUM;
 
   /**
@@ -80,7 +80,7 @@ export class SegmentedControlItem extends LitElement {
    * Icon with no label text. Keeps a 64px minimum width.
    * @internal
    */
-  @property({ type: Boolean, reflect: true, attribute: 'icon-only' })
+  @property({ type: Boolean })
   accessor iconOnly = false;
 
   /**
@@ -98,25 +98,25 @@ export class SegmentedControlItem extends LitElement {
   accessor _button!: HTMLButtonElement;
 
   /**
-   * The label element for the segment.
+   * Icon slot.
    * @internal
    */
-  @query('.label')
-  accessor _label!: HTMLElement;
+  @query('slot[name="icon"]')
+  accessor _iconSlot!: HTMLSlotElement;
 
   /**
-   * The icon element for the segment.
+   * Label slot.
    * @internal
    */
-  @query('.icon')
-  accessor _icon!: HTMLElement;
+  @query('slot:not([name])')
+  accessor _labelSlot!: HTMLSlotElement;
 
   override render() {
     return html`
       <button
         class=${classMap({
           segment: true,
-          'has-icon': this._hasIcon,
+          'segment--small': this.size === SEGMENTED_CONTROL_SIZES.SMALL,
         })}
         type="button"
         aria-label=${this.value}
@@ -131,12 +131,10 @@ export class SegmentedControlItem extends LitElement {
         ?disabled=${this.disabled}
         @click=${this._handleClick}
       >
-        <span class="icon"
-          ><slot name="icon" @slotchange=${this._handleIconSlotChange}></slot
-        ></span>
-        <span class="label"
-          ><slot @slotchange=${this._handleLabelSlotChange}></slot
-        ></span>
+        <span>
+          <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
+          <slot @slotchange=${this._handleLabelSlotChange}></slot>
+        </span>
       </button>
     `;
   }
@@ -146,21 +144,48 @@ export class SegmentedControlItem extends LitElement {
     if (!this._button) return 0;
 
     const styles = getComputedStyle(this._button);
+    const content = this._button.querySelector(':scope > span');
+    const contentStyles = content ? getComputedStyle(content) : styles;
     const padding =
       parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
     const gap =
       this._hasIcon && this._hasLabel
-        ? parseFloat(styles.columnGap || styles.gap)
+        ? parseFloat(contentStyles.columnGap || contentStyles.gap)
         : 0;
-    const iconWidth = this._hasIcon
-      ? this._icon.getBoundingClientRect().width
-      : 0;
-    const labelWidth =
-      this._hasLabel && this._label ? this._label.scrollWidth : 0;
     const safeGap = Number.isNaN(gap) ? 0 : gap;
-    const width = Math.ceil(padding + safeGap + iconWidth + labelWidth);
+    const width = Math.ceil(
+      padding + safeGap + this._getIconWidth() + this._getLabelWidth()
+    );
 
     return this.iconOnly ? Math.max(width, 64) : width;
+  }
+
+  private _getIconWidth(): number {
+    if (!this._hasIcon) return 0;
+
+    const iconEl = this._iconSlot?.assignedElements({
+      flatten: true,
+    })[0] as HTMLElement | undefined;
+    if (iconEl) return iconEl.getBoundingClientRect().width;
+
+    return this.size === SEGMENTED_CONTROL_SIZES.SMALL ? 14 : 16;
+  }
+
+  private _getLabelWidth(): number {
+    if (!this._hasLabel || !this._labelSlot) return 0;
+
+    let width = 0;
+    for (const node of this._labelSlot.assignedNodes({ flatten: true })) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        width += (node as HTMLElement).scrollWidth;
+      } else if (node.textContent?.trim()) {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        width += range.getBoundingClientRect().width;
+      }
+    }
+
+    return width;
   }
 
   /** @internal */

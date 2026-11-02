@@ -37,30 +37,20 @@ export const Default = {
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <kyn-segmented-control-item value="one" selected>
-        <span slot="icon">${unsafeSVG(circleIcon)}</span>
-        <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label</span
-        >
+        <span slot="icon" style="display: flex;">${unsafeSVG(circleIcon)}</span>
+        Control Label
       </kyn-segmented-control-item>
       <kyn-segmented-control-item value="two">
-        <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label</span
-        ></kyn-segmented-control-item
+        Control Label</kyn-segmented-control-item
       >
-      <kyn-segmented-control-item value="three">
-        <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label</span
-        ></kyn-segmented-control-item
+      <kyn-segmented-control-item value="three"
+        >Control Label</kyn-segmented-control-item
       >
-      <kyn-segmented-control-item value="four">
-        <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label
-        </span></kyn-segmented-control-item
+      <kyn-segmented-control-item value="four"
+        >Control Label</kyn-segmented-control-item
       >
-      <kyn-segmented-control-item value="five">
-        <span style="display: block; overflow: hidden; text-overflow: ellipsis;"
-          >Control Label</span
-        ></kyn-segmented-control-item
+      <kyn-segmented-control-item value="five"
+        >Control Label</kyn-segmented-control-item
       >
     </kyn-segmented-control>
   `,
@@ -83,13 +73,9 @@ export const UnevenLabels = {
         >Day</kyn-segmented-control-item
       >
       <kyn-segmented-control-item value="week">Week</kyn-segmented-control-item>
-      <kyn-segmented-control-item value="month">
-        <span
-          style="display: block; overflow: hidden; text-overflow: ellipsis;"
-        >
-          Longer month label
-        </span>
-      </kyn-segmented-control-item>
+      <kyn-segmented-control-item value="month"
+        >Longer month label</kyn-segmented-control-item
+      >
     </kyn-segmented-control>
   `,
 };
@@ -120,7 +106,7 @@ export const Disabled = {
   `,
 };
 
-export const IconPosition = {
+export const WithIcons = {
   args: {
     size: 'medium',
     multiple: false,
@@ -134,11 +120,13 @@ export const IconPosition = {
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <kyn-segmented-control-item value="dark" selected>
-        <span slot="icon">${unsafeSVG(circleIcon)}</span>
+        <span slot="icon" style="display: flex;">${unsafeSVG(circleIcon)}</span>
         Dark
       </kyn-segmented-control-item>
       <kyn-segmented-control-item value="light" iconPosition="right">
-        <span slot="icon">${unsafeSVG(lightbulbIcon)}</span>
+        <span slot="icon" style="display: flex;"
+          >${unsafeSVG(lightbulbIcon)}</span
+        >
         Light
       </kyn-segmented-control-item>
     </kyn-segmented-control>
@@ -159,10 +147,12 @@ export const IconOnly = {
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <kyn-segmented-control-item value="dark" selected>
-        <span slot="icon">${unsafeSVG(circleIcon)}</span>
+        <span slot="icon" style="display: flex;">${unsafeSVG(circleIcon)}</span>
       </kyn-segmented-control-item>
       <kyn-segmented-control-item value="light">
-        <span slot="icon">${unsafeSVG(lightbulbIcon)}</span>
+        <span slot="icon" style="display: flex;"
+          >${unsafeSVG(lightbulbIcon)}</span
+        >
       </kyn-segmented-control-item>
     </kyn-segmented-control>
   `,
