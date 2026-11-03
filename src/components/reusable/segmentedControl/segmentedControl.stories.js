@@ -80,6 +80,98 @@ export const UnevenLabels = {
   `,
 };
 
+const renderResponsiveLabelItems = (compact) => html`
+  <kyn-segmented-control-item
+    value="devices"
+    selected
+    style="flex: 1 1 0; width: 25%; max-width: none;"
+  >
+    <span
+      style="display: block; min-width: 0; max-width: ${compact
+        ? '96px'
+        : '100%'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+    >
+      Devices
+    </span>
+  </kyn-segmented-control-item>
+  <kyn-segmented-control-item
+    value="os-devices"
+    style="flex: 1 1 0; width: 25%; max-width: none;"
+  >
+    <span
+      style="display: block; min-width: 0; max-width: ${compact
+        ? '96px'
+        : '100%'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+    >
+      OS Devices
+    </span>
+  </kyn-segmented-control-item>
+  <kyn-segmented-control-item
+    value="more-devices"
+    style="flex: 1 1 0; width: 25%; max-width: none;"
+  >
+    <span
+      style="display: block; min-width: 0; max-width: ${compact
+        ? '96px'
+        : '100%'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+    >
+      More Devices
+    </span>
+  </kyn-segmented-control-item>
+  <kyn-segmented-control-item
+    value="long-label-devices"
+    style="flex: 1 1 0; width: 25%; max-width: none;"
+  >
+    <span
+      style="display: block; min-width: 0; max-width: ${compact
+        ? '96px'
+        : '100%'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+    >
+      Long Label Devices
+    </span>
+  </kyn-segmented-control-item>
+`;
+
+export const ResponsiveLabels = {
+  args: {
+    size: 'medium',
+    multiple: false,
+    description:
+      'Full labels at wide widths and consumer-managed truncation at compact widths',
+  },
+  render: (args) => html`
+    <i style="color:red"
+      >**User managed truncation and responsive labels for testing
+      purposes,Remove it before final commit</i
+    >
+    <br />
+    <br />
+
+    <i>Responsive Labels, resize the browser to see the effect</i>
+    <div style="display: flex; flex-direction: column; gap: 32px;">
+      <kyn-segmented-control
+        size=${args.size}
+        description=${args.description}
+        ?multiple=${args.multiple}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        ${renderResponsiveLabelItems(false)}
+      </kyn-segmented-control>
+
+      <i>Fixed Track Width, with truncated labels</i>
+      <kyn-segmented-control
+        style="width: 750px;"
+        size=${args.size}
+        description=${args.description}
+        ?multiple=${args.multiple}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        ${renderResponsiveLabelItems(true)}
+      </kyn-segmented-control>
+    </div>
+  `,
+};
+
 export const Disabled = {
   args: {
     size: 'medium',
