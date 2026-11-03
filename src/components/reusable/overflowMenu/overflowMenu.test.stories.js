@@ -285,6 +285,83 @@ export const RemovingOpenSubmenus = {
   },
 };
 
+export const BackButtonKeyboardNavigation = {
+  render: OriginalItemBindings.render,
+  play: async ({ canvasElement }) => {
+    const menu = canvasElement.querySelector('kyn-overflow-menu');
+    const parent = menu.querySelector('#export');
+    const json = menu.querySelector('#json');
+    const zip = menu.querySelector('#zip');
+    const deeper = menu.querySelector('#deeper');
+    const action = (item) => item.shadowRoot.querySelector('button, a');
+    const arrow = (item, key, keyCode) => {
+      action(item).dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key,
+          keyCode,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    };
+    const focusedBack = async () => {
+      await menu.updateComplete;
+      const back = menu.shadowRoot.querySelector('.submenu-back-item');
+      await waitFor(() => {
+        expect(back.shadowRoot.activeElement).toBe(action(back));
+      });
+      return back;
+    };
+    await menu.updateComplete;
+    await parent.updateComplete;
+    await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+    await waitFor(() => {
+      expect(
+        getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
+      ).toBe('visible');
+    });
+    await userEvent.click(action(parent));
+    const back = await focusedBack();
+    arrow(back, 'ArrowDown', 40);
+    expect(json.shadowRoot.activeElement).toBe(action(json));
+    arrow(json, 'ArrowUp', 38);
+    expect(back.shadowRoot.activeElement).toBe(action(back));
+    arrow(back, 'ArrowDown', 40);
+    arrow(json, 'ArrowDown', 40);
+    expect(zip.shadowRoot.activeElement).toBe(action(zip));
+    arrow(zip, 'ArrowDown', 40);
+    expect(deeper.shadowRoot.activeElement).toBe(action(deeper));
+    await userEvent.keyboard('{Enter}');
+    const deepBack = await focusedBack();
+    arrow(deepBack, 'ArrowDown', 40);
+    const deep = menu.querySelector('#deep');
+    expect(deep.shadowRoot.activeElement).toBe(action(deep));
+    arrow(deep, 'ArrowUp', 38);
+    expect(deepBack.shadowRoot.activeElement).toBe(action(deepBack));
+    await userEvent.keyboard('{Enter}');
+    const previousBack = await focusedBack();
+    expect(menu._getCurrentMenuItems()).toEqual([json, zip, deeper]);
+    arrow(previousBack, 'ArrowUp', 38);
+    expect(menu.shadowRoot.activeElement).toBe(
+      menu.shadowRoot.querySelector('.btn')
+    );
+    action(previousBack).focus();
+    await userEvent.keyboard(' ');
+    await menu.updateComplete;
+    await waitFor(() => {
+      expect(parent.shadowRoot.activeElement).toBe(action(parent));
+    });
+    expect(menu.shadowRoot.querySelector('.submenu-back-item')).toBeNull();
+    expect(menu.open).toBe(true);
+    await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+    await waitFor(() => {
+      expect(
+        getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
+      ).toBe('hidden');
+    });
+  },
+};
+
 export const ToggleKeyboardNavigation = {
   render: () => html`
     <kyn-overflow-menu backButtonText="Back">
@@ -370,6 +447,16 @@ export const ToggleKeyboardNavigation = {
       const back = menu.shadowRoot.querySelector('.submenu-back-item');
       expect(back.shadowRoot.activeElement).toBe(action(back));
     });
+    const disabledBack = menu.shadowRoot.querySelector('.submenu-back-item');
+    action(disabledBack).dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        keyCode: 40,
+        bubbles: true,
+        composed: true,
+      })
+    );
+    expect(disabledBack.shadowRoot.activeElement).toBe(action(disabledBack));
     press('ArrowDown', 40);
     expect(menu.shadowRoot.activeElement).toBe(toggle);
     expect(menu.open).toBe(true);

@@ -284,9 +284,16 @@ export class OverflowMenuItem extends LitElement {
     const DOWN = 40;
     const UP = 38;
 
-    const items =
-      this.closest('kyn-overflow-menu')?._getCurrentMenuItems() ??
-      this._menuItems;
+    const root = this.getRootNode();
+    const menu =
+      this.closest('kyn-overflow-menu') ??
+      (root instanceof ShadowRoot
+        ? root.host.closest('kyn-overflow-menu')
+        : null);
+    const items = menu?._getCurrentMenuItems() ?? [...this._menuItems];
+    const back =
+      menu?.shadowRoot?.querySelector<OverflowMenuItem>('.submenu-back-item');
+    if (back) items.unshift(back);
     const activeEl = (this.getRootNode() as Document | ShadowRoot)
       .activeElement as Element | null;
 
@@ -316,7 +323,9 @@ export class OverflowMenuItem extends LitElement {
           const anchor = prev.shadowRoot?.querySelector<HTMLAnchorElement>('a');
           (btn ?? anchor)?.focus();
         } else if (idx === 0) {
-          this._menu?.querySelector<HTMLButtonElement>('button')?.focus();
+          (menu?.getMenu() ?? this._menu)
+            ?.querySelector<HTMLButtonElement>('button')
+            ?.focus();
         }
         return;
       }
