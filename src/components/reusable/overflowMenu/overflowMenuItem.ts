@@ -10,7 +10,7 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
  * Overflow Menu Item.
  * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for menu item text.
- * @slot submenu - Provide a nested submenu's markup here (light DOM). Presence auto-detects nesting.
+ * @slot submenu - Nested submenu content, projected without recreating its elements or event listeners. Presence auto-detects nesting.
  * @slot tooltip - Slot for tooltip content.
  * @prop {'ai'|'default'|string} kind - Visual variant inherited from parent menu.
  */
@@ -74,6 +74,18 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor _submenuOpenTimer: number | undefined;
 
+  /** Whether this item's submenu is on the current navigation path.
+   * @internal
+   */
+  @state()
+  accessor _submenuExpanded = false;
+
+  /** Whether this item's action belongs to the current menu level.
+   * @internal
+   */
+  @state()
+  accessor _itemVisible = true;
+
   /**
    * @internal
    */
@@ -114,7 +126,10 @@ export class OverflowMenuItem extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
     // Observe for submenu add/remove or slot attr changes and re-render.
-    this._mo = new MutationObserver(() => this.requestUpdate());
+    this._mo = new MutationObserver(() => {
+      this.requestUpdate();
+      this.closest('kyn-overflow-menu')?.requestUpdate();
+    });
     this._mo.observe(this, {
       childList: true,
       subtree: true,
@@ -130,6 +145,15 @@ export class OverflowMenuItem extends LitElement {
   }
 
   override render() {
+    return html`
+      <div ?hidden=${!this._itemVisible}>${this._renderAction()}</div>
+      <div ?hidden=${!this._submenuExpanded}>
+        <slot name="submenu"></slot>
+      </div>
+    `;
+  }
+
+  private _renderAction() {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
@@ -217,6 +241,12 @@ export class OverflowMenuItem extends LitElement {
     this.checkOverflow();
   }
 
+  override updated(changedProps: Map<string, unknown>) {
+    if (changedProps.has('_itemVisible') && this._itemVisible) {
+      this.checkOverflow();
+    }
+  }
+
   private handleClick(e: Event) {
     const wrapper = this.querySelector<HTMLElement>(
       ':scope > [slot="submenu"]:not(kyn-overflow-menu-item)'
@@ -254,11 +284,14 @@ export class OverflowMenuItem extends LitElement {
     const DOWN = 40;
     const UP = 38;
 
-    const items = this._menuItems;
+    const items =
+      this.closest('kyn-overflow-menu')?._getCurrentMenuItems() ??
+      this._menuItems;
     const activeEl = (this.getRootNode() as Document | ShadowRoot)
       .activeElement as Element | null;
 
     const idx = items.findIndex((item) => {
+      if (item === this && this.shadowRoot?.activeElement) return true;
       if (item === activeEl) return true;
       const sr = (item as HTMLElement).shadowRoot;
       return !!(sr && activeEl && sr.contains(activeEl));

@@ -2,9 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-
-import './overflowMenuItem';
+import { OverflowMenuItem } from './overflowMenuItem';
 
 import SCSS from './overflowMenu.scss?inline';
 
@@ -72,26 +70,17 @@ export class OverflowMenu extends LitElement {
   accessor _openUpwards = false;
 
   /**
-   * History of previous menus for back navigation.
-   * Each entry is either 'root' (slot) or a string of HTML for a submenu.
-   * @ignore
+   * Original items whose submenus form the current navigation path.
+   * @internal
    */
   @state()
-  accessor _menuHistory: string[] = [];
-
-  /**
-   * Current submenu HTML when viewing a submenu. Null when viewing root slot.
-   * @ignore
-   */
-  @state()
-  accessor _currentMenuHtml: string | null = null;
+  accessor _menuHistory: OverflowMenuItem[] = [];
 
   private _onDocClick = (e: Event) => this.handleClickOut(e);
   private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
   private _onItemClick = () => {
     this.open = false;
     this._menuHistory = [];
-    this._currentMenuHtml = null;
     this._emitToggleEvent();
     this._btnEl?.focus();
   };
@@ -146,11 +135,9 @@ export class OverflowMenu extends LitElement {
                   <span class="back-button-icon">${unsafeSVG(backIcon)}</span>
                   <span class="back-button-txt">${this.backButtonText}</span>
                 </kyn-overflow-menu-item>
-                <div class="submenu-contents">
-                  ${unsafeHTML(this._currentMenuHtml || '')}
-                </div>
               `
-            : html`<slot></slot>`}
+            : null}
+          <slot @slotchange=${() => this.requestUpdate()}></slot>
         </div>
       </div>
     `;
@@ -228,7 +215,6 @@ export class OverflowMenu extends LitElement {
         }
       } else {
         this._menuHistory = [];
-        this._currentMenuHtml = null;
         setTimeout(() => {
           this._openUpwards = false;
         }, 150);
@@ -268,7 +254,7 @@ export class OverflowMenu extends LitElement {
       this.toggleMenu();
     }
 
-    const menuItems: any = this.getMenuItems();
+    const menuItems: any = this._getCurrentMenuItems();
 
     if (menuItems.length > 0 && e.keyCode === DOWN_ARROW_KEY_CODE) {
       const firstItemIndex = menuItems.findIndex(
@@ -283,7 +269,33 @@ export class OverflowMenu extends LitElement {
   getMenuItems() {
     return Array.from(
       this.querySelectorAll('kyn-overflow-menu-item') || []
-    ).filter((item: any) => !item.hasAttribute('disabled'));
+    ).filter((item) => !item.hasAttribute('disabled'));
+  }
+
+  /** Enabled items in the current navigation level.
+   * @internal
+   */
+  _getCurrentMenuItems() {
+    const current = this._menuHistory[this._menuHistory.length - 1];
+    return this.getMenuItems().filter(
+      (item) =>
+        !item.disabled &&
+        item.closest('kyn-overflow-menu') === this &&
+        item.parentElement?.closest('kyn-overflow-menu-item') ===
+          (current ?? null)
+    );
+  }
+
+  override willUpdate() {
+    const current = this._menuHistory[this._menuHistory.length - 1];
+    this.querySelectorAll('kyn-overflow-menu-item').forEach((item) => {
+      if (item.closest('kyn-overflow-menu') !== this) return;
+      item._submenuExpanded = this._menuHistory.includes(item);
+      item._itemVisible =
+        item.parentElement?.closest('kyn-overflow-menu-item') ===
+        (current ?? null);
+      item.kind = this.kind;
+    });
   }
 
   getMenu() {
@@ -310,132 +322,28 @@ export class OverflowMenu extends LitElement {
 
   private handleOpenSubmenu(e: CustomEvent) {
     e.stopPropagation();
-    const submenuHtml = (e.detail && e.detail.html) || '';
-
-    if (this._currentMenuHtml === null) {
-      this._menuHistory = [...this._menuHistory, 'root'];
-    } else {
-      this._menuHistory = [...this._menuHistory, this._currentMenuHtml];
+    const item = e.composedPath()[0];
+    if (item instanceof OverflowMenuItem) {
+      this._menuHistory = [...this._menuHistory, item];
+      this._focusCurrentMenu();
     }
-
-    this._currentMenuHtml = submenuHtml;
-
-    requestAnimationFrame(() => {
-      const contents = this._menuEl?.querySelector('.submenu-contents');
-      const items = contents
-        ? Array.from(contents.querySelectorAll('kyn-overflow-menu-item'))
-        : [];
-
-      items.forEach((it: any) => {
-        try {
-          it.kind = this.kind;
-        } catch (err) {
-          /* no op */
-        }
-      });
-
-      if (
-        typeof (customElements as any) !== 'undefined' &&
-        (customElements as any).whenDefined
-      ) {
-        (customElements as any)
-          .whenDefined('kyn-overflow-menu-item')
-          .then(() => {
-            setTimeout(() => {
-              const upgradedItems = contents
-                ? Array.from(
-                    contents.querySelectorAll('kyn-overflow-menu-item')
-                  )
-                : [];
-              upgradedItems.forEach((it: any) => {
-                try {
-                  it.kind = this.kind;
-                } catch (err) {
-                  /* no op */
-                }
-              });
-            }, 0);
-          })
-          .catch(() => {
-            /* no op */
-          });
-      }
-      this._menuEl?.querySelector('button, a')?.focus();
-    });
   }
 
   private goBack() {
-    const last = this._menuHistory.pop();
+    this._menuHistory = this._menuHistory.slice(0, -1);
+    this._focusCurrentMenu();
+  }
 
-    this._menuHistory = [...this._menuHistory];
-    if (last === 'root') {
-      this._currentMenuHtml = null;
-
-      requestAnimationFrame(() => {
-        const menuItems: any = this.getMenuItems();
-
-        menuItems.forEach((it: any) => {
-          try {
-            it.kind = this.kind;
-          } catch (err) {
-            /* no op */
-          }
-        });
-
-        if (menuItems.length > 0) {
-          menuItems[0].shadowRoot?.querySelector('button')
-            ? menuItems[0].shadowRoot?.querySelector('button')?.focus()
-            : menuItems[0].shadowRoot?.querySelector('a')?.focus();
-        } else {
-          this._btnEl?.focus();
-        }
-      });
-    } else {
-      this._currentMenuHtml = last || null;
-      requestAnimationFrame(() => {
-        const contents = this._menuEl?.querySelector('.submenu-contents');
-        const items = contents
-          ? Array.from(contents.querySelectorAll('kyn-overflow-menu-item'))
-          : [];
-
-        items.forEach((it: any) => {
-          try {
-            it.kind = this.kind;
-          } catch (err) {
-            /* no op */
-          }
-        });
-
-        if (
-          typeof (customElements as any) !== 'undefined' &&
-          (customElements as any).whenDefined
-        ) {
-          (customElements as any)
-            .whenDefined('kyn-overflow-menu-item')
-            .then(() => {
-              setTimeout(() => {
-                const upgradedItems = contents
-                  ? Array.from(
-                      contents.querySelectorAll('kyn-overflow-menu-item')
-                    )
-                  : [];
-                upgradedItems.forEach((it: any) => {
-                  try {
-                    it.kind = this.kind;
-                  } catch (err) {
-                    /* no op */
-                  }
-                });
-              }, 0);
-            })
-            .catch(() => {
-              /* no op */
-            });
-        }
-
-        this._menuEl?.querySelector('button, a')?.focus();
-      });
-    }
+  private async _focusCurrentMenu() {
+    await this.updateComplete;
+    const first = this._menuHistory.length
+      ? this.shadowRoot?.querySelector('kyn-overflow-menu-item')
+      : this._getCurrentMenuItems()[0];
+    await first?.updateComplete;
+    requestAnimationFrame(() => {
+      const action = first?.shadowRoot?.querySelector<HTMLElement>('button, a');
+      (action ?? this._btnEl)?.focus();
+    });
   }
 }
 
