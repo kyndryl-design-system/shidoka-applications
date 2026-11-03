@@ -4,7 +4,8 @@ import { action } from 'storybook/actions';
 import './index';
 import { SEGMENTED_CONTROL_SIZES } from './defs';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
-import lightbulbIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lightbulb.svg';
+import sunIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/sun.svg';
+import moonIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/moon.svg';
 
 export default {
   title: 'Components/Buttons & Actions/Segmented Control',
@@ -212,13 +213,11 @@ export const WithIcons = {
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <kyn-segmented-control-item value="dark" selected>
-        <span slot="icon" style="display: flex;">${unsafeSVG(circleIcon)}</span>
+        <span slot="icon" style="display: flex;">${unsafeSVG(moonIcon)}</span>
         Dark
       </kyn-segmented-control-item>
       <kyn-segmented-control-item value="light" iconPosition="right">
-        <span slot="icon" style="display: flex;"
-          >${unsafeSVG(lightbulbIcon)}</span
-        >
+        <span slot="icon" style="display: flex;">${unsafeSVG(sunIcon)}</span>
         Light
       </kyn-segmented-control-item>
     </kyn-segmented-control>
@@ -239,12 +238,10 @@ export const IconOnly = {
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <kyn-segmented-control-item value="dark" selected>
-        <span slot="icon" style="display: flex;">${unsafeSVG(circleIcon)}</span>
+        <span slot="icon" style="display: flex;">${unsafeSVG(moonIcon)}</span>
       </kyn-segmented-control-item>
       <kyn-segmented-control-item value="light">
-        <span slot="icon" style="display: flex;"
-          >${unsafeSVG(lightbulbIcon)}</span
-        >
+        <span slot="icon" style="display: flex;">${unsafeSVG(sunIcon)}</span>
       </kyn-segmented-control-item>
     </kyn-segmented-control>
   `,
