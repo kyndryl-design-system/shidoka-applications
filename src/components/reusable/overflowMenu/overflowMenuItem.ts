@@ -8,6 +8,9 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
 
 /**
  * Overflow Menu Item.
+ *
+ * Nested `on-click` events are stopped at the submenu slot and relayed to the
+ * menu, skipping ancestor item bubble-phase listeners, but not capture listeners.
  * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for menu item text.
  * @slot submenu - Nested submenu content, projected without recreating its elements or event listeners. Presence auto-detects nesting.
@@ -148,7 +151,7 @@ export class OverflowMenuItem extends LitElement {
     return html`
       <div ?hidden=${!this._itemVisible}>${this._renderAction()}</div>
       <div ?hidden=${!this._submenuExpanded}>
-        <slot name="submenu"></slot>
+        <slot name="submenu" @on-click=${this._handleSubmenuClick}></slot>
       </div>
     `;
   }
@@ -244,6 +247,23 @@ export class OverflowMenuItem extends LitElement {
   override updated(changedProps: Map<string, unknown>) {
     if (changedProps.has('_itemVisible') && this._itemVisible) {
       this.checkOverflow();
+    }
+  }
+
+  /** Keep nested selections out of ancestor item callbacks while notifying the menu.
+   * @internal
+   */
+  private _handleSubmenuClick(e: CustomEvent<{ origEvent: Event }>) {
+    const menu = this.closest('kyn-overflow-menu');
+    if (menu) {
+      e.stopPropagation();
+      menu.dispatchEvent(
+        new CustomEvent('on-click', {
+          detail: e.detail,
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
   }
 

@@ -199,6 +199,8 @@ export const AncestorEventPropagation = {
     const menu = canvasElement.querySelector('kyn-overflow-menu');
     const parent = menu.querySelector('#export');
     const json = menu.querySelector('#json');
+    const deeper = menu.querySelector('#deeper');
+    const deep = menu.querySelector('#deep');
     await menu.updateComplete;
     await parent.updateComplete;
     await json.updateComplete;
@@ -208,22 +210,69 @@ export const AncestorEventPropagation = {
     menu.addEventListener('on-click', onMenu);
     parent.addEventListener('on-click', onParent);
     json.addEventListener('on-click', onChild);
+    deeper.addEventListener('on-click', onParent);
+    deep.addEventListener('on-click', onChild);
     try {
       await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+      await waitFor(() => {
+        expect(
+          getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
+        ).toBe('visible');
+      });
       await userEvent.click(parent.shadowRoot.querySelector('button'));
       await menu.updateComplete;
       await json.updateComplete;
       await userEvent.click(json.shadowRoot.querySelector('button'));
       await menu.updateComplete;
       expect(onChild).toHaveBeenCalledTimes(1);
-      expect(onParent).toHaveBeenCalledTimes(1);
+      expect(onParent).not.toHaveBeenCalled();
       expect(onMenu).toHaveBeenCalledTimes(1);
       const event = onChild.mock.calls[0][0];
-      expect(onParent.mock.calls[0][0]).toBe(event);
-      expect(onMenu.mock.calls[0][0]).toBe(event);
+      expect(onMenu.mock.calls[0][0].detail).toBe(event.detail);
+      expect(onMenu.mock.calls[0][0].target).toBe(menu);
       expect(event.target).toBe(json);
       expect(event.detail.origEvent.type).toBe('click');
       expect(menu.open).toBe(false);
+      await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+      await waitFor(() => {
+        expect(
+          getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
+        ).toBe('visible');
+      });
+      await userEvent.click(parent.shadowRoot.querySelector('button'));
+      await menu.updateComplete;
+      await deeper.updateComplete;
+      await userEvent.click(deeper.shadowRoot.querySelector('button'));
+      await menu.updateComplete;
+      await deep.updateComplete;
+      await userEvent.click(deep.shadowRoot.querySelector('button'));
+      await menu.updateComplete;
+      expect(onChild).toHaveBeenCalledTimes(2);
+      expect(onParent).not.toHaveBeenCalled();
+      expect(onMenu).toHaveBeenCalledTimes(2);
+      expect(onMenu.mock.calls[1][0].detail).toBe(
+        onChild.mock.calls[1][0].detail
+      );
+      expect(menu.open).toBe(false);
+      await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+      await waitFor(() => {
+        expect(
+          getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
+        ).toBe('visible');
+      });
+      await userEvent.click(parent.shadowRoot.querySelector('button'));
+      await menu.updateComplete;
+      await json.updateComplete;
+      json.addEventListener('on-click', (e) => e.stopPropagation(), {
+        once: true,
+      });
+      await userEvent.click(json.shadowRoot.querySelector('button'));
+      await menu.updateComplete;
+      expect(onChild).toHaveBeenCalledTimes(3);
+      expect(onParent).not.toHaveBeenCalled();
+      expect(onMenu).toHaveBeenCalledTimes(2);
+      expect(menu.open).toBe(true);
+      await userEvent.click(menu.shadowRoot.querySelector('.btn'));
       await waitFor(() => {
         expect(
           getComputedStyle(menu.shadowRoot.querySelector('.menu')).visibility
@@ -233,8 +282,15 @@ export const AncestorEventPropagation = {
       menu.removeEventListener('on-click', onMenu);
       parent.removeEventListener('on-click', onParent);
       json.removeEventListener('on-click', onChild);
+      deeper.removeEventListener('on-click', onParent);
+      deep.removeEventListener('on-click', onChild);
     }
   },
+};
+
+export const WrappedAncestorEventPropagation = {
+  ...AncestorEventPropagation,
+  render: WrappedItemBindings.render,
 };
 
 export const RemovingOpenSubmenus = {

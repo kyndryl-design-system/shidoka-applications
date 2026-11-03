@@ -11,6 +11,11 @@ import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arr
 
 /**
  * Overflow Menu.
+ *
+ * Nested selections notify this menu with a new `on-click` event sharing
+ * `detail.origEvent`. Its `composedPath()` excludes the selected item.
+ * Listen on individual items to identify selections; stopping their event
+ * propagation prevents menu notification and automatic closure.
  * @slot icon - Slot for overflow icon.
  * @slot unnamed - Slot for overflow menu items.
  * @fires on-toggle - Capture the open/close event and emits the new state.`detail:{ open: boolean }`
