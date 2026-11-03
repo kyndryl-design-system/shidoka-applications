@@ -131,7 +131,7 @@ export class OverflowMenuItem extends LitElement {
     // Observe for submenu add/remove or slot attr changes and re-render.
     this._mo = new MutationObserver(() => {
       this.requestUpdate();
-      this.closest('kyn-overflow-menu')?.requestUpdate();
+      this.closest('kyn-overflow-menu')?._requestMenuItemsUpdate();
     });
     this._mo.observe(this, {
       childList: true,

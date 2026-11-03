@@ -81,6 +81,8 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _menuHistory: OverflowMenuItem[] = [];
 
+  private _itemsChanged = true;
+
   private _onDocClick = (e: Event) => this.handleClickOut(e);
   private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
   private _onItemClick = () => {
@@ -142,7 +144,7 @@ export class OverflowMenu extends LitElement {
                 </kyn-overflow-menu-item>
               `
             : null}
-          <slot @slotchange=${() => this.requestUpdate()}></slot>
+          <slot @slotchange=${this._requestMenuItemsUpdate}></slot>
         </div>
       </div>
     `;
@@ -291,7 +293,17 @@ export class OverflowMenu extends LitElement {
     );
   }
 
-  override willUpdate() {
+  /** Resynchronize item visibility after slotted content changes.
+   * @internal
+   */
+  _requestMenuItemsUpdate() {
+    this._itemsChanged = true;
+    this.requestUpdate();
+  }
+
+  override willUpdate(changedProps: Map<string, unknown>) {
+    if (!this._itemsChanged && !changedProps.has('_menuHistory')) return;
+    this._itemsChanged = false;
     const current = this._menuHistory[this._menuHistory.length - 1];
     this.querySelectorAll('kyn-overflow-menu-item').forEach((item) => {
       if (item.closest('kyn-overflow-menu') !== this) return;
@@ -299,7 +311,6 @@ export class OverflowMenu extends LitElement {
       item._itemVisible =
         item.parentElement?.closest('kyn-overflow-menu-item') ===
         (current ?? null);
-      item.kind = this.kind;
     });
   }
 

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, userEvent, waitFor } from 'storybook/test';
 import './index';
 
 export default {
@@ -95,10 +95,11 @@ const play = async ({ canvasElement }) => {
   await userEvent.click(action(parent));
   await settle();
   menu.kind = 'ai';
-  await settle();
-  for (const item of [parent, json, zip, deeper, deep]) {
-    expect(item.kind).toBe('ai');
-  }
+  await waitFor(() => {
+    for (const item of [parent, json, zip, deeper, deep]) {
+      expect(item.kind).toBe('ai');
+    }
+  });
   await userEvent.click(action(deeper));
   await settle();
   expect(menu._getCurrentMenuItems()).toEqual([deep]);
@@ -110,10 +111,11 @@ const play = async ({ canvasElement }) => {
   expect(menu._getCurrentMenuItems()).toEqual([parent]);
   expect(parent.kind).toBe('ai');
   menu.kind = 'default';
-  await settle();
-  for (const item of [parent, json, zip, deeper, deep]) {
-    expect(item.kind).toBe('default');
-  }
+  await waitFor(() => {
+    for (const item of [parent, json, zip, deeper, deep]) {
+      expect(item.kind).toBe('default');
+    }
+  });
   await waitFor(() => {
     expect(parent.shadowRoot.activeElement).toBe(action(parent));
   });
@@ -191,6 +193,107 @@ export const WrappedItemBindings = {
     </kyn-overflow-menu>
   `,
   play,
+};
+
+export const ItemSynchronization = {
+  render: OriginalItemBindings.render,
+  play: async ({ canvasElement }) => {
+    const menu = canvasElement.querySelector('kyn-overflow-menu');
+    const parent = menu.querySelector('#export');
+    const json = menu.querySelector('#json');
+    const action = (item) => item.shadowRoot.querySelector('button, a');
+    await menu.updateComplete;
+    await Promise.all(
+      [...menu.querySelectorAll('kyn-overflow-menu-item')].map(
+        (item) => item.updateComplete
+      )
+    );
+    await new Promise(requestAnimationFrame);
+    const queryItems = spyOn(menu, 'querySelectorAll');
+    try {
+      json.kind = 'ai';
+      await json.updateComplete;
+      menu.assistiveText = 'Actions';
+      menu.backButtonText = 'Previous';
+      menu.anchorRight = true;
+      menu.verticalDots = true;
+      await menu.updateComplete;
+      expect(queryItems).not.toHaveBeenCalled();
+      expect(json.kind).toBe('ai');
+
+      menu.requestUpdate();
+      await menu.updateComplete;
+      expect(queryItems).not.toHaveBeenCalled();
+      expect(json.kind).toBe('ai');
+
+      menu.kind = 'ai';
+      await waitFor(() => {
+        expect(parent.kind).toBe('ai');
+      });
+      expect(queryItems).not.toHaveBeenCalled();
+      menu.kind = 'default';
+      await waitFor(() => {
+        expect(parent.kind).toBe('default');
+        expect(json.kind).toBe('default');
+      });
+      expect(queryItems).not.toHaveBeenCalled();
+
+      json.kind = 'ai';
+      await json.updateComplete;
+      await userEvent.click(menu.shadowRoot.querySelector('.btn'));
+      await userEvent.click(action(parent));
+      await menu.updateComplete;
+      await json.updateComplete;
+      expect(parent._itemVisible).toBe(false);
+      expect(parent._submenuExpanded).toBe(true);
+      expect(json._itemVisible).toBe(true);
+      expect(json.kind).toBe('ai');
+
+      const dynamic = document.createElement('kyn-overflow-menu-item');
+      dynamic.textContent = 'Dynamic action';
+      menu.append(dynamic);
+      try {
+        await waitFor(() => {
+          expect(dynamic._itemVisible).toBe(false);
+        });
+        dynamic.slot = 'submenu';
+        parent.append(dynamic);
+        await waitFor(() => {
+          expect(dynamic._itemVisible).toBe(true);
+          expect(action(dynamic).getClientRects().length).toBeGreaterThan(0);
+        });
+        queryItems.mockClear();
+        dynamic.slot = '';
+        await waitFor(() => {
+          expect(queryItems).toHaveBeenCalledWith('kyn-overflow-menu-item');
+          expect(action(dynamic).getClientRects()).toHaveLength(0);
+        });
+        dynamic.slot = 'submenu';
+        await waitFor(() => {
+          expect(action(dynamic).getClientRects().length).toBeGreaterThan(0);
+        });
+        dynamic.slot = '';
+        menu.append(dynamic);
+        await waitFor(() => {
+          expect(dynamic._itemVisible).toBe(false);
+        });
+      } finally {
+        dynamic.remove();
+      }
+
+      const back = menu.shadowRoot.querySelector('.submenu-back-item');
+      await userEvent.click(action(back));
+      await menu.updateComplete;
+      await parent.updateComplete;
+      await json.updateComplete;
+      expect(parent._itemVisible).toBe(true);
+      expect(parent._submenuExpanded).toBe(false);
+      expect(json._itemVisible).toBe(false);
+      expect(json.kind).toBe('ai');
+    } finally {
+      queryItems.mockRestore();
+    }
+  },
 };
 
 export const AncestorEventPropagation = {
