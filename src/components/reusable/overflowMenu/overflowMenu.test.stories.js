@@ -5,7 +5,7 @@ import './index';
 export default {
   title: 'Tests/Components/Overflow Menu',
   component: 'kyn-overflow-menu',
-  tags: ['!autodocs'],
+  tags: ['!autodocs', '!dev'],
 };
 
 const exportAction = fn();
