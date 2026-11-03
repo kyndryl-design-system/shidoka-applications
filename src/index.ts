@@ -128,3 +128,7 @@ export {
   QueryBuilderRule,
 } from './components/reusable/queryBuilder';
 export { IconSelector } from './components/reusable/iconSelector';
+export {
+  SegmentedControl,
+  SegmentedControlItem,
+} from './components/reusable/segmentedControl';
