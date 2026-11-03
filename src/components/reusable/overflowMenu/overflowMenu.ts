@@ -81,7 +81,8 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _menuHistory: OverflowMenuItem[] = [];
 
-  private _itemsChanged = true;
+  /** @internal */
+  private accessor _itemsChanged = true;
 
   private _onDocClick = (e: Event) => this.handleClickOut(e);
   private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
@@ -350,6 +351,7 @@ export class OverflowMenu extends LitElement {
     this._focusCurrentMenu();
   }
 
+  /** @internal */
   private async _focusCurrentMenu() {
     await this.updateComplete;
     const first = this._menuHistory.length

@@ -156,6 +156,7 @@ export class OverflowMenuItem extends LitElement {
     `;
   }
 
+  /** @internal */
   private _renderAction() {
     const classes = {
       'overflow-menu-item': true,
