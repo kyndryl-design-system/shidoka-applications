@@ -16,14 +16,6 @@ const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 export default {
   title: 'Components/Navigation/Link',
   component: 'kyn-link',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          '`size` controls both link typography and the slotted icon: `lg` = 16px, `md` = 14px, and `sm` = 12px. When omitted, text inherits its size from the surrounding context and the icon keeps its intrinsic size.',
-      },
-    },
-  },
   argTypes: {
     kind: {
       options: createSelectOptions(LINK_TYPES),
@@ -40,6 +32,8 @@ export default {
       },
     },
     size: {
+      description:
+        'Controls link text typography and icon size: `lg` = 16px, `md` = 14px, and `sm` = 12px. When omitted, text inherits from context and the icon keeps its intrinsic size.',
       options: [...createOptionsArray(LINK_SIZES), undefined],
       control: 'select',
       table: {
