@@ -33,7 +33,7 @@ export default {
     },
     size: {
       description:
-        'Controls link text typography and icon size: `lg` = 16px, `md` = 14px, and `sm` = 12px. When omitted, text inherits from context and the icon keeps its intrinsic size.',
+        'Controls link text typography only. When omitted, text inherits from context. Consumers must size slotted icons to 16px for `lg`, 14px for `md`, and 12px for `sm`; Link does not resize icons.',
       options: [...createOptionsArray(LINK_SIZES), undefined],
       control: 'select',
       table: {
@@ -62,7 +62,7 @@ const args = {
   'on-click': fn(),
 };
 
-const linkIconArgs = { ...args, standalone: true, sizeOverride: 16 };
+const linkIconArgs = { ...args, standalone: true };
 
 // Inline link
 export const Link = {
@@ -95,31 +95,61 @@ export const Link = {
 
 // Standalone Link
 export const LinkWithIcon = {
-  args: { ...linkIconArgs, size: LINK_SIZES.LARGE },
+  args: linkIconArgs,
+  argTypes: {
+    size: { control: false },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Each example sets the SVG dimensions in consumer CSS: 16px for `lg`, 14px for `md`, and 12px for `sm`. Link controls text typography only.',
+      },
+    },
+  },
   render: (args) => html`
-    <kyn-link
-      id="test"
-      ?standalone=${args.standalone}
-      ?iconLeft=${args.iconLeft}
-      ?animationInactive=${args.animationInactive}
-      ?truncate=${args.truncate}
-      href=${args.href}
-      target=${args.target}
-      kind=${args.kind}
-      size=${args.size}
-      linkFontWeight=${args.linkFontWeight}
-      ?disabled=${args.disabled}
-      @on-click=${args['on-click']}
+    <style>
+      .link-icon-examples [slot='icon'] svg {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div
+      class="link-icon-examples"
+      style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--kd-spacing-16);"
     >
-      ${args.unnamed}
-      <span
-        slot="icon"
-        role="img"
-        aria-label="Arrow right icon"
-        title="Arrow right icon"
-        >${unsafeSVG(arrowRightIcon)}</span
-      >
-    </kyn-link>
+      ${[
+        { size: LINK_SIZES.LARGE, iconSize: 16 },
+        { size: LINK_SIZES.MEDIUM, iconSize: 14 },
+        { size: LINK_SIZES.SMALL, iconSize: 12 },
+      ].map(
+        ({ size, iconSize }) => html`
+          <kyn-link
+            ?standalone=${args.standalone}
+            ?iconLeft=${args.iconLeft}
+            ?animationInactive=${args.animationInactive}
+            ?truncate=${args.truncate}
+            href=${args.href}
+            target=${args.target}
+            kind=${args.kind}
+            size=${size}
+            linkFontWeight=${args.linkFontWeight}
+            ?disabled=${args.disabled}
+            @on-click=${args['on-click']}
+          >
+            ${args.unnamed} (${size})
+            <span
+              slot="icon"
+              role="img"
+              aria-label="Arrow right icon"
+              title="Arrow right icon"
+              style="width: ${iconSize}px; height: ${iconSize}px;"
+              >${unsafeSVG(arrowRightIcon)}</span
+            >
+          </kyn-link>
+        `
+      )}
+    </div>
   `,
 };
 

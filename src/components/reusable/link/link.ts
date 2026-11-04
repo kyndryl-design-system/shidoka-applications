@@ -35,7 +35,7 @@ export class Link extends LitElement {
   @property({ type: String })
   accessor kind: LINK_TYPES = LINK_TYPES.PRIMARY;
 
-  /** Controls link text typography and icon size. When omitted, text inherits from context and the icon keeps its intrinsic size. */
+  /** Controls link text typography. When omitted, text inherits from context. Consumers must size slotted icons to 16px for lg, 14px for md, and 12px for sm; the component does not resize icons. */
   @property({ type: String })
   accessor size: LINK_SIZES | undefined = undefined;
 
