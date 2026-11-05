@@ -7,7 +7,7 @@ import { within } from 'shadow-dom-testing-library';
 
 import './link';
 import arrowRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
-import { LINK_TYPES, LINK_TARGETS } from './defs';
+import { LINK_TYPES, LINK_TARGETS, LINK_SIZES } from './defs';
 import { createOptionsArray } from '../../../common/helpers/helpers';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
@@ -31,6 +31,15 @@ export default {
         defaultValue: { summary: LINK_TARGETS.SELF },
       },
     },
+    size: {
+      description:
+        'Controls link text typography only. When omitted, text inherits from context. Consumers must size slotted icons to 16px for `lg`, 14px for `md`, and 12px for `sm`; Link does not resize icons.',
+      options: [...createOptionsArray(LINK_SIZES), undefined],
+      control: 'select',
+      table: {
+        defaultValue: { summary: 'undefined (inherited)' },
+      },
+    },
     linkFontWeight: {
       options: ['default', 'lighter'],
       control: { type: 'select' },
@@ -43,6 +52,7 @@ const args = {
   href: '',
   target: '_self',
   kind: 'primary',
+  size: undefined,
   disabled: false,
   standalone: false,
   iconLeft: false,
@@ -52,7 +62,7 @@ const args = {
   'on-click': fn(),
 };
 
-const linkIconArgs = { ...args, standalone: true, sizeOverride: 16 };
+const linkIconArgs = { ...args, standalone: true };
 
 // Inline link
 export const Link = {
@@ -65,6 +75,7 @@ export const Link = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
+        size=${args.size}
         linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
         ?truncate=${args.truncate}
@@ -85,29 +96,60 @@ export const Link = {
 // Standalone Link
 export const LinkWithIcon = {
   args: linkIconArgs,
+  argTypes: {
+    size: { control: false },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Each example sets the SVG dimensions in consumer CSS: 16px for `lg`, 14px for `md`, and 12px for `sm`. Link controls text typography only.',
+      },
+    },
+  },
   render: (args) => html`
-    <kyn-link
-      id="test"
-      ?standalone=${args.standalone}
-      ?iconLeft=${args.iconLeft}
-      ?animationInactive=${args.animationInactive}
-      ?truncate=${args.truncate}
-      href=${args.href}
-      target=${args.target}
-      kind=${args.kind}
-      linkFontWeight=${args.linkFontWeight}
-      ?disabled=${args.disabled}
-      @on-click=${args['on-click']}
+    <style>
+      .link-icon-examples [slot='icon'] svg {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div
+      class="link-icon-examples"
+      style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--kd-spacing-16);"
     >
-      ${args.unnamed}
-      <span
-        slot="icon"
-        role="img"
-        aria-label="Arrow right icon"
-        title="Arrow right icon"
-        >${unsafeSVG(arrowRightIcon)}</span
-      >
-    </kyn-link>
+      ${[
+        { size: LINK_SIZES.LARGE, iconSize: 16 },
+        { size: LINK_SIZES.MEDIUM, iconSize: 14 },
+        { size: LINK_SIZES.SMALL, iconSize: 12 },
+      ].map(
+        ({ size, iconSize }) => html`
+          <kyn-link
+            ?standalone=${args.standalone}
+            ?iconLeft=${args.iconLeft}
+            ?animationInactive=${args.animationInactive}
+            ?truncate=${args.truncate}
+            href=${args.href}
+            target=${args.target}
+            kind=${args.kind}
+            size=${size}
+            linkFontWeight=${args.linkFontWeight}
+            ?disabled=${args.disabled}
+            @on-click=${args['on-click']}
+          >
+            ${args.unnamed} (${size})
+            <span
+              slot="icon"
+              role="img"
+              aria-label="Arrow right icon"
+              title="Arrow right icon"
+              style="width: ${iconSize}px; height: ${iconSize}px;"
+              >${unsafeSVG(arrowRightIcon)}</span
+            >
+          </kyn-link>
+        `
+      )}
+    </div>
   `,
 };
 
@@ -125,6 +167,7 @@ export const LinkAISpecific = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
+        size=${args.size}
         linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
         ?truncate=${args.truncate}

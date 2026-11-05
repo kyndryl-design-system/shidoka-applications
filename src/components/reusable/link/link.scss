@@ -61,11 +61,6 @@
     }
   }
 
-  // lighter font-weight (used in breadcrumbs)
-  &-font-lighter {
-    font-weight: var(--kd-font-weight-regular);
-  }
-
   // Link disable class
   &-disabled {
     cursor: not-allowed;
@@ -76,6 +71,32 @@
   // Link Inline - standalone classes
   &-inline {
     text-decoration: underline;
+  }
+
+  &-size-large {
+    @include typography.type-body-02;
+    & {
+      font-weight: var(--kd-font-weight-medium);
+    }
+  }
+
+  &-size-medium {
+    @include typography.type-ui-02;
+    & {
+      font-weight: var(--kd-font-weight-medium);
+    }
+  }
+
+  &-size-small {
+    @include typography.type-ui-03;
+    & {
+      font-weight: var(--kd-font-weight-medium);
+    }
+  }
+
+  // lighter font-weight (used in breadcrumbs)
+  &-font-lighter {
+    font-weight: var(--kd-font-weight-regular);
   }
 
   &-standalone {
@@ -98,6 +119,9 @@
     slot[name='icon']::slotted(*) {
       display: inline-flex;
       align-self: center;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
       margin-left: 0px;
       transition: 300ms ease-in-out;
     }

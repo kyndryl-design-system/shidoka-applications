@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LINK_TYPES, LINK_TARGETS } from './defs';
+import { LINK_TYPES, LINK_TARGETS, LINK_SIZES } from './defs';
 
 import LinkStyles from './link.scss?inline';
 
@@ -34,6 +34,10 @@ export class Link extends LitElement {
   /** The Link type. Primary(App) or Secondary(Web).*/
   @property({ type: String })
   accessor kind: LINK_TYPES = LINK_TYPES.PRIMARY;
+
+  /** Controls link text typography. When omitted, text inherits from context. Consumers must size slotted icons to 16px for lg, 14px for md, and 12px for sm; the component does not resize icons. */
+  @property({ type: String })
+  accessor size: LINK_SIZES | undefined = undefined;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
@@ -128,6 +132,9 @@ export class Link extends LitElement {
       'kyn-link-text-disabled': this.disabled,
       'icon-left': this.iconLeft,
       'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
+      'kyn-link-text-size-large': this.size === LINK_SIZES.LARGE,
+      'kyn-link-text-size-medium': this.size === LINK_SIZES.MEDIUM,
+      'kyn-link-text-size-small': this.size === LINK_SIZES.SMALL,
       'kyn-link-text-font-lighter': this.linkFontWeight === 'lighter',
       'animation-inactive': this.animationInactive,
       truncate: this.truncate,
