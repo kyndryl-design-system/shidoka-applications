@@ -140,6 +140,7 @@ export const Inline = {
             <kyn-link
               kind="secondary"
               href="#"
+              size="sm"
               standalone
               @on-click=${(e) => e.preventDefault()}
             >
