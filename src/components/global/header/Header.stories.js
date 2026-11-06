@@ -5,6 +5,7 @@ import './';
 import '../../reusable/button';
 import '../../reusable/tabs';
 import '../../reusable/search';
+import '../../reusable/link';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
@@ -15,6 +16,7 @@ import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
 import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
 import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -277,6 +279,12 @@ export const WithFlyouts = {
 export const WithNotificationPanel = {
   args,
   render: (args) => html`
+    <style>
+      .notification-review-link [slot='icon'] svg {
+        width: 12px;
+        height: 12px;
+      }
+    </style>
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-flyouts>
         <kyn-header-flyout label="Notification" hideMenuLabel>
@@ -309,12 +317,9 @@ export const WithNotificationPanel = {
                   notificationTitle="Notification Title"
                   notificationSubtitle="Application or Service"
                   timeStamp="2 mins ago"
-                  href="#"
-                  type="clickable"
+                  type="normal"
                   tagStatus=${ele.tagStatus}
                   unRead
-                  @on-notification-click=${(e) =>
-                    action(e.type)({ ...e, detail: e.detail })}
                 >
                   <kyn-overflow-menu
                     slot="actions"
@@ -334,9 +339,26 @@ export const WithNotificationPanel = {
                     </kyn-overflow-menu-item>
                   </kyn-overflow-menu>
 
-                  <div>
-                    Message, this is an additional line Ipsum iMessage, Lorem
-                    Ipsum is simply dummy and typesetting industry.
+                  <div
+                    style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--kd-spacing-8);"
+                  >
+                    <div>
+                      Message, this is an additional line Ipsum iMessage, Lorem
+                      Ipsum is simply dummy and typesetting industry.
+                    </div>
+                    <kyn-link
+                      class="notification-review-link"
+                      href="#"
+                      standalone
+                      size="sm"
+                      @on-click=${(e) =>
+                        action(e.type)({ ...e, detail: e.detail })}
+                    >
+                      Review notification
+                      <span slot="icon" aria-hidden="true">
+                        ${unsafeSVG(chevronRightIcon)}
+                      </span>
+                    </kyn-link>
                   </div>
                 </kyn-notification>
               `
