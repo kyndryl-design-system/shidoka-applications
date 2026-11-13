@@ -9,8 +9,8 @@ import Prism from 'prismjs';
 import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
 
-import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/copy.svg';
-import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark.svg';
+import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 import '../button';
