@@ -64,6 +64,7 @@ export default {
 const args = {
   horizontal: false,
   noBackground: false,
+  noPadding: false,
 };
 
 export const Default = {
@@ -74,6 +75,7 @@ export const Default = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label" class="label-center">Label</div>
           <div class="example">
@@ -96,6 +98,7 @@ export const WithIcon = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label">Label</div>
           <div slot="icon">${unsafeSVG(testingIcon)}</div>
@@ -119,6 +122,7 @@ export const WithText = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label">Label</div>
           <div
@@ -143,6 +147,7 @@ export const WithLink = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label">Label</div>
           <div class="line_height">
@@ -162,6 +167,7 @@ export const WithDate = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label">Label</div>
           <div class="line_height">09/18/2025</div>
@@ -179,6 +185,7 @@ export const WithBadge = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label">Label</div>
           <div style="line-height: 18px;">
@@ -208,6 +215,7 @@ export const WithTable = {
       <kyn-meta-data
         ?horizontal=${args.horizontal}
         ?noBackground=${args.noBackground}
+        ?noPadding=${args.noPadding}
       >
         <div slot="label">Label</div>
         <div slot="icon">${unsafeSVG(testingIcon)}</div>
@@ -261,6 +269,7 @@ export const ScrollableContent = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
           scrollableContent
           style="height: 150px;"
         >
@@ -280,6 +289,57 @@ export const ScrollableContent = {
             consequat. Duis aute irure dolor in reprehenderit in voluptate velit
             esse cillum
           </div>
+        </kyn-meta-data>
+      </div>
+    `;
+  },
+};
+
+export const HorizontalNoPadding = {
+  args: {
+    ...args,
+    horizontal: true,
+    noBackground: true,
+    noPadding: true,
+  },
+  render: (args) => {
+    return html`
+      <div
+        style="max-width: 360px; display: flex; flex-direction: column; gap: 8px;"
+      >
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
+        >
+          <div slot="label">Last detected</div>
+          <div class="line_height" style="text-align: right;">
+            4 Aug 2026, 13:48
+          </div>
+        </kyn-meta-data>
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
+        >
+          <div slot="label">Failed checks while open</div>
+          <div class="line_height" style="text-align: right;">777,6</div>
+        </kyn-meta-data>
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
+        >
+          <div slot="label">Last data update</div>
+          <div class="line_height" style="text-align: right;">6 May 2026</div>
+        </kyn-meta-data>
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
+        >
+          <div slot="label">Account</div>
+          <div class="line_height" style="text-align: right;">ACME</div>
         </kyn-meta-data>
       </div>
     `;
@@ -314,6 +374,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -326,6 +387,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -338,6 +400,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -350,6 +413,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -364,6 +428,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -376,6 +441,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -388,6 +454,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -400,6 +467,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -414,6 +482,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
             scrollableContent
             style="height: 150px;"
           >
@@ -440,6 +509,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
             scrollableContent
             style="height: 150px;"
           >
@@ -468,6 +538,7 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
+            ?noPadding=${args.noPadding}
           >
             <div slot="label">Label</div>
             <div
