@@ -56,7 +56,7 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    include: ['flatpickr'],
+    include: ['flatpickr', 'lit/directives/live.js'],
   },
 
   server: {

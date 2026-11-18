@@ -7,6 +7,14 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 export default {
   title: 'Components/Form Inputs/Number Input',
   component: 'kyn-number-input',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Integers above `Number.MAX_SAFE_INTEGER` (9007199254740991) are not exact in JavaScript. Set `max` if you want range-overflow invalid text. Use `allowEmpty` to leave the field blank (`null` instead of resetting to `0`).',
+      },
+    },
+  },
   argTypes: {
     size: {
       options: ['xs', 'sm', 'md', 'lg'],
@@ -23,6 +31,9 @@ export default {
     },
     max: {
       control: { type: 'number' },
+    },
+    allowEmpty: {
+      control: { type: 'boolean' },
     },
     ...ValidationArgs,
   },
@@ -42,6 +53,7 @@ const args = {
   warnText: '',
   hideLabel: false,
   inline: false,
+  allowEmpty: false,
   step: 1,
   min: undefined,
   max: undefined,
@@ -71,6 +83,7 @@ export const NumberInput = {
         warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
+        ?allowEmpty=${args.allowEmpty}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -82,6 +95,15 @@ export const NumberInput = {
       </kyn-number-input>
     `;
   },
+};
+
+export const AllowEmpty = {
+  args: {
+    ...args,
+    allowEmpty: true,
+    caption: 'Clearing the field leaves it empty (value is null).',
+  },
+  render: NumberInput.render,
 };
 
 export const FullWidth = {
@@ -105,6 +127,7 @@ export const FullWidth = {
         warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
+        ?allowEmpty=${args.allowEmpty}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -135,6 +158,7 @@ export const ConstrainedMaxWidth = {
         warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
+        ?allowEmpty=${args.allowEmpty}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -169,6 +193,7 @@ export const LongLabelContrainedInput = {
         warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
+        ?allowEmpty=${args.allowEmpty}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -203,6 +228,7 @@ export const LongWrappingLabel = {
         warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
+        ?allowEmpty=${args.allowEmpty}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
