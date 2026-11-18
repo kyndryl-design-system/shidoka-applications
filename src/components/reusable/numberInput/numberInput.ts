@@ -21,6 +21,8 @@ const _defaultTextStrings = {
   warning: 'Warning',
 };
 
+const _maxSafeValue = Number.MAX_SAFE_INTEGER;
+
 /**
  * Number input.
  *
@@ -45,8 +47,8 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
-  /** Input value. */
-  override value = 0;
+  /** Input value. `null` when the input is empty. */
+  override value: number | null = 0;
 
   /** Input placeholder. */
   @property({ type: String })
@@ -68,13 +70,13 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: String })
   accessor caption = '';
 
-  /** Maximum value. */
+  /** Maximum value. Defaults to Number.MAX_SAFE_INTEGER. */
   @property({ type: Number })
-  accessor max!: number;
+  accessor max = _maxSafeValue;
 
-  /** Minimum value. */
+  /** Minimum value. Defaults to Number.MIN_SAFE_INTEGER. */
   @property({ type: Number })
-  accessor min!: number;
+  accessor min = -_maxSafeValue;
 
   /** Step value. */
   @property({ type: Number })
@@ -148,7 +150,7 @@ export class NumberInput extends FormMixin(LitElement) {
                 kind="outline"
                 size=${this._sizeMap(this.size)}
                 ?disabled=${this.disabled ||
-                this.value <= this.min ||
+                (this.value !== null && this.value <= this.min) ||
                 this.readonly}
                 description=${this._textStrings.subtract}
                 @on-click=${this._handleSubtract}
@@ -175,7 +177,7 @@ export class NumberInput extends FormMixin(LitElement) {
             type="number"
             id=${this.name}
             name=${this.name}
-            value=${this.value.toString()}
+            value=${this.value === null ? '' : this.value.toString()}
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
@@ -197,7 +199,7 @@ export class NumberInput extends FormMixin(LitElement) {
                 kind="outline"
                 size=${this._sizeMap(this.size)}
                 ?disabled=${this.disabled ||
-                this.value >= this.max ||
+                (this.value !== null && this.value >= this.max) ||
                 this.readonly}
                 description=${this._textStrings.add}
                 @on-click=${this._handleAdd}
@@ -307,8 +309,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
   private _handleInput(e: any) {
     if (e.target.value === '') {
-      this.value = 0;
-      this._inputEl.value = '0';
+      this.value = null;
     } else {
       this.value = Number(e.target.value);
     }
@@ -397,7 +398,15 @@ export class NumberInput extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this._inputEl.value = this.value.toString();
+      const displayValue = this.value === null ? '' : this.value.toString();
+      // Skip the write-back when the typed text already parses to the same
+      // number, so unsafe integers (e.g. 16 digits) aren't rewritten.
+      const InSync =
+        this.value === null
+          ? this._inputEl.value === ''
+          : this._inputEl.value !== '' &&
+            Number(this._inputEl.value) === this.value;
+      if (!InSync) this._inputEl.value = displayValue;
     }
   }
 
