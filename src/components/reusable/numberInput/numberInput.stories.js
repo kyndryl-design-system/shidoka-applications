@@ -11,7 +11,7 @@ export default {
     docs: {
       description: {
         component:
-          'Integers above `Number.MAX_SAFE_INTEGER` (9007199254740991) are not exact in JavaScript. Set `max` if you want range-overflow invalid text. Use `allowEmpty` to leave the field blank (`null` instead of resetting to `0`).',
+          'Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact in JavaScript. Typed digits are kept and the field is marked invalid because the emitted `Number` no longer matches. Use `allowEmpty` to leave the field blank (`null` instead of resetting to `0`).',
       },
     },
   },
@@ -63,181 +63,140 @@ const args = {
     add: 'Add',
     error: 'Error',
     warning: 'Warning',
+    unsafeInteger:
+      'Value is outside the safe integer range and cannot be represented exactly.',
   },
 };
 
-export const NumberInput = {
+const renderNumberInput = (storyArgs, style) => html`
+  <kyn-number-input
+    size=${storyArgs.size}
+    name=${storyArgs.name}
+    value=${storyArgs.value}
+    placeholder=${storyArgs.placeholder}
+    caption=${storyArgs.caption}
+    ?required=${storyArgs.required}
+    ?disabled=${storyArgs.disabled}
+    ?readonly=${storyArgs.readonly}
+    invalidText=${storyArgs.invalidText}
+    warnText=${storyArgs.warnText}
+    ?hideLabel=${storyArgs.hideLabel}
+    ?inline=${storyArgs.inline}
+    ?allowEmpty=${storyArgs.allowEmpty}
+    step=${ifDefined(storyArgs.step)}
+    min=${ifDefined(storyArgs.min)}
+    max=${ifDefined(storyArgs.max)}
+    .textStrings=${storyArgs.textStrings}
+    label=${storyArgs.label}
+    style=${ifDefined(style)}
+    @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+    @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+  >
+  </kyn-number-input>
+`;
+
+export const Default = {
   args,
-  render: (args) => {
-    return html`
-      <kyn-number-input
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        placeholder=${args.placeholder}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?readonly=${args.readonly}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        ?hideLabel=${args.hideLabel}
-        ?inline=${args.inline}
-        ?allowEmpty=${args.allowEmpty}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        .textStrings=${args.textStrings}
-        label=${args.label}
-        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-      </kyn-number-input>
-    `;
-  },
+  render: (storyArgs) => renderNumberInput(storyArgs),
 };
 
-export const AllowEmpty = {
-  args: {
-    ...args,
-    allowEmpty: true,
-    caption: 'Clearing the field leaves it empty (value is null).',
+export const Gallery = {
+  parameters: {
+    controls: { disable: true },
   },
-  render: NumberInput.render,
-};
-
-export const FullWidth = {
-  args: {
-    ...args,
-    label:
-      'Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label',
-  },
-  render: (args) => {
+  render: () => {
     return html`
-      <kyn-number-input
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        placeholder=${args.placeholder}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?readonly=${args.readonly}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        ?hideLabel=${args.hideLabel}
-        ?inline=${args.inline}
-        ?allowEmpty=${args.allowEmpty}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        .textStrings=${args.textStrings}
-        label=${args.label}
-        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        style="width: 100%; --kyn-number-input-inner-max-width: 100%;"
+      <div
+        class="heading kd-type--headline-04"
+        style="margin-bottom:var(--kd-spacing-24)"
       >
-      </kyn-number-input>
-    `;
-  },
-};
+        Gallery
+      </div>
+      <div
+        style="display: flex;gap: var(--kd-spacing-16); flex-direction: column; "
+      >
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Allow empty
+          </div>
+          <kyn-number-input
+            name="allowEmpty"
+            label="Label"
+            allowEmpty
+            .value=${0}
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
 
-export const ConstrainedMaxWidth = {
-  args,
-  render: (args) => {
-    return html`
-      <kyn-number-input
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        placeholder=${args.placeholder}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?readonly=${args.readonly}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        ?hideLabel=${args.hideLabel}
-        ?inline=${args.inline}
-        ?allowEmpty=${args.allowEmpty}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        .textStrings=${args.textStrings}
-        label=${args.label}
-        style="max-width: 300px"
-        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-      </kyn-number-input>
-    `;
-  },
-};
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Unsafe integer
+          </div>
+          <kyn-number-input
+            name="unsafeInteger"
+            label="Label"
+            .value=${0}
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
 
-export const LongLabelContrainedInput = {
-  args: {
-    ...args,
-    label:
-      'Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label',
-  },
-  render: (args) => {
-    return html`
-      <kyn-number-input
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        placeholder=${args.placeholder}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?readonly=${args.readonly}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        ?hideLabel=${args.hideLabel}
-        ?inline=${args.inline}
-        ?allowEmpty=${args.allowEmpty}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        .textStrings=${args.textStrings}
-        label=${args.label}
-        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        style="max-width: 700px; --kyn-number-input-inner-max-width: 160px"
-      >
-      </kyn-number-input>
-    `;
-  },
-};
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Full width
+          </div>
+          <kyn-number-input
+            name="fullWidth"
+            label="Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label"
+            .value=${0}
+            style="width: 100%; --kyn-number-input-inner-max-width: 100%;"
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
 
-export const LongWrappingLabel = {
-  args: {
-    ...args,
-    label:
-      'Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label',
-  },
-  render: (args) => {
-    return html`
-      <kyn-number-input
-        size=${args.size}
-        name=${args.name}
-        value=${args.value}
-        placeholder=${args.placeholder}
-        caption=${args.caption}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?readonly=${args.readonly}
-        invalidText=${args.invalidText}
-        warnText=${args.warnText}
-        ?hideLabel=${args.hideLabel}
-        ?inline=${args.inline}
-        ?allowEmpty=${args.allowEmpty}
-        step=${ifDefined(args.step)}
-        min=${ifDefined(args.min)}
-        max=${ifDefined(args.max)}
-        .textStrings=${args.textStrings}
-        label=${args.label}
-        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        style="max-width: 275px"
-      >
-      </kyn-number-input>
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Constrained max width
+          </div>
+          <kyn-number-input
+            name="constrainedMaxWidth"
+            label="Label"
+            .value=${0}
+            style="max-width: 300px"
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Long label, constrained input
+          </div>
+          <kyn-number-input
+            name="longLabelConstrained"
+            label="Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label"
+            .value=${0}
+            style="max-width: 700px; --kyn-number-input-inner-max-width: 160px"
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Long wrapping label
+          </div>
+          <kyn-number-input
+            name="longWrappingLabel"
+            label="Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label"
+            .value=${0}
+            style="max-width: 275px"
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
+      </div>
+      <style>
+        .heading-text {
+          margin-bottom: var(--kd-spacing-12);
+        }
+      </style>
     `;
   },
 };

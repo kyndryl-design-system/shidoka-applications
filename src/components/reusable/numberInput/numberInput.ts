@@ -20,13 +20,17 @@ const _defaultTextStrings = {
   add: 'Add',
   error: 'Error',
   warning: 'Warning',
+  unsafeInteger:
+    'Value is outside the safe integer range and cannot be represented exactly.',
 };
 
 /**
  * Number input.
  *
- * Integers above `Number.MAX_SAFE_INTEGER` (9007199254740991) are not exact
- * in JavaScript. Set `max` if you want native range-overflow invalid text.
+ * Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact
+ * in JavaScript. The typed digits are kept, but the field is marked invalid
+ * because the emitted `Number` no longer matches. Set `min`/`max` for native
+ * range validation of application limits.
  *
  * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
  * @fires on-change - Emitted when the value is committed (blur after edit, Enter, or stepper click).`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
@@ -73,8 +77,8 @@ export class NumberInput extends FormMixin(LitElement) {
   accessor caption = '';
 
   /**
-   * Maximum value. Unset unless provided. Set this if you want native
-   * range-overflow invalid text (for example at `Number.MAX_SAFE_INTEGER`).
+   * Maximum value. Unset unless provided. Set this for native range-overflow
+   * of an application limit. Unsafe integers are already marked invalid.
    */
   @property({ type: Number })
   accessor max!: number;
@@ -397,7 +401,22 @@ export class NumberInput extends FormMixin(LitElement) {
     );
   }
 
+  /** True when the typed digits are an integer JS cannot represent exactly. */
+  private _isUnsafeIntegerInput(): boolean {
+    if (!this._inputEl) return false;
+    const raw = this._inputEl.value;
+    if (!/^-?\d+$/.test(raw)) return false;
+    return !Number.isSafeInteger(Number(raw));
+  }
+
   private _validate(interacted: Boolean, report: Boolean) {
+    const unsafeInteger = this._isUnsafeIntegerInput();
+    this._inputEl.setCustomValidity(
+      this.invalidText === '' && unsafeInteger
+        ? this._textStrings.unsafeInteger
+        : ''
+    );
+
     // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
