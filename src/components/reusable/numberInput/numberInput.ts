@@ -2,6 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
 import { classMap } from 'lit/directives/class-map.js';
 import Styles from './numberInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -19,13 +20,20 @@ const _defaultTextStrings = {
   add: 'Add',
   error: 'Error',
   warning: 'Warning',
+  unsafeInteger:
+    'Value is outside the safe integer range and cannot be represented exactly.',
 };
 
 /**
  * Number input.
  *
- * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number }`
- * @fires on-change - Emitted when the value is committed (blur after edit, Enter, or stepper click).`detail:{ value: number }`
+ * Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact
+ * in JavaScript. The typed digits are kept, but the field is marked invalid
+ * because the emitted `Number` no longer matches. Set `min`/`max` for native
+ * range validation of application limits.
+ *
+ * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
+ * @fires on-change - Emitted when the value is committed (blur after edit, Enter, or stepper click).`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -45,8 +53,8 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
-  /** Input value. */
-  override value = 0;
+  /** Input value. `null` only when `allowEmpty` and the field is empty. */
+  override value: number | null = 0;
 
   /** Input placeholder. */
   @property({ type: String })
@@ -68,13 +76,23 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: String })
   accessor caption = '';
 
-  /** Maximum value. */
+  /**
+   * Maximum value. Unset unless provided. Set this for native range-overflow
+   * of an application limit. Unsafe integers are already marked invalid.
+   */
   @property({ type: Number })
   accessor max!: number;
 
-  /** Minimum value. */
+  /** Minimum value. Unset unless provided. */
   @property({ type: Number })
   accessor min!: number;
+
+  /**
+   * When true, clearing the field leaves it empty and emits `null`.
+   * Default (false) keeps existing behavior: clear resets to `0`.
+   */
+  @property({ type: Boolean })
+  accessor allowEmpty = false;
 
   /** Step value. */
   @property({ type: Number })
@@ -148,7 +166,7 @@ export class NumberInput extends FormMixin(LitElement) {
                 kind="outline"
                 size=${this._sizeMap(this.size)}
                 ?disabled=${this.disabled ||
-                this.value <= this.min ||
+                (this.value !== null && this.value <= this.min) ||
                 this.readonly}
                 description=${this._textStrings.subtract}
                 @on-click=${this._handleSubtract}
@@ -175,7 +193,7 @@ export class NumberInput extends FormMixin(LitElement) {
             type="number"
             id=${this.name}
             name=${this.name}
-            value=${this.value.toString()}
+            .value=${live(this._displayValue())}
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
@@ -197,7 +215,7 @@ export class NumberInput extends FormMixin(LitElement) {
                 kind="outline"
                 size=${this._sizeMap(this.size)}
                 ?disabled=${this.disabled ||
-                this.value >= this.max ||
+                (this.value !== null && this.value >= this.max) ||
                 this.readonly}
                 description=${this._textStrings.add}
                 @on-click=${this._handleAdd}
@@ -275,6 +293,19 @@ export class NumberInput extends FormMixin(LitElement) {
     return btnSize;
   }
 
+  /** Prefer the typed string when it already parses to `value`, so unsafe integers are not rewritten. */
+  private _displayValue(): string {
+    if (this.value === null) return '';
+    if (
+      this._inputEl &&
+      this._inputEl.value !== '' &&
+      Number(this._inputEl.value) === this.value
+    ) {
+      return this._inputEl.value;
+    }
+    return String(this.value);
+  }
+
   private _handleSubtract() {
     if (this.readonly) return;
     this._inputEl.stepDown();
@@ -307,8 +338,12 @@ export class NumberInput extends FormMixin(LitElement) {
 
   private _handleInput(e: any) {
     if (e.target.value === '') {
-      this.value = 0;
-      this._inputEl.value = '0';
+      if (this.allowEmpty) {
+        this.value = null;
+      } else {
+        this.value = 0;
+        this._inputEl.value = '0';
+      }
     } else {
       this.value = Number(e.target.value);
     }
@@ -366,7 +401,22 @@ export class NumberInput extends FormMixin(LitElement) {
     );
   }
 
+  /** True when the typed digits are an integer JS cannot represent exactly. */
+  private _isUnsafeIntegerInput(): boolean {
+    if (!this._inputEl) return false;
+    const raw = this._inputEl.value;
+    if (!/^-?\d+$/.test(raw)) return false;
+    return !Number.isSafeInteger(Number(raw));
+  }
+
   private _validate(interacted: Boolean, report: Boolean) {
+    const unsafeInteger = this._isUnsafeIntegerInput();
+    this._inputEl.setCustomValidity(
+      this.invalidText === '' && unsafeInteger
+        ? this._textStrings.unsafeInteger
+        : ''
+    );
+
     // get validity state from inputEl, combine customError flag if invalidText is provided
     const Validity =
       this.invalidText !== ''
@@ -397,7 +447,15 @@ export class NumberInput extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this._inputEl.value = this.value.toString();
+      const displayValue = this.value === null ? '' : String(this.value);
+      // Skip write-back when the typed text already parses to the same
+      // number, so unsafe integers (e.g. 16 digits) aren't rewritten.
+      const inSync =
+        this.value === null
+          ? this._inputEl.value === ''
+          : this._inputEl.value !== '' &&
+            Number(this._inputEl.value) === this.value;
+      if (!inSync) this._inputEl.value = displayValue;
     }
   }
 
