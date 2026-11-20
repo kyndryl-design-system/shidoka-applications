@@ -14,7 +14,7 @@ import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
-const _defaultTextStrings = {
+export const _defaultTextStrings = {
   requiredText: 'Required',
   subtract: 'Subtract',
   add: 'Add',

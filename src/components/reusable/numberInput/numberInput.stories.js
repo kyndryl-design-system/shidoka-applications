@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import { _defaultTextStrings } from './numberInput';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ref } from 'lit/directives/ref.js';
@@ -77,15 +78,7 @@ const args = {
   step: 1,
   min: undefined,
   max: undefined,
-  textStrings: {
-    requiredText: 'Required',
-    subtract: 'Subtract',
-    add: 'Add',
-    error: 'Error',
-    warning: 'Warning',
-    unsafeInteger:
-      'Value is outside the safe integer range and cannot be represented exactly.',
-  },
+  textStrings: { ..._defaultTextStrings },
 };
 
 const renderNumberInput = (storyArgs, style) => html`
