@@ -66,7 +66,7 @@ const _defaultTextStrings = {
  * <kyn-query-builder
  *   .fields=${[
  *     { name: 'firstName', label: 'First Name', dataType: 'text' },
- *     { name: 'age', label: 'Age', dataType: 'number' },
+ *     { name: 'age', label: 'Age', dataType: 'number', integer: true },
  *     { name: 'legacyId', label: 'Legacy ID', dataType: 'text', disabled: true },
  *     { name: 'status', label: 'Status', dataType: 'select', values: [
  *       { value: 'active', label: 'Active' },

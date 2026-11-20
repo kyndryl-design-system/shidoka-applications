@@ -72,6 +72,11 @@ export interface QueryField {
   max?: number;
   /** Step increment for number/slider fields */
   step?: number;
+  /**
+   * When true, number fields block decimal separators and exponential notation.
+   * Passed through to `kyn-number-input`. Decimal *values* still follow `step`.
+   */
+  integer?: boolean;
 
   // Text validation
   /** RegEx pattern for text fields */

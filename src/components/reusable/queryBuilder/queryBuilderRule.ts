@@ -347,6 +347,7 @@ export class QueryBuilderRule extends LitElement {
         ?required=${field.required}
         min=${ifDefined(field.min)}
         max=${ifDefined(field.max)}
+        ?integer=${field.integer}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -575,6 +576,7 @@ export class QueryBuilderRule extends LitElement {
             ?required=${field.required}
             min=${ifDefined(field.min)}
             max=${ifDefined(field.max)}
+            ?integer=${field.integer}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
             @blur=${this._handleValueBlur}
@@ -591,6 +593,7 @@ export class QueryBuilderRule extends LitElement {
             ?required=${field.required}
             min=${ifDefined(field.min)}
             max=${ifDefined(field.max)}
+            ?integer=${field.integer}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
             @blur=${this._handleValueBlur}

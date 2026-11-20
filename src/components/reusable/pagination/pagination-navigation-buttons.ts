@@ -203,6 +203,7 @@ export class PaginationNavigationButtons extends LitElement {
                 ?inline=${true}
                 .inlineBorder=${true}
                 size="sm"
+                integer
                 .value=${this._draftPageNumber ?? this.pageNumber}
                 min=${1}
                 max=${this.numberOfPages}

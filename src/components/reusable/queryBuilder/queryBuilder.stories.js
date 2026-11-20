@@ -80,7 +80,7 @@ const sampleFields = [
   },
 
   // number inputs
-  { name: 'age', label: 'Age', dataType: 'number' },
+  { name: 'age', label: 'Age', dataType: 'number', integer: true },
   { name: 'salary', label: 'Salary', dataType: 'number' },
 
   // date inputs
@@ -829,6 +829,7 @@ const fieldsWithValidation = [
     name: 'age',
     label: 'Age',
     dataType: 'number',
+    integer: true,
     validator: (rule) => {
       if (
         rule.value === '' ||
