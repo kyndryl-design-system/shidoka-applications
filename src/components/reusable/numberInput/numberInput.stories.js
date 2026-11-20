@@ -1,8 +1,25 @@
 import { html } from 'lit';
 import './index';
+import { _defaultTextStrings } from './numberInput';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 import { ValidationArgs } from '../../../common/helpers/helpers';
+
+const integerErrorDemoReady = new WeakSet();
+
+/** Surface the integer validation message on first paint (stories skip user interaction). */
+const showIntegerErrorDemo = (el) => {
+  if (!el || integerErrorDemoReady.has(el)) return;
+  integerErrorDemoReady.add(el);
+  queueMicrotask(async () => {
+    await el.updateComplete;
+    const input = el.shadowRoot?.querySelector('input');
+    if (!input) return;
+    input.value = '1.5';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+};
 
 export default {
   title: 'Components/Form Inputs/Number Input',
@@ -11,7 +28,7 @@ export default {
     docs: {
       description: {
         component:
-          'Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact in JavaScript. Typed digits are kept and the field is marked invalid because the emitted `Number` no longer matches. Use `allowEmpty` to leave the field blank (`null` instead of resetting to `0`).',
+          'Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact in JavaScript. Typed digits are kept and the field is marked invalid because the emitted `Number` no longer matches. Use `allowEmpty` to leave the field blank (`null` instead of resetting to `0`). Use `integer` to block decimal separators and exponential notation; a complete decimal still uses native `step` / `badInput` validation.',
       },
     },
   },
@@ -35,6 +52,9 @@ export default {
     allowEmpty: {
       control: { type: 'boolean' },
     },
+    integer: {
+      control: { type: 'boolean' },
+    },
     ...ValidationArgs,
   },
 };
@@ -54,18 +74,11 @@ const args = {
   hideLabel: false,
   inline: false,
   allowEmpty: false,
+  integer: false,
   step: 1,
   min: undefined,
   max: undefined,
-  textStrings: {
-    requiredText: 'Required',
-    subtract: 'Subtract',
-    add: 'Add',
-    error: 'Error',
-    warning: 'Warning',
-    unsafeInteger:
-      'Value is outside the safe integer range and cannot be represented exactly.',
-  },
+  textStrings: { ..._defaultTextStrings },
 };
 
 const renderNumberInput = (storyArgs, style) => html`
@@ -83,6 +96,7 @@ const renderNumberInput = (storyArgs, style) => html`
     ?hideLabel=${storyArgs.hideLabel}
     ?inline=${storyArgs.inline}
     ?allowEmpty=${storyArgs.allowEmpty}
+    ?integer=${storyArgs.integer}
     step=${ifDefined(storyArgs.step)}
     min=${ifDefined(storyArgs.min)}
     max=${ifDefined(storyArgs.max)}
@@ -124,6 +138,35 @@ export const Gallery = {
             label="Label"
             allowEmpty
             .value=${0}
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Integer only
+          </div>
+          <kyn-number-input
+            name="integerOnly"
+            label="Quantity"
+            caption="Try typing '.' — decimal separators and exponents are blocked."
+            integer
+            .value=${0}
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          ></kyn-number-input>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Integer only — pasted decimal
+          </div>
+          <kyn-number-input
+            ${ref(showIntegerErrorDemo)}
+            name="integerPastedDecimal"
+            label="Quantity"
+            caption="1.5 fails native step validation — same error as without integer."
+            integer
+            .value=${1.5}
             @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-number-input>
         </div>

@@ -14,7 +14,7 @@ import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
-const _defaultTextStrings = {
+export const _defaultTextStrings = {
   requiredText: 'Required',
   subtract: 'Subtract',
   add: 'Add',
@@ -30,7 +30,9 @@ const _defaultTextStrings = {
  * Integers outside `Number.MAX_SAFE_INTEGER` (±9007199254740991) are not exact
  * in JavaScript. The typed digits are kept, but the field is marked invalid
  * because the emitted `Number` no longer matches. Set `min`/`max` for native
- * range validation of application limits.
+ * range validation of application limits. Set `integer` to block decimal
+ * separators and exponential notation; remaining decimals still use native
+ * `step` / `badInput` validation.
  *
  * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
  * @fires on-change - Emitted when the value is committed (blur after edit, Enter, or stepper click).`detail:{ value: number | null }` (`null` only when `allowEmpty` and the field is empty)
@@ -93,6 +95,14 @@ export class NumberInput extends FormMixin(LitElement) {
    */
   @property({ type: Boolean })
   accessor allowEmpty = false;
+
+  /**
+   * When true, decimal separators (`.` `,`) and exponential notation (`e` `E` `+`)
+   * cannot be typed or pasted. A complete decimal still uses native `step` /
+   * `badInput` validation (the same messages as without `integer`).
+   */
+  @property({ type: Boolean })
+  accessor integer = false;
 
   /** Step value. */
   @property({ type: Number })
@@ -205,6 +215,7 @@ export class NumberInput extends FormMixin(LitElement) {
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
             @focus=${this._handleFocus}
+            @beforeinput=${(e: InputEvent) => this._handleBeforeInput(e)}
             @input=${(e: any) => this._handleInput(e)}
             @change=${(e: Event) => this._handleChange(e)}
             @keydown=${(e: KeyboardEvent) => this._handleKeydown(e)}
@@ -337,6 +348,15 @@ export class NumberInput extends FormMixin(LitElement) {
   }
 
   private _handleInput(e: any) {
+    // Trailing `.` / incomplete exponent: native value is "" with badInput.
+    // Only intercept that in `integer` mode. Default (decimals allowed) still
+    // uses the empty-value path so existing on-input behavior is unchanged.
+    if (this.integer && e.target.validity.badInput) {
+      this._validate(true, false);
+      this._emitValue(e);
+      return;
+    }
+
     if (e.target.value === '') {
       if (this.allowEmpty) {
         this.value = null;
@@ -366,10 +386,33 @@ export class NumberInput extends FormMixin(LitElement) {
     this._emitChange(e);
   }
 
+  private _handleBeforeInput(e: InputEvent) {
+    if (!this.integer || e.defaultPrevented) return;
+    if (!e.data || !this._hasBlockedIntegerChars(e.data)) return;
+    e.preventDefault();
+  }
+
   private _handleKeydown(e: KeyboardEvent) {
-    if (e.key !== 'Enter') return;
-    // Blur commits via the native change event when the value changed.
-    (e.target as HTMLInputElement).blur();
+    if (e.key === 'Enter') {
+      // Blur commits via the native change event when the value changed.
+      (e.target as HTMLInputElement).blur();
+      return;
+    }
+
+    if (
+      this.integer &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      this._hasBlockedIntegerChars(e.key)
+    ) {
+      e.preventDefault();
+    }
+  }
+
+  /** Decimal separators and scientific-notation characters blocked in `integer` mode. */
+  private _hasBlockedIntegerChars(data: string): boolean {
+    return /[eE.,+]/.test(data);
   }
 
   private _emitValue(e?: any) {

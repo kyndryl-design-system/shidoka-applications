@@ -70,6 +70,65 @@ export const AllowEmptyClearEmitsNull = {
   },
 };
 
+export const IntegerBlocksDecimalPoint = {
+  name: 'integer blocks decimal point',
+  render: () => html`
+    <kyn-number-input
+      name="numberInput"
+      label="Label"
+      integer
+      .value=${5}
+    ></kyn-number-input>
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-number-input');
+    await el.updateComplete;
+    const input = getInput(el);
+
+    const blocked = input.dispatchEvent(
+      new InputEvent('beforeinput', {
+        bubbles: true,
+        cancelable: true,
+        data: '.',
+        inputType: 'insertText',
+      })
+    );
+
+    expect(blocked).toBe(false);
+    expect(input.value).toBe('5');
+    expect(el.value).toBe(5);
+  },
+};
+
+export const IntegerRejectsDecimalValue = {
+  name: 'integer rejects a decimal value',
+  render: () => html`
+    <kyn-number-input
+      name="numberInput"
+      label="Label"
+      integer
+      .value=${0}
+    ></kyn-number-input>
+  `,
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('kyn-number-input');
+    await el.updateComplete;
+    const input = getInput(el);
+
+    fireInput(input, '1.5');
+    await el.updateComplete;
+
+    expect(el.value).toBe(1.5);
+    await waitFor(() => {
+      expect(input.validity.stepMismatch).toBe(true);
+      expect(el._isInvalid).toBe(true);
+      expect(
+        el.shadowRoot.querySelector('.error')?.textContent?.trim()
+      ).not.toBe('');
+    });
+  },
+};
+
 export const SixteenNinesAreNotRewritten = {
   name: '16 nines are not rewritten to 1e16',
   render: () => html`
